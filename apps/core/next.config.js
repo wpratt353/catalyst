@@ -19,6 +19,9 @@ const nextConfig = {
   },
   // default URL generation in BigCommerce uses trailing slash
   trailingSlash: process.env.TRAILING_SLASH !== 'false',
+  experimental: {
+    ppr: process.env.PPR === 'true',
+  },
 };
 
 module.exports = nextConfig;
