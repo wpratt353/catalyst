@@ -21,4 +21,8 @@ const nextConfig = {
   trailingSlash: process.env.TRAILING_SLASH !== 'false',
 };
 
+if (process.env.USE_DOCKER === 'true') {
+  nextConfig.output = 'standalone';
+}
+
 module.exports = nextConfig;
