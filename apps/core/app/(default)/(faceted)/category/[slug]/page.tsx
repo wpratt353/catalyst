@@ -130,4 +130,4 @@ export default async function Category({ params, searchParams }: Props) {
   );
 }
 
-export const runtime = 'edge';
+export const runtime = process.env.NEXTJS_RUNTIME ? process.env.NEXTJS_RUNTIME : 'edge';

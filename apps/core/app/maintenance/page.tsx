@@ -52,4 +52,4 @@ export default async function MaintenancePage() {
   );
 }
 
-export const runtime = 'edge';
+export const runtime = process.env.NEXTJS_RUNTIME ? process.env.NEXTJS_RUNTIME : 'edge';

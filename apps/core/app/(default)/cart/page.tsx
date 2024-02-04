@@ -192,4 +192,4 @@ export default async function CartPage() {
   );
 }
 
-export const runtime = 'edge';
+export const runtime = process.env.NEXTJS_RUNTIME ? process.env.NEXTJS_RUNTIME : 'edge';
