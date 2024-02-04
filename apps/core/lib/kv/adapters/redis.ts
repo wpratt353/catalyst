@@ -9,8 +9,11 @@ export class GcpMemorystoreAdapter implements KvAdapter {
     // Initialize the Redis client. Ensure to replace 'REDIS_HOST' and 'REDIS_PORT'
     // with your Memorystore instance's connection details.
     this.client = createClient({
-      "host": process.env.REDIS_IP
-    });
+        socket: {
+            host: process.env.REDIS_IP
+        }
+    })
+    
 
     this.client.on('error', (err) => console.log('Redis Client Error', err));
 
