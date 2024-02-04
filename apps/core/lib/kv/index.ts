@@ -30,6 +30,17 @@ class KV<Adapter extends KvAdapter> implements KvAdapter {
     return value;
   }
 
+  async mget<Data>(...keys: string[]) {
+    const kv = await this.getKv();
+    const fullKeys = keys.map((key) => `${this.namespace}_${key}`);
+
+    const values = await kv.mget<Data>(...fullKeys);
+
+    this.logger(`MGET - Keys: ${fullKeys.toString()} - Value: ${JSON.stringify(values, null, 2)}`);
+
+    return values;
+  }
+
   async set<Data, Options extends SetCommandOptions = SetCommandOptions>(
     key: string,
     value: Data,
@@ -60,15 +71,15 @@ class KV<Adapter extends KvAdapter> implements KvAdapter {
 }
 
 async function createKVAdapter() {
-  if (process.env.NODE_ENV === 'development' && !process.env.KV_REST_API_URL) {
-    const { DevKvAdapter } = await import('./adapters/dev');
+  if (process.env.REDIS_IP) {
+    const { GcpMemorystoreAdapter } = await import('./adapters/redis');
 
-    return new DevKvAdapter();
+    return new GcpMemorystoreAdapter();
   }
 
-  const { VercelKvAdapter } = await import('./adapters/vercel');
+  const { DevKvAdapter } = await import('./adapters/dev');
 
-  return new VercelKvAdapter();
+  return new DevKvAdapter();
 }
 
 const adapterInstance = new KV(createKVAdapter, {

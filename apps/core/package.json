@@ -35,6 +35,7 @@
     "schema-dts": "^1.1.2",
     "server-only": "^0.0.1",
     "sharp": "^0.33.0",
+    "redis": "4.6.12",
     "tailwind-merge": "^2.1.0",
     "zod": "^3.22.4"
   },
