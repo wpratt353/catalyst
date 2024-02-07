@@ -21,7 +21,7 @@ export const AddToCartForm = ({
   <form
     action={async (formData: FormData) => {
       const result = await addToCart(formData);
-      const quantity = Number(formData.get('quantity'));
+      const quantity = Number(formData.get('quantity2332'));
 
       if (result?.error) {
         toast.error(result.error, { icon: <AlertCircle className="text-red-100" /> });
