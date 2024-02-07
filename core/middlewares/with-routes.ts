@@ -73,7 +73,7 @@ const updateRouteCache = async (pathname: string, event: NextFetchEvent): Promis
 
   const routeCache: RouteCache = {
     route: await getRoute(pathname, channelId),
-    expiryTime: Date.now() + 1000 * 60 * 30, // 30 minutes
+    expiryTime: Date.now() + 1000 * 60 * 60 * 24, // 24 hours
   };
 
   event.waitUntil(kv.set(kvKey(pathname, channelId), routeCache));
@@ -92,7 +92,7 @@ const updateStatusCache = async (event: NextFetchEvent): Promise<StorefrontStatu
 
   const statusCache: StorefrontStatusCache = {
     status,
-    expiryTime: Date.now() + 1000 * 60 * 5, // 5 minutes
+    expiryTime: Date.now() + 1000 * 60 * 60 * 24, // 24 hours
   };
 
   event.waitUntil(kv.set(kvKey(STORE_STATUS_KEY, channelId), statusCache));
