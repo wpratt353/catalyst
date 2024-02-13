@@ -10,7 +10,7 @@ type LinkType = Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkPr
   } & React.RefAttributes<HTMLAnchorElement>;
 
 export const Link = forwardRef<ElementRef<'a'>, LinkType>(
-  ({ href, prefetch = false, children, className, ...rest }, ref) => {
+  ({ href, prefetch = true, children, className, ...rest }, ref) => {
     return (
       <NextLink
         className={cn(
