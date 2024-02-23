@@ -238,11 +238,11 @@ export const withRoutes: MiddlewareFactory = (next) => {
         }
 
         // Trailing slash handling based on environment variable preference
-        // if (!pathname.endsWith('/') && process.env.TRAILING_SLASH === 'true') {
-        //   request.nextUrl.pathname += '/';
+        if (!pathname.endsWith('/') && process.env.TRAILING_SLASH === 'true') {
+          request.nextUrl.pathname += '/';
 
-        //   return NextResponse.redirect(request.nextUrl);
-        // }
+          return NextResponse.redirect(request.nextUrl);
+        }
 
         return next(request, event);
       }
