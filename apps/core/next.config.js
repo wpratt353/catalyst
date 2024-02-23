@@ -4,7 +4,7 @@ const cspHeader = `
   base-uri 'self';
   form-action 'self';
   frame-ancestors 'none';
-`
+`;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -24,8 +24,9 @@ const nextConfig = {
     ignoreDuringBuilds: !!process.env.CI,
     dirs: ['app', 'client', 'components', 'lib', 'middlewares'],
   },
-  // default URL generation in BigCommerce uses trailing slash
-  trailingSlash: process.env.TRAILING_SLASH !== 'false',
+  // BigCommerce allows URLs with or without trailing slash,
+  // so this behavior will be handled in middleware (with-routes.ts)
+  skipTrailingSlashRedirect: true,
   async headers() {
     return [
       {
@@ -37,8 +38,8 @@ const nextConfig = {
           },
         ],
       },
-    ]
-  }
+    ];
+  },
 };
 
 module.exports = nextConfig;
