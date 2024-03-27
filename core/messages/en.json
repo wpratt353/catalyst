@@ -218,6 +218,17 @@
         "createLink": "Create Account "
       }
     },
+    "Register": {
+        "heading": "New account",
+        "emptyTextValidatoinMessage": "This field can not be empty",
+        "emailValidationMessage": "Enter a valid email such as name@domain.com",
+        "emptyPasswordValidatoinMessage": "Password field can not be empty",
+        "equalPasswordValidatoinMessage": "Confirm password field must be equal with password",
+        "submit": "Create account",
+        "submitting": "Creating account...", 
+        "recaptchaText": "Pass ReCAPTCHA check",
+        "successMessage": "Dear {firstName} {lastName}, your account was successfully created. Redirecting to account..."
+    },
     "ChangePassword": {
       "currentPasswordLabel": "Current password",
       "newPasswordLabel": "New password",
