@@ -16,9 +16,7 @@ export const deleteAddress = async (addressId: number) => {
 
     return {
       status: 'error',
-      message: response.errors
-        .map((error) => error.message)
-        .join('\n'),
+      message: response.errors.map((error) => error.message).join('\n'),
     };
   } catch (error: unknown) {
     if (error instanceof Error) {

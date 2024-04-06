@@ -9,6 +9,7 @@ import { AddressFields, FieldNameToFieldId } from '..';
 type TextType = Extract<NonNullable<AddressFields>[number], { __typename: 'TextFormField' }>;
 
 interface TextProps {
+  defaultValue?: string;
   field: TextType;
   isValid?: boolean;
   name: string;
@@ -16,7 +17,7 @@ interface TextProps {
   type?: string;
 }
 
-export const Text = ({ field, isValid, name, onChange, type }: TextProps) => {
+export const Text = ({ defaultValue, field, isValid, name, onChange, type }: TextProps) => {
   const t = useTranslations('Account.Register');
 
   return (
@@ -26,7 +27,7 @@ export const Text = ({ field, isValid, name, onChange, type }: TextProps) => {
       </FieldLabel>
       <FieldControl asChild>
         <Input
-          defaultValue={field.defaultText ?? undefined}
+          defaultValue={field.defaultText ?? defaultValue}
           id={`field-${field.entityId}`}
           maxLength={field.maxLength ?? undefined}
           onChange={field.isRequired ? onChange : undefined}

@@ -194,6 +194,7 @@ export const EditAddress = ({
                 return (
                   <FieldWrapper fieldId={field.entityId} key={field.entityId}>
                     <Text
+                      defaultValue={defaultValue}
                       field={field}
                       isValid={textInputValid[field.entityId]}
                       name={createFieldName('address', field.entityId)}

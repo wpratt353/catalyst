@@ -185,7 +185,8 @@
       "wishlists": "Wish lists",
       "recentlyViewed": "Recently viewed",
       "settings": "Account settings",
-      "changePassword": "Change password"
+      "changePassword": "Change password",
+      "updateAddress": "Update address"
     },
     "Addresses": {
       "defaultAddress": "Default",

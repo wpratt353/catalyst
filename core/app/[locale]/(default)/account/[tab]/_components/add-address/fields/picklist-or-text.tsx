@@ -38,6 +38,7 @@ export const PicklistOrText = ({
       <FieldControl asChild>
         {field.entityId === FieldNameToFieldId.stateOrProvince && options.length === 0 ? (
           <Input
+            defaultValue={defaultValue}
             id={`field-${field.entityId}`}
             onChange={field.isRequired ? onChange : undefined}
             onInvalid={field.isRequired ? onChange : undefined}

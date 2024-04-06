@@ -57,14 +57,14 @@ export default async function AccountTabPage({ params: { tab, locale }, searchPa
       const customerAddressesDetails = await getCustomerAddresses({
         ...(after && { after }),
         ...(before && { before }),
-        limit: 2,
+        limit: action === 'edit-address' ? undefined : 2,
       });
 
       if (!customerAddressesDetails) {
         notFound();
       }
 
-      const { addresses, pageInfo } = customerAddressesDetails;
+      const { addresses, pageInfo, addressesCount } = customerAddressesDetails;
 
       if (action === 'edit-address' && searchParams['address-id']) {
         const activeAddress = addresses
@@ -81,7 +81,14 @@ export default async function AccountTabPage({ params: { tab, locale }, searchPa
         );
       }
 
-      return <AddressesContent addresses={addresses} pageInfo={pageInfo} title={tab} />;
+      return (
+        <AddressesContent
+          addresses={addresses}
+          addressesCount={addressesCount}
+          pageInfo={pageInfo}
+          title={tab}
+        />
+      );
     }
 
     case 'wishlists':

@@ -1,17 +1,36 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 
 import { getCustomerAddresses } from '~/client/queries/get-customer-addresses';
 import { Link } from '~/components/link';
 import { Button } from '~/components/ui/button';
 
+import { deleteAddress } from '../_actions/delete-address';
+
+import { Modal } from './modal';
+
 type Addresses = NonNullable<Awaited<ReturnType<typeof getCustomerAddresses>>>['addresses'];
 
-interface Props {
-  customerAddressBook: Addresses;
+interface AddressChangeProps {
+  addressId: number;
+  isAddressRemovable: boolean;
+  onDelete: (state: Addresses | ((prevState: Addresses) => Addresses)) => void;
 }
 
-const AddressChangeButtons = ({ addressId }: { addressId: number }) => {
+const AddressChangeButtons = ({ addressId, isAddressRemovable, onDelete }: AddressChangeProps) => {
   const t = useTranslations('Account.Addresses');
+
+  const handleDeleteAddress = async () => {
+    const { status } = await deleteAddress(addressId);
+
+    if (status === 'success') {
+      onDelete((prevAddressBook) =>
+        prevAddressBook.filter(({ entityId }) => entityId !== addressId),
+      );
+    }
+  };
 
   return (
     <div className="my-2 flex w-fit gap-x-2 divide-y-0">
@@ -25,19 +44,31 @@ const AddressChangeButtons = ({ addressId }: { addressId: number }) => {
           {t('editButton')}
         </Link>
       </Button>
-      <Button aria-label={t('deleteButton')} variant="subtle">
-        {t('deleteButton')}
-      </Button>
+      <Modal
+        actionHandler={handleDeleteAddress}
+        confirmationText={t('confirmDeleteAddress')}
+        title={t('deleteModalTitle')}
+      >
+        <Button aria-label={t('deleteButton')} disabled={!isAddressRemovable} variant="subtle">
+          {t('deleteButton')}
+        </Button>
+      </Modal>
     </div>
   );
 };
 
-export const AddressesList = ({ customerAddressBook }: Props) => {
+interface Props {
+  customerAddressBook: Addresses;
+  addressesCount: number;
+}
+
+export const AddressesList = ({ addressesCount, customerAddressBook }: Props) => {
   const t = useTranslations('Account.Addresses');
+  const [addressBook, setAddressBook] = useState(customerAddressBook);
 
   return (
     <ul className="mb-12">
-      {customerAddressBook.map(
+      {addressBook.map(
         ({
           entityId,
           firstName,
@@ -64,7 +95,11 @@ export const AddressesList = ({ customerAddressBook }: Props) => {
               </p>
               <p>{countryCode}</p>
             </div>
-            <AddressChangeButtons addressId={entityId} />
+            <AddressChangeButtons
+              addressId={entityId}
+              isAddressRemovable={addressesCount > 1}
+              onDelete={setAddressBook}
+            />
           </li>
         ),
       )}
