@@ -1,14 +1,9 @@
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 
 import { TabType } from '../layout';
 
-export const TabHeading = async ({
-  heading,
-  locale,
-}: {
-  heading: TabType | 'change-password';
-  locale: string;
-}) => {
+export const TabHeading = async ({ heading }: { heading: TabType | 'change-password' }) => {
+  const locale = await getLocale();
   const t = await getTranslations({ locale, namespace: 'Account.Home' });
   const tab = heading === 'recently-viewed' ? 'recentlyViewed' : heading;
   const title = tab === 'change-password' ? 'changePassword' : tab;

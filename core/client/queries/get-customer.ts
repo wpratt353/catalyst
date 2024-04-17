@@ -1,5 +1,7 @@
 import { cache } from 'react';
 
+import { getSessionCustomerId } from '~/auth';
+
 import { client } from '..';
 import { graphql } from '../graphql';
 
@@ -43,7 +45,9 @@ const GET_CUSTOMER_QUERY = graphql(`
   }
 `);
 
-export const getCustomer = cache(async (customerId: string) => {
+export const getCustomer = cache(async () => {
+  const customerId = await getSessionCustomerId();
+
   const response = await client.fetch({
     document: GET_CUSTOMER_QUERY,
     fetchOptions: { cache: 'no-store' },
