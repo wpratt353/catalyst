@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { ChangeEvent } from 'react';
 
 import { Countries, createFieldName, FieldNameToFieldId } from '.';
 
@@ -6,14 +6,11 @@ interface FieldState {
   [key: string]: boolean;
 }
 
-type FieldStateSetFunction = Dispatch<
-  SetStateAction<{
-    [key: string]: boolean;
-  }>
->;
+type StateOrProvince = Countries[number]['statesOrProvinces'];
+type FieldStateSetFn<Type> = (state: Type | ((prevState: Type) => Type)) => void;
 
 const createTextInputValidationHandler =
-  (textInputState: FieldState, textInputStateSetter: FieldStateSetFunction) =>
+  (textInputStateSetter: FieldStateSetFn<FieldState>, textInputState: FieldState) =>
   (e: ChangeEvent<HTMLInputElement>) => {
     const fieldId = Number(e.target.id.split('-')[1]);
 
@@ -24,7 +21,7 @@ const createTextInputValidationHandler =
   };
 
 const createPasswordValidationHandler =
-  (passwordStateSetter: FieldStateSetFunction) => (e: ChangeEvent<HTMLInputElement>) => {
+  (passwordStateSetter: FieldStateSetFn<FieldState>) => (e: ChangeEvent<HTMLInputElement>) => {
     const fieldId = e.target.id.split('-')[1] ?? '';
 
     switch (FieldNameToFieldId[Number(fieldId)]) {
@@ -55,7 +52,7 @@ const createPasswordValidationHandler =
   };
 
 const createPicklistOrTextValidationHandler =
-  (picklistWithTextState: FieldState, picklistWithTextStateSetter: FieldStateSetFunction) =>
+  (picklistWithTextStateSetter: FieldStateSetFn<FieldState>, picklistWithTextState: FieldState) =>
   (e: ChangeEvent<HTMLInputElement>) => {
     const fieldId = Number(e.target.id.split('-')[1]);
 
@@ -65,11 +62,7 @@ const createPicklistOrTextValidationHandler =
   };
 
 const createCountryChangeHandler =
-  (
-    countries: Countries,
-    provinceSetter: Dispatch<SetStateAction<Countries[number]['statesOrProvinces']>>,
-  ) =>
-  (value: string) => {
+  (provinceSetter: FieldStateSetFn<StateOrProvince>, countries: Countries) => (value: string) => {
     const states = countries.find(({ code }) => code === value)?.statesOrProvinces;
 
     provinceSetter(states ?? []);

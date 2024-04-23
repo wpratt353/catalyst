@@ -43,7 +43,7 @@ export const addAddress = async ({
     if (!isAddCustomerAddressInput(parsed)) {
       return {
         status: 'error',
-        error: 'Something went wrong with proccessing user input',
+        error: 'Something went wrong with proccessing user input.',
       };
     }
 
@@ -55,7 +55,7 @@ export const addAddress = async ({
     revalidatePath('/account/addresses', 'page');
 
     if (response.errors.length === 0) {
-      return { status: 'success', message: 'The address has been added' };
+      return { status: 'success', message: 'The address has been added.' };
     }
 
     return {
@@ -70,6 +70,6 @@ export const addAddress = async ({
       };
     }
 
-    return { status: 'error', message: 'Unknown error' };
+    return { status: 'error', message: 'Unknown error.' };
   }
 };

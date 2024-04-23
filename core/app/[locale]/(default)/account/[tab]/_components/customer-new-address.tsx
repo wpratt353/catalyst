@@ -90,7 +90,6 @@ export async function CustomerNewAddress() {
         addressFields={addressFields}
         countries={countries || []}
         defaultCountry={{ id: entityId, code, states: defaultCountryStates }}
-        fallbackCountryId={FALLBACK_COUNTRY.entityId}
         reCaptchaSettings={reCaptchaSettings}
       />
     </NextIntlClientProvider>

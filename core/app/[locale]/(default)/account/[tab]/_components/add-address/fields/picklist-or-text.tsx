@@ -1,4 +1,3 @@
-import { Loader2 as Spinner } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { ChangeEvent } from 'react';
 
@@ -17,9 +16,8 @@ interface PicklistOrTextProps {
   defaultValue?: string;
   field: PicklistOrTextType;
   name: string;
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void | Promise<void>;
   options: Array<{ label: string; entityId: string | number }>;
-  pending?: boolean;
   variant?: 'error';
 }
 
@@ -29,43 +27,29 @@ export const PicklistOrText = ({
   name,
   onChange,
   options,
-  pending,
-  variant,
 }: PicklistOrTextProps) => {
   const t = useTranslations('Account.Register');
 
   return (
     <Field className="relative space-y-2 pb-7" name={name}>
       <FieldLabel htmlFor={`field-${field.entityId}`} isRequired={field.isRequired}>
-        <span className="flex justify-start">
-          {field.label}
-          {pending && field.entityId === FieldNameToFieldId.stateOrProvince && (
-            <span className="ms-1 text-primary">
-              <Spinner aria-hidden="true" className="animate-spin" />
-              <span className="sr-only">{t('loadingStates')}</span>
-            </span>
-          )}
-        </span>
+        {field.label}
       </FieldLabel>
       <FieldControl asChild>
         {field.entityId === FieldNameToFieldId.stateOrProvince && options.length === 0 ? (
           <Input
-            defaultValue={defaultValue}
-            disabled={pending}
             id={`field-${field.entityId}`}
             onChange={field.isRequired ? onChange : undefined}
             onInvalid={field.isRequired ? onChange : undefined}
             required={field.isRequired}
             type="text"
-            variant={variant}
           />
         ) : (
           <Select
             aria-label={field.label}
             defaultValue={defaultValue}
-            disabled={pending}
+            disabled={false}
             id={`field-${field.entityId}`}
-            key={defaultValue}
             placeholder={field.label}
             required={field.isRequired}
           >

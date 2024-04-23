@@ -17,6 +17,7 @@ import { NewAddressQueryResponseType } from '../customer-new-address';
 
 import { FieldWrapper, Password, Picklist, PicklistOrText, Text } from './fields';
 import {
+  createCountryChangeHandler,
   createPasswordValidationHandler,
   createPicklistOrTextValidationHandler,
   createTextInputValidationHandler,
@@ -139,19 +140,14 @@ export const AddAddress = ({
   );
 
   const handleTextInputValidation = createTextInputValidationHandler(
-    textInputValid,
     setTextInputValid,
+    textInputValid,
   );
   const handlePasswordValidation = createPasswordValidationHandler(setPassswordValid);
-  const handleCountryChange = (value: string) => {
-    const states = countries.find(({ code }) => code === value)?.statesOrProvinces;
-
-    setCountryStates(states ?? []);
-  };
-
+  const handleCountryChange = createCountryChangeHandler(setCountryStates, countries);
   const handlePicklistOrTextValidation = createPicklistOrTextValidationHandler(
-    picklistWithTextValid,
     setPicklistWithTextValid,
+    picklistWithTextValid,
   );
 
   const onReCaptchaChange = (token: string | null) => {

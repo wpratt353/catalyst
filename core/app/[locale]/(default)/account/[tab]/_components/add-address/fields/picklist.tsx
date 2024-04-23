@@ -12,7 +12,7 @@ interface PicklistProps {
   defaultValue?: string;
   field: PicklistType;
   name: string;
-  onChange?: (value: string) => Promise<void> | void;
+  onChange?: (value: string) => void | Promise<void>;
   options: Array<{ label: string; entityId: string | number }>;
 }
 
