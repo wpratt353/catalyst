@@ -181,6 +181,7 @@
       "orders": "Orders",
       "messages": "Messages",
       "addresses": "Addresses",
+      "newAddress": "New address",
       "wishlists": "Wish lists",
       "recentlyViewed": "Recently viewed",
       "settings": "Account settings",
@@ -191,7 +192,27 @@
       "alternativeAddress": "Alternative",
       "addNewAddress": "Add new address",
       "editButton": "Edit",
-      "deleteButton": "Delete"
+      "deleteButton": "Delete",
+      "confirmDeleteAddress": "Delete address",
+      "deleteModalTitle": "Are you sure you want to delete address?",
+      "recaptchaText": "Pass ReCAPTCHA check",
+      "emptyTextValidationMessage": "This field can not be empty",
+      "successMessage": "The address has been created successfully.",
+      "submit": "Add new address",
+      "cancel": "Cancel",
+      "submitting": "In progress..."
+    },
+    "Register": {
+      "heading": "New account",
+      "loadingStates": "Loading states according to selected country...",
+      "emptyTextValidatoinMessage": "This field can not be empty",
+      "emailValidationMessage": "Enter a valid email such as name@domain.com",
+      "emptyPasswordValidatoinMessage": "Password field can not be empty",
+      "equalPasswordValidatoinMessage": "Confirm Password field must be equal with Password",
+      "submit": "Create account",
+      "submitting": "Creating account...", 
+      "recaptchaText": "Pass ReCAPTCHA check",
+      "successMessage": "Dear {firstName} {lastName}, your account was successfully created. Redirecting to Account..."
     },
     "Login": {
       "heading": "Log In",

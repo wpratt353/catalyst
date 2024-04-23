@@ -63,7 +63,9 @@ export const AddressesList = ({ customerAddressBook }: Props) => {
       )}
       <li className="flex w-full border-collapse flex-col justify-start gap-2 border-t border-gray-200 pt-8">
         <Button aria-label={t('addNewAddress')} asChild className="w-fit hover:text-white">
-          <Link href="/account/add-new-address">{t('addNewAddress')}</Link>
+          <Link href={{ pathname: '/account/addresses', query: { action: 'add-new-address' } }}>
+            {t('addNewAddress')}
+          </Link>
         </Button>
       </li>
     </ul>

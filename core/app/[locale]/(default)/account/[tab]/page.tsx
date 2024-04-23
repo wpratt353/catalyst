@@ -6,6 +6,7 @@ import { getCustomerAddresses } from '~/client/queries/get-customer-addresses';
 import { LocaleType } from '~/i18n';
 
 import { AddressesContent } from './_components/addresses-content';
+import { CustomerNewAddress } from './_components/customer-new-address';
 import { SettingsContent } from './_components/settings-content';
 import { TabHeading } from './_components/tab-heading';
 import { TabType } from './layout';
@@ -31,6 +32,8 @@ export async function generateMetadata({ params: { tab, locale } }: Props): Prom
 }
 
 export default async function AccountTabPage({ params: { tab, locale }, searchParams }: Props) {
+  const t = await getTranslations({ locale, namespace: 'Account.Home' });
+
   switch (tab) {
     case 'orders':
       return <TabHeading heading={tab} locale={locale} />;
@@ -39,7 +42,17 @@ export default async function AccountTabPage({ params: { tab, locale }, searchPa
       return <TabHeading heading={tab} locale={locale} />;
 
     case 'addresses': {
-      const { before, after } = searchParams;
+      const { before, after, action } = searchParams;
+
+      if (action === 'add-new-address') {
+        return (
+          <div className="mx-auto mb-14 lg:w-2/3">
+            <h1 className="my-8 text-3xl font-black lg:text-4xl">{t('newAddress')}</h1>
+            <CustomerNewAddress />
+          </div>
+        );
+      }
+
       const customerAddressesDetails = await getCustomerAddresses({
         ...(after && { after }),
         ...(before && { before }),
