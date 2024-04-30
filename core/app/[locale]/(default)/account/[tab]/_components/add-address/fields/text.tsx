@@ -1,13 +1,15 @@
-import { Field, FieldControl, FieldLabel, FieldMessage } from '@bigcommerce/components/form';
-import { Input } from '@bigcommerce/components/input';
 import { useTranslations } from 'next-intl';
 import { ChangeEvent } from 'react';
+
+import { Field, FieldControl, FieldLabel, FieldMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
 
 import { AddressFields, FieldNameToFieldId } from '..';
 
 type TextType = Extract<NonNullable<AddressFields>[number], { __typename: 'TextFormField' }>;
 
 interface TextProps {
+  defaultValue?: string;
   field: TextType;
   isValid?: boolean;
   name: string;
@@ -15,8 +17,8 @@ interface TextProps {
   type?: string;
 }
 
-export const Text = ({ field, isValid, name, onChange, type }: TextProps) => {
-  const t = useTranslations('Account.Register'); // TODO: update later
+export const Text = ({ defaultValue, field, isValid, name, onChange, type }: TextProps) => {
+  const t = useTranslations('Account.Register');
 
   return (
     <Field className="relative space-y-2 pb-7" name={name}>
@@ -25,7 +27,7 @@ export const Text = ({ field, isValid, name, onChange, type }: TextProps) => {
       </FieldLabel>
       <FieldControl asChild>
         <Input
-          defaultValue={field.defaultText ?? undefined}
+          defaultValue={field.defaultText ?? defaultValue}
           id={`field-${field.entityId}`}
           maxLength={field.maxLength ?? undefined}
           onChange={field.isRequired ? onChange : undefined}

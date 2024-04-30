@@ -6,6 +6,7 @@ import { getCustomerAddresses } from '~/client/queries/get-customer-addresses';
 import { LocaleType } from '~/i18n';
 
 import { AddressesContent } from './_components/addresses-content';
+import { CustomerEditAddress } from './_components/customer-edit-address';
 import { CustomerNewAddress } from './_components/customer-new-address';
 import { SettingsContent } from './_components/settings-content';
 import { TabHeading } from './_components/tab-heading';
@@ -64,6 +65,21 @@ export default async function AccountTabPage({ params: { tab, locale }, searchPa
       }
 
       const { addresses, pageInfo } = customerAddressesDetails;
+
+      if (action === 'edit-address' && searchParams['address-id']) {
+        const activeAddress = addresses
+          .filter(({ entityId }) => entityId.toString() === searchParams['address-id'])
+          .shift();
+
+        return (
+          <div className="mx-auto mb-14 lg:w-2/3">
+            <h1 className="my-8 text-3xl font-black lg:text-4xl">{t('updateAddress')}</h1>
+            {activeAddress && Object.keys(activeAddress).length > 0 ? (
+              <CustomerEditAddress address={activeAddress} />
+            ) : null}
+          </div>
+        );
+      }
 
       return <AddressesContent addresses={addresses} pageInfo={pageInfo} title={tab} />;
     }

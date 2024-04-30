@@ -1,7 +1,8 @@
-import { Field, FieldControl, FieldLabel, FieldMessage } from '@bigcommerce/components/form';
-import { Input } from '@bigcommerce/components/input';
 import { useTranslations } from 'next-intl';
 import { ChangeEvent } from 'react';
+
+import { Field, FieldControl, FieldLabel, FieldMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
 
 import { AddressFields, FieldNameToFieldId } from '..';
 

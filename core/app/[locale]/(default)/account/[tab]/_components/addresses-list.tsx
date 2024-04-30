@@ -10,13 +10,20 @@ interface Props {
   customerAddressBook: Addresses;
 }
 
-const AddressChangeButtons = () => {
+const AddressChangeButtons = ({ addressId }: { addressId: number }) => {
   const t = useTranslations('Account.Addresses');
 
   return (
     <div className="my-2 flex w-fit gap-x-2 divide-y-0">
       <Button aria-label={t('editButton')} variant="secondary">
-        {t('editButton')}
+        <Link
+          href={{
+            pathname: '/account/addresses',
+            query: { action: 'edit-address', 'address-id': addressId },
+          }}
+        >
+          {t('editButton')}
+        </Link>
       </Button>
       <Button aria-label={t('deleteButton')} variant="subtle">
         {t('deleteButton')}
@@ -57,7 +64,7 @@ export const AddressesList = ({ customerAddressBook }: Props) => {
               </p>
               <p>{countryCode}</p>
             </div>
-            <AddressChangeButtons />
+            <AddressChangeButtons addressId={entityId} />
           </li>
         ),
       )}

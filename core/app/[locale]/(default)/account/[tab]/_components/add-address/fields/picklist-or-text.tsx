@@ -1,9 +1,10 @@
-import { Field, FieldControl, FieldLabel, FieldMessage } from '@bigcommerce/components/form';
-import { Input } from '@bigcommerce/components/input';
-import { Select, SelectContent, SelectItem } from '@bigcommerce/components/select';
 import { Loader2 as Spinner } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { ChangeEvent } from 'react';
+
+import { Field, FieldControl, FieldLabel, FieldMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { Select, SelectContent, SelectItem } from '~/components/ui/select';
 
 import { AddressFields, FieldNameToFieldId } from '..';
 
@@ -49,6 +50,7 @@ export const PicklistOrText = ({
       <FieldControl asChild>
         {field.entityId === FieldNameToFieldId.stateOrProvince && options.length === 0 ? (
           <Input
+            defaultValue={defaultValue}
             disabled={pending}
             id={`field-${field.entityId}`}
             onChange={field.isRequired ? onChange : undefined}
@@ -67,7 +69,7 @@ export const PicklistOrText = ({
             placeholder={field.label}
             required={field.isRequired}
           >
-            <SelectContent>
+            <SelectContent position="item-aligned">
               {field.entityId === FieldNameToFieldId.stateOrProvince &&
                 options.map(({ entityId, label }) => {
                   return (

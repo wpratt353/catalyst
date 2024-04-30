@@ -1,7 +1,5 @@
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
-import { getShippingStates } from '~/app/[locale]/(default)/cart/_actions/get-shipping-states';
-
 import { Countries, createFieldName, FieldNameToFieldId } from '.';
 
 interface FieldState {
@@ -69,27 +67,12 @@ const createPicklistOrTextValidationHandler =
 const createCountryChangeHandler =
   (
     countries: Countries,
-    fallbackCountryId: number,
     provinceSetter: Dispatch<SetStateAction<Countries[number]['statesOrProvinces']>>,
-    provincePendingSetter: Dispatch<SetStateAction<boolean>>,
   ) =>
-  async (value: string) => {
-    const country = countries.find(({ code }) => code === value);
+  (value: string) => {
+    const states = countries.find(({ code }) => code === value)?.statesOrProvinces;
 
-    provincePendingSetter(true);
-
-    const { data = [] } = await getShippingStates(country?.entityId || fallbackCountryId);
-
-    provincePendingSetter(false);
-
-    provinceSetter(
-      data.map(({ id, state, state_abbreviation }) => ({
-        abbreviation: state_abbreviation,
-        name: state,
-        entityId: id,
-        __typename: 'StateOrProvince',
-      })),
-    );
+    provinceSetter(states ?? []);
   };
 
 export {

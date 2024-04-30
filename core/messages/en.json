@@ -182,6 +182,7 @@
       "messages": "Messages",
       "addresses": "Addresses",
       "newAddress": "New address",
+      "updateAddress": "Update address",
       "wishlists": "Wish lists",
       "recentlyViewed": "Recently viewed",
       "settings": "Account settings",
@@ -200,6 +201,14 @@
       "successMessage": "The address has been created successfully.",
       "submit": "Add new address",
       "cancel": "Cancel",
+      "submitting": "In progress..."
+    },
+    "EditAddress": {
+      "recaptchaText": "Pass ReCAPTCHA check",
+      "emptyTextValidationMessage": "This field can not be empty",
+      "successMessage": "The address has been updated successfully.",
+      "cancel": "Cancel",
+      "submit": "Update address",
       "submitting": "In progress..."
     },
     "Register": {

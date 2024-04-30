@@ -12,53 +12,34 @@ import { Button } from '~/components/ui/button';
 import { Field, Form, FormSubmit } from '~/components/ui/form';
 import { Message } from '~/components/ui/message';
 
-import { addAddress } from '../../_actions/add-address';
-import { NewAddressQueryResponseType } from '../customer-new-address';
-
-import { FieldWrapper, Password, Picklist, PicklistOrText, Text } from './fields';
+import { updateAddress } from '../../_actions/update-address';
+import { AddressFields, Countries, createFieldName, FieldNameToFieldId } from '../add-address';
+import { FieldWrapper, Password, Picklist, PicklistOrText, Text } from '../add-address/fields';
 import {
   createPasswordValidationHandler,
   createPicklistOrTextValidationHandler,
   createTextInputValidationHandler,
-} from './handlers';
+} from '../add-address/handlers';
+import { Address } from '../customer-edit-address';
 
 interface FormStatus {
   status: 'success' | 'error';
   message: string;
 }
 
-export type AddressFields = NonNullable<
-  NewAddressQueryResponseType['site']['settings']
->['formFields']['shippingAddress'];
-
-export type Countries = NonNullable<NewAddressQueryResponseType['geography']['countries']>;
-type CountryCode = Countries[number]['code'];
 type CountryStates = Countries[number]['statesOrProvinces'];
+type FieldUnionType = Exclude<
+  keyof typeof FieldNameToFieldId,
+  'email' | 'password' | 'confirmPassword' | 'exclusiveOffers' | 'currentPassword'
+>;
 
-export enum FieldNameToFieldId {
-  email = 1,
-  password,
-  confirmPassword,
-  firstName,
-  lastName,
-  company,
-  phone,
-  address1,
-  address2,
-  city,
-  countryCode,
-  stateOrProvince,
-  postalCode,
-  currentPassword = 24,
-  exclusiveOffers = 25,
-}
+const isExistedField = (name: unknown): name is FieldUnionType => {
+  if (typeof name === 'string' && name in FieldNameToFieldId) {
+    return true;
+  }
 
-export const BOTH_CUSTOMER_ADDRESS_FIELDS = [
-  FieldNameToFieldId.firstName,
-  FieldNameToFieldId.lastName,
-  FieldNameToFieldId.company,
-  FieldNameToFieldId.phone,
-];
+  return false;
+};
 
 interface SumbitMessages {
   messages: {
@@ -66,12 +47,6 @@ interface SumbitMessages {
     submitting: string;
   };
 }
-
-export const createFieldName = (fieldType: 'customer' | 'address', fieldId: number) => {
-  const secondFieldType = fieldType === 'customer' ? 'address' : 'customer';
-
-  return `${fieldType}-${BOTH_CUSTOMER_ADDRESS_FIELDS.includes(fieldId) ? `${secondFieldType}-` : ''}${FieldNameToFieldId[fieldId] || fieldId}`;
-};
 
 const SubmitButton = ({ messages }: SumbitMessages) => {
   const { pending } = useFormStatus();
@@ -97,28 +72,26 @@ const SubmitButton = ({ messages }: SumbitMessages) => {
   );
 };
 
-interface AddAddressProps {
+interface EditAddressProps {
+  address: Address;
   addressFields: AddressFields;
   countries: Countries;
-  defaultCountry: {
-    id: number;
-    code: CountryCode;
-    states: CountryStates;
-  };
   reCaptchaSettings?: {
     isEnabledOnStorefront: boolean;
     siteKey: string;
   };
 }
 
-export const AddAddress = ({
+export const EditAddress = ({
+  address,
   addressFields,
   countries,
-  defaultCountry,
   reCaptchaSettings,
-}: AddAddressProps) => {
+}: EditAddressProps) => {
   const form = useRef<HTMLFormElement>(null);
   const [formStatus, setFormStatus] = useState<FormStatus | null>(null);
+
+  const t = useTranslations('Account.EditAddress');
 
   const reCaptchaRef = useRef<ReCaptcha>(null);
   const router = useRouter();
@@ -131,9 +104,10 @@ export const AddAddress = ({
     [FieldNameToFieldId.confirmPassword]: true,
   });
 
-  const t = useTranslations('Account.Addresses');
-
-  const [countryStates, setCountryStates] = useState(defaultCountry.states);
+  const defaultStates = countries
+    .filter((country) => country.code === address.countryCode)
+    .flatMap((country) => country.statesOrProvinces);
+  const [countryStates, setCountryStates] = useState<CountryStates>(defaultStates);
   const [picklistWithTextValid, setPicklistWithTextValid] = useState<{ [key: string]: boolean }>(
     {},
   );
@@ -144,9 +118,12 @@ export const AddAddress = ({
   );
   const handlePasswordValidation = createPasswordValidationHandler(setPassswordValid);
   const handleCountryChange = (value: string) => {
-    const states = countries.find(({ code }) => code === value)?.statesOrProvinces;
+    const country = countries.find(({ code }) => code === value);
+    const states = country?.statesOrProvinces;
 
-    setCountryStates(states ?? []);
+    if (states) {
+      setCountryStates(states);
+    }
   };
 
   const handlePicklistOrTextValidation = createPicklistOrTextValidationHandler(
@@ -170,7 +147,7 @@ export const AddAddress = ({
 
     setReCaptchaValid(true);
 
-    const submit = await addAddress({ formData });
+    const submit = await updateAddress({ addressId: address.entityId, formData });
 
     if (submit.status === 'success') {
       form.current?.reset();
@@ -204,11 +181,20 @@ export const AddAddress = ({
       <Form action={onSubmit} ref={form}>
         <div className="grid grid-cols-1 gap-y-6 lg:grid-cols-2 lg:gap-x-6 lg:gap-y-2">
           {addressFields.map((field) => {
+            const key = FieldNameToFieldId[field.entityId];
+
+            if (!isExistedField(key)) {
+              return null;
+            }
+
+            const defaultValue = address[key] || undefined;
+
             switch (field.__typename) {
               case 'TextFormField': {
                 return (
                   <FieldWrapper fieldId={field.entityId} key={field.entityId}>
                     <Text
+                      defaultValue={defaultValue}
                       field={field}
                       isValid={textInputValid[field.entityId]}
                       name={createFieldName('address', field.entityId)}
@@ -223,9 +209,7 @@ export const AddAddress = ({
                   <FieldWrapper fieldId={field.entityId} key={field.entityId}>
                     <Picklist
                       defaultValue={
-                        field.entityId === FieldNameToFieldId.countryCode
-                          ? defaultCountry.code
-                          : undefined
+                        field.entityId === FieldNameToFieldId.countryCode ? defaultValue : undefined
                       }
                       field={field}
                       name={createFieldName('address', field.entityId)}
@@ -241,16 +225,17 @@ export const AddAddress = ({
                   </FieldWrapper>
                 );
 
-              case 'PicklistOrTextFormField':
+              case 'PicklistOrTextFormField': {
                 return (
                   <FieldWrapper fieldId={field.entityId} key={field.entityId}>
                     <PicklistOrText
                       defaultValue={
                         field.entityId === FieldNameToFieldId.stateOrProvince
-                          ? countryStates[0]?.name
+                          ? defaultValue
                           : undefined
                       }
                       field={field}
+                      key={countryStates.length}
                       name={createFieldName('address', field.entityId)}
                       onChange={handlePicklistOrTextValidation}
                       options={countryStates.map(({ name }) => {
@@ -262,6 +247,7 @@ export const AddAddress = ({
                     />
                   </FieldWrapper>
                 );
+              }
 
               case 'PasswordFormField': {
                 return (
@@ -307,6 +293,7 @@ export const AddAddress = ({
           <Button className="items-center px-8 md:w-fit" variant="secondary">
             <Link href="/account/addresses">{t('cancel')}</Link>
           </Button>
+          {/* TODO: add DELETE button */}
         </div>
       </Form>
     </>

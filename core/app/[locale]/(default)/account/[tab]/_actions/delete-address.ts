@@ -10,13 +10,13 @@ export const deleteAddress = async (addressId: number) => {
 
     revalidatePath('/account/addresses', 'page');
 
-    if (response.customer.deleteCustomerAddress.errors.length === 0) {
+    if (response.errors.length === 0) {
       return { status: 'success', message: 'This address has been deleted' };
     }
 
     return {
       status: 'error',
-      message: response.customer.deleteCustomerAddress.errors
+      message: response.errors
         .map((error) => error.message)
         .join('\n'),
     };
