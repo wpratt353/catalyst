@@ -169,7 +169,7 @@ export const RegisterCustomerForm = ({
       case 'confirmPassword': {
         const confirmPassword = e.target.value;
 
-        const passwordFieldName = createFieldName('customer', +fieldId);
+        const passwordFieldName = createFieldName('customer', FieldNameToFieldId.password);
         const password = new FormData(e.target.form ?? undefined).get(passwordFieldName);
 
         return setPassswordValid((prevState) => ({
@@ -258,7 +258,7 @@ export const RegisterCustomerForm = ({
   return (
     <>
       {formStatus && (
-        <Message className="mx-auto lg:w-[830px]" variant={formStatus.status}>
+        <Message className="mb-8" variant={formStatus.status}>
           <p>{formStatus.message}</p>
         </Message>
       )}

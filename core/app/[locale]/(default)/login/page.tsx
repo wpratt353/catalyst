@@ -96,7 +96,7 @@ export default async function Login({ params: { locale }, searchParams }: Props)
             <li>{t('CreateAccount.ordersTracking')}</li>
             <li>{t('CreateAccount.wishlists')}</li>
           </ul>
-          <Button asChild className="w-fit items-center px-8 py-2">
+          <Button asChild className="w-fit items-center px-8 py-2 hover:text-white">
             <Link href="/login/register-customer">{t('CreateAccount.createLink')}</Link>
           </Button>
         </div>

@@ -70,7 +70,7 @@ export const PicklistOrText = ({
       </FieldControl>
       {field.isRequired && options.length === 0 && (
         <FieldMessage
-          className="absolute inset-x-0 bottom-0 inline-flex w-full text-xs font-normal text-red-200"
+          className="absolute inset-x-0 bottom-0 inline-flex w-full text-xs font-normal text-error-secondary"
           match="valueMissing"
         >
           {t('emptyTextValidatoinMessage')}

@@ -4,21 +4,21 @@ import { ChangeEvent } from 'react';
 import { Field, FieldControl, FieldLabel, FieldMessage } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
 
-import { AddressFields, CustomerFields, FieldNameToFieldId } from '..';
+import { CustomerFields, FieldNameToFieldId } from '..';
 
-type TextType =
-  | Extract<NonNullable<CustomerFields>[number], { __typename: 'TextFormField' }>
-  | Extract<NonNullable<AddressFields>[number], { __typename: 'TextFormField' }>;
+type PasswordType = Extract<
+  NonNullable<CustomerFields>[number],
+  { __typename: 'PasswordFormField' }
+>;
 
-interface TextProps {
-  field: TextType;
+interface PasswordProps {
+  field: PasswordType;
   isValid?: boolean;
-  name: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  type?: string;
+  name: string;
 }
 
-export const Text = ({ field, isValid, name, onChange, type }: TextProps) => {
+export const Password = ({ field, isValid, name, onChange }: PasswordProps) => {
   const t = useTranslations('Account.Register');
 
   return (
@@ -30,28 +30,29 @@ export const Text = ({ field, isValid, name, onChange, type }: TextProps) => {
         <Input
           defaultValue={field.defaultText ?? undefined}
           id={`field-${field.entityId}`}
-          maxLength={field.maxLength ?? undefined}
-          onChange={field.isRequired ? onChange : undefined}
-          onInvalid={field.isRequired ? onChange : undefined}
+          onChange={onChange}
+          onInvalid={onChange}
           required={field.isRequired}
-          type={type === 'email' ? 'email' : 'text'}
+          type="password"
           variant={isValid === false ? 'error' : undefined}
         />
       </FieldControl>
       {field.isRequired && (
         <FieldMessage
-          className="absolute inset-x-0 bottom-0 inline-flex w-full text-xs font-normal text-red-200"
+          className="absolute inset-x-0 bottom-0 inline-flex w-full text-xs font-normal text-error-secondary"
           match="valueMissing"
         >
-          {t('emptyTextValidatoinMessage')}
+          {t('emptyPasswordValidatoinMessage')}
         </FieldMessage>
       )}
-      {FieldNameToFieldId[field.entityId] === 'email' && (
+      {FieldNameToFieldId[field.entityId] === 'confirmPassword' && (
         <FieldMessage
-          className="absolute inset-x-0 bottom-0 inline-flex w-full text-xs font-normal text-red-200"
-          match="typeMismatch"
+          className="absolute inset-x-0 bottom-0 inline-flex w-full text-xs font-normal text-error-secondary"
+          match={() => {
+            return !isValid;
+          }}
         >
-          {t('emailValidationMessage')}
+          {t('equalPasswordValidatoinMessage')}
         </FieldMessage>
       )}
     </Field>
