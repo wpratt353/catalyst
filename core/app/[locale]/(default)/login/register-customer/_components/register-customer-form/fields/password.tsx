@@ -19,7 +19,7 @@ interface PasswordProps {
 }
 
 export const Password = ({ field, isValid, name, onChange }: PasswordProps) => {
-  const t = useTranslations('Account.Register');
+  const t = useTranslations('Account.Register.validationMessages');
 
   return (
     <Field className="relative space-y-2 pb-7" name={name}>
@@ -42,7 +42,7 @@ export const Password = ({ field, isValid, name, onChange }: PasswordProps) => {
           className="absolute inset-x-0 bottom-0 inline-flex w-full text-xs font-normal text-error-secondary"
           match="valueMissing"
         >
-          {t('emptyPasswordValidatoinMessage')}
+          {t('password')}
         </FieldMessage>
       )}
       {FieldNameToFieldId[field.entityId] === 'confirmPassword' && (
@@ -52,7 +52,7 @@ export const Password = ({ field, isValid, name, onChange }: PasswordProps) => {
             return !isValid;
           }}
         >
-          {t('equalPasswordValidatoinMessage')}
+          {t('confirmPassword')}
         </FieldMessage>
       )}
     </Field>

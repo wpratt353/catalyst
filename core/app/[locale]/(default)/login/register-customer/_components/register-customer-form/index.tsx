@@ -137,10 +137,6 @@ export const RegisterCustomerForm = ({
 
   const [countryStates, setCountryStates] = useState(defaultCountry.states);
 
-  const [picklistWithTextValid, setPicklistWithTextValid] = useState<{ [key: string]: boolean }>(
-    {},
-  );
-
   const reCaptchaRef = useRef<ReCaptcha>(null);
   const [reCaptchaToken, setReCaptchaToken] = useState('');
   const [isReCaptchaValid, setReCaptchaValid] = useState(true);
@@ -190,14 +186,6 @@ export const RegisterCustomerForm = ({
     const states = countries.find(({ code }) => code === value)?.statesOrProvinces;
 
     setCountryStates(states ?? []);
-  };
-
-  const handlePicklistWihtTextValidation = (e: ChangeEvent<HTMLInputElement>) => {
-    const fieldId = Number(e.target.id.split('-')[1]);
-
-    const validationStatus = e.target.validity.valueMissing;
-
-    return setPicklistWithTextValid({ ...picklistWithTextValid, [fieldId]: !validationStatus });
   };
 
   const onReCaptchaChange = (token: string | null) => {
@@ -348,7 +336,6 @@ export const RegisterCustomerForm = ({
                       }
                       field={field}
                       name={createFieldName('address', field.entityId)}
-                      onChange={handlePicklistWihtTextValidation}
                       options={countryStates.map(({ name }) => {
                         return { entityId: name, label: name };
                       })}

@@ -1,5 +1,4 @@
 import { useTranslations } from 'next-intl';
-import { ChangeEvent } from 'react';
 
 import { Field, FieldControl, FieldLabel, FieldMessage } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
@@ -12,22 +11,15 @@ type PicklistOrTextType = Extract<
   { __typename: 'PicklistOrTextFormField' }
 >;
 
-interface PicklistWithTextProps {
+interface PicklistOrTextProps {
   defaultValue?: string;
   field: PicklistOrTextType;
   name: string;
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   options: Array<{ label: string; entityId: string | number }>;
   variant?: 'error';
 }
 
-export const PicklistOrText = ({
-  defaultValue,
-  field,
-  name,
-  onChange,
-  options,
-}: PicklistWithTextProps) => {
+export const PicklistOrText = ({ defaultValue, field, name, options }: PicklistOrTextProps) => {
   const t = useTranslations('Account.Register');
 
   return (
@@ -40,12 +32,7 @@ export const PicklistOrText = ({
       </FieldLabel>
       <FieldControl asChild>
         {options.length === 0 ? (
-          <Input
-            id={`field-${field.entityId}`}
-            onChange={field.isRequired ? onChange : undefined}
-            onInvalid={field.isRequired ? onChange : undefined}
-            type="text"
-          />
+          <Input id={`field-${field.entityId}`} type="text" />
         ) : (
           <Select
             aria-label="Choose state or province"
@@ -55,7 +42,7 @@ export const PicklistOrText = ({
             placeholder="Choose state or province"
             required={field.isRequired}
           >
-            <SelectContent>
+            <SelectContent position="item-aligned">
               {field.entityId === FieldNameToFieldId.stateOrProvince &&
                 options.map(({ entityId, label }) => {
                   return (
