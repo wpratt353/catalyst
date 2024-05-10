@@ -32,12 +32,11 @@ export const Picklist = ({ defaultValue, field, name, onChange, options }: Pickl
           required={field.isRequired}
         >
           <SelectContent position="item-aligned">
-            {field.entityId === FieldNameToFieldId.countryCode &&
-              options.map(({ label, entityId }) => (
-                <SelectItem key={entityId} value={entityId.toString()}>
-                  {label}
-                </SelectItem>
-              ))}
+            {options.map(({ entityId, label }) => (
+              <SelectItem key={entityId} value={entityId.toString()}>
+                {label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </FieldControl>

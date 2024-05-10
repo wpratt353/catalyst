@@ -20,6 +20,7 @@ interface TextProps {
 
 export const Text = ({ field, isValid, name, onChange, type }: TextProps) => {
   const t = useTranslations('Account.Register.validationMessages');
+  const fieldName = FieldNameToFieldId[field.entityId];
 
   return (
     <Field className="relative space-y-2 pb-7" name={name}>
@@ -43,10 +44,10 @@ export const Text = ({ field, isValid, name, onChange, type }: TextProps) => {
           className="absolute inset-x-0 bottom-0 inline-flex w-full text-xs font-normal text-error-secondary"
           match="valueMissing"
         >
-          {t(FieldNameToFieldId[field.entityId] ?? 'empty')}
+          {t(fieldName ?? 'empty')}
         </FieldMessage>
       )}
-      {FieldNameToFieldId[field.entityId] === 'email' && (
+      {fieldName === 'email' && (
         <FieldMessage
           className="absolute inset-x-0 bottom-0 inline-flex w-full text-xs font-normal text-error-secondary"
           match="typeMismatch"
