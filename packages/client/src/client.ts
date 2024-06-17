@@ -14,11 +14,12 @@ interface Config {
   storeHash: string;
   customerImpersonationToken: string;
   xAuthToken: string;
-  channelId?: string;
+  // We don't want channel id to be optional, but we need to allow it to be undefined for environment variables
+  channelId: string | undefined;
   platform?: string;
   backendUserAgentExtensions?: string;
   logger?: boolean;
-  getChannelId?: (defaultChannelId: string) => Promise<string | undefined> | string;
+  getChannelId?: (defaultChannelId: string) => Promise<string> | string;
 }
 
 interface BigCommerceResponse<T> {
@@ -27,9 +28,19 @@ interface BigCommerceResponse<T> {
 
 class Client<FetcherRequestInit extends RequestInit = RequestInit> {
   private backendUserAgent: string;
+  private readonly defaultChannelId: string;
+  private getChannelId: (defaultChannelId: string) => Promise<string> | string;
 
   constructor(private config: Config) {
+    if (!config.channelId) {
+      throw new Error('Client configuration must include a channelId.');
+    }
+
+    this.defaultChannelId = config.channelId;
     this.backendUserAgent = getBackendUserAgent(config.platform, config.backendUserAgentExtensions);
+    this.getChannelId = config.getChannelId
+      ? config.getChannelId
+      : (defaultChannelId) => defaultChannelId;
   }
 
   // Overload for documents that require variables
@@ -156,22 +167,9 @@ class Client<FetcherRequestInit extends RequestInit = RequestInit> {
   }
 
   private async getEndpoint(channelId?: string) {
-    let resolvedChannelId;
+    const resolvedChannelId = channelId ?? (await this.getChannelId(this.defaultChannelId));
 
-    // We want to prioritize the channelId passed in before we try other methods
-    if (channelId) {
-      return `https://store-${this.config.storeHash}-${channelId}.${graphqlApiDomain}/graphql`;
-    }
-
-    if (typeof this.config.getChannelId === 'function' && this.config.channelId) {
-      resolvedChannelId = await this.config.getChannelId(this.config.channelId);
-    }
-
-    if (!resolvedChannelId && !this.config.channelId) {
-      throw new Error('Missing channelId');
-    }
-
-    return `https://store-${this.config.storeHash}-${resolvedChannelId ?? this.config.channelId}.${graphqlApiDomain}/graphql`;
+    return `https://store-${this.config.storeHash}-${resolvedChannelId}.${graphqlApiDomain}/graphql`;
   }
 
   private requestLogger(document: string) {
