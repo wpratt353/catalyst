@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { getCart } from '~/client/queries/get-cart';
 import { Link } from '~/components/link';
 import { NavigationMenuLink } from '~/components/ui/navigation-menu';
+import { getChannelIdFromLocale } from '~/lib/utils';
 
 import { CartIcon } from './cart-icon';
 
@@ -17,6 +18,7 @@ export const CartLink = ({ children }: { children: ReactNode }) => (
 
 export const Cart = async () => {
   const cartId = cookies().get('cartId')?.value;
+  const locale = cookies().get('NEXT_LOCALE')?.value;
 
   if (!cartId) {
     return (
@@ -26,7 +28,7 @@ export const Cart = async () => {
     );
   }
 
-  const cart = await getCart(cartId);
+  const cart = await getCart(cartId, getChannelIdFromLocale(locale));
 
   const count = cart?.lineItems.totalQuantity ?? 0;
 
