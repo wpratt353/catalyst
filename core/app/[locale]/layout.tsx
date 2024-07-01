@@ -60,7 +60,7 @@ interface RootLayoutProps extends PropsWithChildren {
 
 export default function RootLayout({ children, params: { locale } }: RootLayoutProps) {
   // need to call this method everywhere where static rendering is enabled
-  // https://next-intl-docs.vercel.app/docs/getting-started/app-router#add-unstable_setrequestlocale-to-all-layouts-and-pages
+  // https://next-intl-docs.vercel.app/docs/getting-started/app-router/with-i18n-routing#static-rendering
   unstable_setRequestLocale(locale);
 
   const messages = useMessages();
