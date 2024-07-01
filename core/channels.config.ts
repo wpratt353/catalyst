@@ -12,6 +12,10 @@ const localeToChannelsMappings: Partial<RecordFromLocales> = {
 };
 
 export function getChannelIdFromLocale(locale?: string) {
+  if (!process.env.BIGCOMMERCE_CHANNEL_ID) {
+    throw new Error('Client configuration must include a channelId.');
+  }
+
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   return localeToChannelsMappings[locale as LocalesKeys] || process.env.BIGCOMMERCE_CHANNEL_ID;
 }
