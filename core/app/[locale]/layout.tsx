@@ -11,6 +11,8 @@ import '../globals.css';
 import { client } from '~/client';
 import { graphql } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
+import { LocaleType } from '~/i18n';
+import { getChannelIdFromLocale } from '~/lib/utils';
 
 import { Notifications } from '../notifications';
 import { Providers } from '../providers';
@@ -31,10 +33,19 @@ const RootLayoutMetadataQuery = graphql(`
   }
 `);
 
-export async function generateMetadata(): Promise<Metadata> {
+interface Props {
+  params: {
+    locale: LocaleType;
+  };
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = params;
+
   const { data } = await client.fetch({
     document: RootLayoutMetadataQuery,
     fetchOptions: { next: { revalidate } },
+    channelId: getChannelIdFromLocale(locale),
   });
 
   const title = data.site.settings?.storeName ?? 'Catalyst Store';
