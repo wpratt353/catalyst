@@ -4,12 +4,12 @@ import createMiddleware from 'next-intl/middleware';
 import { z } from 'zod';
 
 import { getSessionCustomerId } from '~/auth';
+import { getChannelIdFromLocale } from '~/channels.config';
 import { graphql } from '~/client/graphql';
 import { getRawWebPageContent } from '~/client/queries/get-raw-web-page-content';
 import { getRoute } from '~/client/queries/get-route';
 import { getStoreStatus } from '~/client/queries/get-store-status';
 import { routeCacheKvKey, STORE_STATUS_KEY } from '~/lib/kv/keys';
-import { getChannelIdFromLocale } from '~/lib/utils';
 
 import { defaultLocale, localePrefix, LocalePrefixes, locales } from '../i18n';
 import { kv } from '../lib/kv';

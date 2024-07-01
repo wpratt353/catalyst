@@ -3,10 +3,10 @@
  */
 import { NextRequest, NextResponse } from 'next/server';
 
+import { getChannelIdFromLocale } from '~/channels.config';
 import { client } from '~/client';
 import { graphql } from '~/client/graphql';
 import { ProductSheetContentFragment } from '~/components/product-sheet/fragment';
-import { getChannelIdFromLocale } from '~/lib/utils';
 
 const GetProductQuery = graphql(
   `

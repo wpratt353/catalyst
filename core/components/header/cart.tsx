@@ -1,10 +1,10 @@
 import { cookies } from 'next/headers';
 import { ReactNode } from 'react';
 
+import { getChannelIdFromLocale } from '~/channels.config';
 import { getCart } from '~/client/queries/get-cart';
 import { Link } from '~/components/link';
 import { NavigationMenuLink } from '~/components/ui/navigation-menu';
-import { getChannelIdFromLocale } from '~/lib/utils';
 
 import { CartIcon } from './cart-icon';
 

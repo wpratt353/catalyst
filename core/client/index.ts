@@ -1,7 +1,7 @@
 import { createClient } from '@bigcommerce/catalyst-client';
 import { getLocale } from 'next-intl/server';
 
-import { getChannelIdFromLocale } from '~/lib/utils';
+import { getChannelIdFromLocale } from '~/channels.config';
 
 import { backendUserAgent } from '../userAgent';
 

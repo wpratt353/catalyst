@@ -8,11 +8,11 @@ import { PropsWithChildren } from 'react';
 
 import '../globals.css';
 
+import { getChannelIdFromLocale } from '~/channels.config';
 import { client } from '~/client';
 import { graphql } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
 import { LocaleType } from '~/i18n';
-import { getChannelIdFromLocale } from '~/lib/utils';
 
 import { Notifications } from '../notifications';
 import { Providers } from '../providers';
