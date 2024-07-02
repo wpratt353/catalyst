@@ -2,15 +2,19 @@
 
 import { graphql, HttpResponse } from 'msw';
 
-let channel = '';
+const storeHash = process.env.BIGCOMMERCE_STORE_HASH;
+const channelId = process.env.BIGCOMMERCE_CHANNEL_ID;
+const graphqlApiDomain = process.env.BIGCOMMERCE_GRAPHQL_API_DOMAIN ?? 'mybigcommerce.com';
 
-if (process.env.BIGCOMMERCE_CHANNEL_ID && process.env.BIGCOMMERCE_CHANNEL_ID !== '1') {
-  channel = `-${process.env.BIGCOMMERCE_CHANNEL_ID}`;
+if (!storeHash) {
+  throw new Error('Missing store hash')
 }
 
-graphql.link(
-  `https://store-${process.env.BIGCOMMERCE_STORE_HASH ?? ''}${channel}.${process.env.BIGCOMMERCE_GRAPHQL_API_DOMAIN ?? 'mybigcommerce.com'}/graphql`,
-);
+if (!channelId) {
+  throw new Error('Missing channel id')
+}
+
+graphql.link(`https://store-${storeHash}-${channelId}.${graphqlApiDomain}/graphql`);
 
 export const handlers = [
   graphql.mutation('registerCustomer', ({ query, variables }) => {
