@@ -16,28 +16,216 @@ import { kv } from '../lib/kv';
 
 import { type MiddlewareFactory } from './compose-middlewares';
 
+const routes = {
+  '/retro-sport-color-block-tee/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMzQ=', entityId: 234 },
+  },
+  '/classic-cable-knit-cardigan/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMjg=', entityId: 228 },
+  },
+  '/modern-minimalist-ivory-work-jacket/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMDU=', entityId: 205 },
+  },
+  '/urban-edge-geometric-sunglasses/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMDQ=', entityId: 204 },
+  },
+  '/nautical-tailored-trousers/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMTM=', entityId: 213 },
+  },
+  '/urban-edge-distressed-denim-jacket/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMDk=', entityId: 209 },
+  },
+  '/casual-button-down-shirt/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMTA=', entityId: 210 },
+  },
+  '/sleek-tailored-business-trousers/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMTc=', entityId: 217 },
+  },
+  '/metro-sleek-rectangular-sunglasses/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMDI=', entityId: 202 },
+  },
+  '/urban-explorer-high-waisted-cargo-trousers/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMTY=', entityId: 216 },
+  },
+  '/luxe-vision-square-frame-sunglasses/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMTE=', entityId: 211 },
+  },
+  '/bold-stripes-oversized-cardigan/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMjE=', entityId: 221 },
+  },
+  '/rustic-highland-plaid-flannel-shirt/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMDY=', entityId: 206 },
+  },
+  '/vibrant-energy-cropped-turtleneck-top/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMzM=', entityId: 233 },
+  },
+  '/sophisticated-wrap-style-blouse/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMjA=', entityId: 220 },
+  },
+  '/retro-striped-mock-neck-knit-vest/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMjk=', entityId: 229 },
+  },
+  '/sunshine-vibes-v-neck-sweater/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMjQ=', entityId: 224 },
+  },
+  '/serenity-fitted-knit-top/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMjU=', entityId: 225 },
+  },
+  '/glamour-glitz-oversized-sunglasses/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMTI=', entityId: 212 },
+  },
+  '/artisanal-cable-knit-turtleneck-sweater/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMTk=', entityId: 219 },
+  },
+  '/summer-breeze-v-neck-midi-dress/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMzA=', entityId: 230 },
+  },
+  '/urban-draped-oversized-tee/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMDg=', entityId: 208 },
+  },
+  '/cozy-comfort-knit-sweater/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMjM=', entityId: 223 },
+  },
+  '/essential-elegance-turtleneck-top/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMjY=', entityId: 226 },
+  },
+  '/chic-icon-oversized-sunglasses/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMzE=', entityId: 231 },
+  },
+  '/classic-clubmaster-revival-sunglasses/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMDM=', entityId: 203 },
+  },
+  '/modern-flair-peplum-top/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMTg=', entityId: 218 },
+  },
+  '/iridescent-aura-ruffled-blouse/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMzU=', entityId: 235 },
+  },
+  '/breeze-short-sleeve-button-up-shirt/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMDc=', entityId: 207 },
+  },
+  '/modern-safari-cargo-trousers/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMTQ=', entityId: 214 },
+  },
+  '/soft-knit-pullover/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMjc=', entityId: 227 },
+  },
+  '/retro-revival-flared-trousers/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMTU=', entityId: 215 },
+  },
+  '/autumnal-stripes-knit-cardigan/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMjI=', entityId: 222 },
+  },
+  '/rainbow-retro-ribbed-sweater/': {
+    redirect: null,
+    node: { __typename: 'Product', id: 'UHJvZHVjdDoyMzI=', entityId: 232 },
+  },
+  '/all-styles/tops/': {
+    redirect: null,
+    node: { __typename: 'Category', id: 'Q2F0ZWdvcnk6Njk=', entityId: 69 },
+  },
+  '/women/pants/': {
+    redirect: null,
+    node: { __typename: 'Category', id: 'Q2F0ZWdvcnk6Nzg=', entityId: 78 },
+  },
+  '/men/shirts/': {
+    redirect: null,
+    node: { __typename: 'Category', id: 'Q2F0ZWdvcnk6NzQ=', entityId: 74 },
+  },
+  '/all-styles/sweaters-jackets/': {
+    redirect: null,
+    node: { __typename: 'Category', id: 'Q2F0ZWdvcnk6NzA=', entityId: 70 },
+  },
+  '/all-styles/': {
+    redirect: null,
+    node: { __typename: 'Category', id: 'Q2F0ZWdvcnk6NjU=', entityId: 65 },
+  },
+  '/women/accessories/': {
+    redirect: null,
+    node: { __typename: 'Category', id: 'Q2F0ZWdvcnk6Nzc=', entityId: 77 },
+  },
+  '/men/pants/': {
+    redirect: null,
+    node: { __typename: 'Category', id: 'Q2F0ZWdvcnk6NzM=', entityId: 73 },
+  },
+  '/all-styles/pants/': {
+    redirect: null,
+    node: { __typename: 'Category', id: 'Q2F0ZWdvcnk6NzE=', entityId: 71 },
+  },
+  '/men/': {
+    redirect: null,
+    node: { __typename: 'Category', id: 'Q2F0ZWdvcnk6NjY=', entityId: 66 },
+  },
+  '/women/sweaters-jackets/': {
+    redirect: null,
+    node: { __typename: 'Category', id: 'Q2F0ZWdvcnk6ODA=', entityId: 80 },
+  },
+  '/women/': {
+    redirect: null,
+    node: { __typename: 'Category', id: 'Q2F0ZWdvcnk6Njc=', entityId: 67 },
+  },
+  '/men/accessories/': {
+    redirect: null,
+    node: { __typename: 'Category', id: 'Q2F0ZWdvcnk6NzI=', entityId: 72 },
+  },
+  '/men/sweaters-jackets/': {
+    redirect: null,
+    node: { __typename: 'Category', id: 'Q2F0ZWdvcnk6NzU=', entityId: 75 },
+  },
+  '/women/shirts-blouses/': {
+    redirect: null,
+    node: { __typename: 'Category', id: 'Q2F0ZWdvcnk6Nzk=', entityId: 79 },
+  },
+  '/all-styles/accessories/': {
+    redirect: null,
+    node: { __typename: 'Category', id: 'Q2F0ZWdvcnk6Njg=', entityId: 68 },
+  },
+  '/women/tops/': {
+    redirect: null,
+    node: { __typename: 'Category', id: 'Q2F0ZWdvcnk6ODE=', entityId: 81 },
+  },
+  '/men/tops/': {
+    redirect: null,
+    node: { __typename: 'Category', id: 'Q2F0ZWdvcnk6NzY=', entityId: 76 },
+  },
+  '/your-first-blog-post/': { redirect: null, node: null },
+};
+
 type Route = Awaited<ReturnType<typeof getRoute>>;
 type StorefrontStatusType = ReturnType<typeof graphql.scalar<'StorefrontStatusType'>>;
-
-interface RouteCache {
-  route: Route;
-  expiryTime: number;
-}
-
-interface StorefrontStatusCache {
-  status: StorefrontStatusType;
-  expiryTime: number;
-}
-
-const StorefrontStatusCacheSchema = z.object({
-  status: z.union([
-    z.literal('HIBERNATION'),
-    z.literal('LAUNCHED'),
-    z.literal('MAINTENANCE'),
-    z.literal('PRE_LAUNCH'),
-  ]),
-  expiryTime: z.number(),
-});
 
 const RedirectSchema = z.object({
   __typename: z.string(),
@@ -61,45 +249,6 @@ const RouteSchema = z.object({
   node: z.nullable(NodeSchema),
 });
 
-const RouteCacheSchema = z.object({
-  route: z.nullable(RouteSchema),
-  expiryTime: z.number(),
-});
-
-let locale: string;
-
-const updateRouteCache = async (pathname: string, event: NextFetchEvent): Promise<RouteCache> => {
-  const channelId = getChannelIdFromLocale(locale);
-
-  const routeCache: RouteCache = {
-    route: await getRoute(pathname, channelId),
-    expiryTime: Date.now() + 1000 * 60 * 30, // 30 minutes
-  };
-
-  event.waitUntil(kv.set(kvKey(pathname, channelId), routeCache));
-
-  return routeCache;
-};
-
-const updateStatusCache = async (event: NextFetchEvent): Promise<StorefrontStatusCache> => {
-  const channelId = getChannelIdFromLocale(locale);
-
-  const status = await getStoreStatus(channelId);
-
-  if (status === undefined) {
-    throw new Error('Failed to fetch new storefront status');
-  }
-
-  const statusCache: StorefrontStatusCache = {
-    status,
-    expiryTime: Date.now() + 1000 * 60 * 5, // 5 minutes
-  };
-
-  event.waitUntil(kv.set(kvKey(STORE_STATUS_KEY, channelId), statusCache));
-
-  return statusCache;
-};
-
 const clearLocaleFromPath = (path: string) => {
   let res: string;
 
@@ -118,51 +267,9 @@ const clearLocaleFromPath = (path: string) => {
   return path;
 };
 
-const getRouteInfo = async (request: NextRequest, event: NextFetchEvent) => {
-  try {
-    const channelId = getChannelIdFromLocale(locale);
-    const pathname = clearLocaleFromPath(request.nextUrl.pathname);
-
-    let [routeCache, statusCache] = await kv.mget<RouteCache | StorefrontStatusCache>(
-      kvKey(pathname, channelId),
-      kvKey(STORE_STATUS_KEY, channelId),
-    );
-
-    // If caches are old, update them in the background and return the old data (SWR-like behavior)
-    // If cache is missing, update it and return the new data, but write to KV in the background
-    if (statusCache && statusCache.expiryTime < Date.now()) {
-      event.waitUntil(updateStatusCache(event));
-    } else if (!statusCache) {
-      statusCache = await updateStatusCache(event);
-    }
-
-    if (routeCache && routeCache.expiryTime < Date.now()) {
-      event.waitUntil(updateRouteCache(pathname, event));
-    } else if (!routeCache) {
-      routeCache = await updateRouteCache(pathname, event);
-    }
-
-    const parsedRoute = RouteCacheSchema.safeParse(routeCache);
-    const parsedStatus = StorefrontStatusCacheSchema.safeParse(statusCache);
-
-    return {
-      route: parsedRoute.success ? parsedRoute.data.route : undefined,
-      status: parsedStatus.success ? parsedStatus.data.status : undefined,
-    };
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-
-    return {
-      route: undefined,
-      status: undefined,
-    };
-  }
-};
-
 export const withRoutes: MiddlewareFactory = () => {
   return async (request, event) => {
-    locale = cookies().get('NEXT_LOCALE')?.value || '';
+    let locale = cookies().get('NEXT_LOCALE')?.value || '';
 
     const intlMiddleware = createMiddleware({
       locales,
@@ -182,12 +289,9 @@ export const withRoutes: MiddlewareFactory = () => {
       locale = response.cookies.get('NEXT_LOCALE')?.value || '';
     }
 
-    const { route, status } = await getRouteInfo(request, event);
+    const route = routes[request.nextUrl.pathname] || null;
 
-    if (status === 'MAINTENANCE') {
-      // 503 status code not working - https://github.com/vercel/next.js/issues/50155
-      return NextResponse.rewrite(new URL(`/${locale}/maintenance`, request.url), { status: 503 });
-    }
+    await new Promise((resolve) => setTimeout(resolve, 30));
 
     // Follow redirects if found on the route
     // Use 301 status code as it is more universally supported by crawlers
