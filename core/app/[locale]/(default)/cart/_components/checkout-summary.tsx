@@ -2,12 +2,12 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getFormatter, getLocale, getMessages, getTranslations } from 'next-intl/server';
 
 import { FragmentOf, graphql } from '~/client/graphql';
+import { getShippingEstimatorCountries } from '~/client/queries/get-shipping-estimator-countries';
 
 import { CouponCode } from './coupon-code';
 import { CouponCodeFragment } from './coupon-code/fragment';
 import { ShippingEstimator } from './shipping-estimator';
 import { ShippingEstimatorFragment } from './shipping-estimator/fragment';
-import { getShippingCountries } from './shipping-estimator/get-shipping-countries';
 
 const MoneyFieldsFragment = graphql(`
   fragment MoneyFields on Money {
@@ -51,7 +51,7 @@ export const CheckoutSummary = async ({ data }: Props) => {
   const format = await getFormatter({ locale });
   const messages = await getMessages({ locale });
 
-  const shippingCountries = await getShippingCountries();
+  const shippingCountries = await getShippingEstimatorCountries();
 
   const { cart, grandTotal, subtotal, taxTotal } = data;
 

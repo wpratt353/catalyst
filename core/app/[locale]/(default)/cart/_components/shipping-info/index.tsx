@@ -55,7 +55,7 @@ export const ShippingInfo = ({
   hideShippingOptions,
 }: {
   checkout: FragmentOf<typeof ShippingInfoFragment>;
-  shippingCountries: ExistingResultType<typeof getShippingCountries>;
+  shippingCountries: any[];
   isVisible: boolean;
   hideShippingOptions: () => void;
 }) => {
@@ -66,7 +66,7 @@ export const ShippingInfo = ({
     checkout.shippingConsignments?.[0];
 
   const selectedShippingCountry = shippingCountries.find(
-    (country) => country.countryCode === shippingConsignment?.address.countryCode,
+    (country) => country.code === shippingConsignment?.address.countryCode,
   );
 
   const [formValues, setFormValues] = useReducer(
@@ -76,7 +76,7 @@ export const ShippingInfo = ({
     }),
     {
       country: selectedShippingCountry
-        ? `${selectedShippingCountry.countryCode}-${selectedShippingCountry.id}`
+        ? `${selectedShippingCountry.code}-${selectedShippingCountry.entityId}`
         : '',
       states: [],
       state: shippingConsignment?.address.stateOrProvince || '',
@@ -88,20 +88,24 @@ export const ShippingInfo = ({
   // Fetch states when country changes
   useEffect(() => {
     if (formValues.country) {
-      const countryId = formValues.country.split('-')[1];
+      const countryId = Number(formValues.country.split('-')[1]);
 
-      const fetchStates = async () => {
-        const { status, data } = await getShippingStates(Number(countryId));
+      const getStates = () => {
+        const country = shippingCountries.find((country) => country.entityId === countryId);
 
-        if (status === 'success' && data) {
-          setFormValues({ states: data });
+        const states = country?.statesOrProvinces;
+
+        console.log('states', states);
+
+        if (states && states.length > 0) {
+          setFormValues({ states });
         } else {
           setFormValues({ states: null });
         }
       };
 
       if (countryId) {
-        void fetchStates();
+        getStates();
       }
     }
   }, [formValues.country, t]);
@@ -158,9 +162,9 @@ export const ShippingInfo = ({
               value={formValues.country}
             >
               <SelectContent>
-                {shippingCountries.map(({ id, countryCode, name }) => {
+                {shippingCountries.map(({ entityId, code, name }) => {
                   return (
-                    <SelectItem key={id} value={`${countryCode}-${id}`}>
+                    <SelectItem key={entityId} value={`${code}-${entityId}`}>
                       {name}
                     </SelectItem>
                   );
@@ -181,10 +185,10 @@ export const ShippingInfo = ({
                 value={formValues.state}
               >
                 <SelectContent>
-                  {formValues.states.map(({ id, state }) => {
+                  {formValues.states.map(({ entityId, name }) => {
                     return (
-                      <SelectItem key={id} value={state}>
-                        {state}
+                      <SelectItem key={entityId} value={name}>
+                        {name}
                       </SelectItem>
                     );
                   })}
