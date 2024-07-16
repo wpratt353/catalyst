@@ -11,7 +11,7 @@ import {
   CarouselPreviousIndicator,
 } from '~/components/ui/carousel';
 
-import { ProductCard } from '../product-card';
+import { ClientProductCard } from '../client-product-card';
 
 import { ProductCardCarouselFragment } from './fragment';
 import { Pagination } from './pagination';
@@ -85,7 +85,7 @@ export const ClientProductCardCarousel = ({
             key={index}
           >
             {group.map((product) => (
-              <ProductCard
+              <ClientProductCard
                 imageSize="tall"
                 key={product.entityId}
                 product={product}

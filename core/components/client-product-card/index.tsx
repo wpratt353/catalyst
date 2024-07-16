@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useEffect, useId, useState } from 'react';
+import { useId } from 'react';
 
 import { ResultOf } from '~/client/graphql';
 import { Link } from '~/components/link';
@@ -23,8 +23,10 @@ import { AddToCart } from './add-to-cart';
 import { Compare } from './compare';
 import { ProductCardFragment } from './fragment';
 
+type Product = ResultOf<typeof ProductCardFragment>;
+
 interface Props {
-  productId: number;
+  product: Product;
   imageSize?: 'tall' | 'wide' | 'square';
   imagePriority?: boolean;
   showCart?: boolean;
@@ -32,10 +34,8 @@ interface Props {
   showReviews?: boolean;
 }
 
-type Product = ResultOf<typeof ProductCardFragment>;
-
 export const ClientProductCard = ({
-  productId,
+  product,
   imageSize = 'square',
   imagePriority = false,
   showCart = true,
@@ -44,23 +44,6 @@ export const ClientProductCard = ({
 }: Props) => {
   const summaryId = useId();
   const t = useTranslations('Product.ProductSheet');
-  const [product, setProduct] = useState<Product | null>(null);
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      const response = await fetch(`/api/product-card/${productId}`);
-      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-      const data = (await response.json()) as Product;
-
-      setProduct(data);
-    };
-
-    void fetchProduct();
-  }, [productId]);
-
-  if (!product) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <ComponentsProductCard key={product.entityId}>
