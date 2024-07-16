@@ -7,6 +7,7 @@ import { client } from '~/client';
 import { graphql } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
 import { ClientProductCard } from '~/components/client-product-card';
+import { ClientProductCardCarousel } from '~/components/client-product-card-carousel';
 import { Hero } from '~/components/hero';
 import {
   ProductCardCarousel,
@@ -69,6 +70,8 @@ export default async function Home({ params: { locale } }: Props) {
         <h1 className="my-10 text-3xl font-bold">My Product Card</h1>
         <NextIntlClientProvider locale={locale} messages={{ Product: messages.Product ?? {} }}>
           <ClientProductCard productId={111} />
+
+          <ClientProductCardCarousel title="Featured" />
         </NextIntlClientProvider>
       </div>
 
