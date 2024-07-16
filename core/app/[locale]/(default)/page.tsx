@@ -6,6 +6,7 @@ import { getSessionCustomerId } from '~/auth';
 import { client } from '~/client';
 import { graphql } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
+import { ClientProductCard } from '~/components/client-product-card';
 import { Hero } from '~/components/hero';
 import {
   ProductCardCarousel,
@@ -63,6 +64,13 @@ export default async function Home({ params: { locale } }: Props) {
   return (
     <>
       <Hero />
+
+      <div>
+        <h1 className="my-10 text-3xl font-bold">My Product Card</h1>
+        <NextIntlClientProvider locale={locale} messages={{ Product: messages.Product ?? {} }}>
+          <ClientProductCard productId={111} />
+        </NextIntlClientProvider>
+      </div>
 
       <div className="my-10">
         <NextIntlClientProvider locale={locale} messages={{ Product: messages.Product ?? {} }}>
