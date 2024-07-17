@@ -1,3 +1,4 @@
+// CAN THIS BE A SINGLE CAROUSEL COMPONENT? BUILD IN APP
 import useEmblaCarousel, { UseEmblaCarouselType } from 'embla-carousel-react';
 import { ArrowLeft, ArrowRight, Pause, Play } from 'lucide-react';
 import {

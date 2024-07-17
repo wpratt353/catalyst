@@ -1,3 +1,5 @@
+// SHOULD WE MOVE TO PDP?
+
 import { LucideIcon } from 'lucide-react';
 import {
   ComponentPropsWithoutRef,

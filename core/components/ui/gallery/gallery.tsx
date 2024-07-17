@@ -1,3 +1,4 @@
+// MOVE TO APP/PRODUCTS
 import { Slot } from '@radix-ui/react-slot';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import {

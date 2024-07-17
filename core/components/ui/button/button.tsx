@@ -5,6 +5,7 @@ import { ComponentPropsWithRef, ElementRef, forwardRef } from 'react';
 
 import { cn } from '~/lib/utils';
 
+// GET RID OF CVA
 export const buttonVariants = cva(
   'relative flex w-full justify-center items-center border-2 py-2.5 px-[30px] text-base leading-6 font-semibold border-primary disabled:border-gray-400 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20',
   {

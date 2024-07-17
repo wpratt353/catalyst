@@ -1,5 +1,6 @@
 import { ComponentPropsWithRef, ElementRef, forwardRef } from 'react';
 
+// DELETE FOR CARD COMPONENT?
 import { cn } from '~/lib/utils';
 
 const ProductCard = forwardRef<ElementRef<'div'>, ComponentPropsWithRef<'div'>>(

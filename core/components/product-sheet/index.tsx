@@ -50,7 +50,7 @@ export const ProductSheet = () => {
 
   return (
     <Sheet onOpenChange={handleOnOpenChange} open={open}>
-      <SheetOverlay className="bg-transparent, backdrop-blur-none">
+      <SheetOverlay>
         <SheetContent side="right">
           <SheetHeader>
             <SheetTitle asChild>

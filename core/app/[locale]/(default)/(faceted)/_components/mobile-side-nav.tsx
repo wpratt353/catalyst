@@ -30,8 +30,8 @@ export const MobileSideNav = ({ children }: PropsWithChildren) => {
           <Filter className="me-3" /> <span>{t('showFilters')}</span>
         </Button>
       </SheetTrigger>
-      <SheetOverlay className="bg-transparent, backdrop-blur-none lg:hidden">
-        <SheetContent className="lg:hidden">
+      <SheetOverlay className="lg:hidden">
+        <SheetContent>
           <SheetHeader>
             <SheetTitle asChild>
               <h2>{t('filters')}</h2>

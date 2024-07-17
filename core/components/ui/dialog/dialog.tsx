@@ -5,25 +5,9 @@ import { cn } from '~/lib/utils';
 
 const Dialog = DialogPrimitive.Root;
 
-const DialogTrigger = forwardRef<
-  ElementRef<typeof DialogPrimitive.Trigger>,
-  ComponentPropsWithoutRef<typeof DialogPrimitive.Trigger>
->(({ className, ...props }, ref) => (
-  <DialogPrimitive.Trigger className={cn(className)} ref={ref} {...props} />
-));
+const DialogTrigger = DialogPrimitive.Trigger;
 
-DialogTrigger.displayName = DialogPrimitive.Trigger.displayName;
-
-const DialogPortal = forwardRef<
-  ElementRef<'div'>,
-  ComponentPropsWithoutRef<typeof DialogPrimitive.Portal>
->(({ ...props }, ref) => (
-  <div ref={ref}>
-    <DialogPrimitive.Portal {...props} />
-  </div>
-));
-
-DialogPortal.displayName = DialogPrimitive.Portal.displayName;
+const DialogPortal = DialogPrimitive.Portal;
 
 const DialogOverlay = forwardRef<
   ElementRef<typeof DialogPrimitive.Overlay>,
@@ -67,32 +51,11 @@ const DialogTitle = forwardRef<
 
 DialogTitle.displayName = DialogPrimitive.Title.displayName;
 
-const DialogDescription = forwardRef<
-  ElementRef<typeof DialogPrimitive.Description>,
-  ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
->(({ className, ...props }, ref) => (
-  <DialogPrimitive.Description className={cn(className)} ref={ref} {...props} />
-));
+const DialogDescription = DialogPrimitive.Description;
 
-DialogDescription.displayName = DialogPrimitive.Description.displayName;
+const DialogCancel = DialogPrimitive.Cancel;
 
-const DialogCancel = forwardRef<
-  ElementRef<typeof DialogPrimitive.Cancel>,
-  ComponentPropsWithoutRef<typeof DialogPrimitive.Cancel>
->(({ className, ...props }, ref) => (
-  <DialogPrimitive.Cancel className={cn(className)} ref={ref} {...props} />
-));
-
-DialogCancel.displayName = DialogPrimitive.Cancel.displayName;
-
-const DialogAction = forwardRef<
-  ElementRef<typeof DialogPrimitive.Action>,
-  ComponentPropsWithoutRef<typeof DialogPrimitive.Action>
->(({ className, ...props }, ref) => (
-  <DialogPrimitive.Action className={cn(className)} ref={ref} {...props} />
-));
-
-DialogAction.displayName = DialogPrimitive.Action.displayName;
+const DialogAction = DialogPrimitive.Action;
 
 export {
   Dialog,

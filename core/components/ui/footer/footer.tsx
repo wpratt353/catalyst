@@ -1,5 +1,6 @@
 import { ComponentPropsWithRef, ElementRef, forwardRef } from 'react';
 
+// MOVE TO APP COMPONENTS
 import { cn } from '~/lib/utils';
 
 const Footer = forwardRef<ElementRef<'footer'>, ComponentPropsWithRef<'footer'>>(

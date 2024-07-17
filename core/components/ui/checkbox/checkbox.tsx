@@ -2,6 +2,7 @@ import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import { cva } from 'class-variance-authority';
 import { Check } from 'lucide-react';
 import { ComponentPropsWithRef, ElementRef, forwardRef } from 'react';
+// REMOVE CVA
 
 import { cn } from '~/lib/utils';
 
@@ -32,7 +33,7 @@ export const Checkbox = forwardRef<ElementRef<CheckboxType>, CheckboxProps>(
         {...props}
       >
         <CheckboxPrimitive.Indicator className="flex flex-shrink-0 items-center justify-center">
-          {children || <Check absoluteStrokeWidth className="stroke-white" size={13} />}
+          <Check absoluteStrokeWidth className="stroke-white" size={13} />
         </CheckboxPrimitive.Indicator>
       </CheckboxPrimitive.Root>
     );

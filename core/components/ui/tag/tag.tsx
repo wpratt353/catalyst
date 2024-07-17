@@ -1,3 +1,4 @@
+// REMOVE TAG ACTION?
 import { X } from 'lucide-react';
 import { ComponentPropsWithRef, ElementRef, forwardRef } from 'react';
 
@@ -34,6 +35,7 @@ TagContent.displayName = 'TagContent';
 
 type TagActionProps = ComponentPropsWithRef<'button'>;
 
+// CAN WE REMOVE TAG ACTION?
 const TagAction = forwardRef<ElementRef<'button'>, TagActionProps>(
   ({ className, children, ...props }, ref) => {
     return (
@@ -45,7 +47,7 @@ const TagAction = forwardRef<ElementRef<'button'>, TagActionProps>(
         type="button"
         {...props}
       >
-        {children || <X className="h-4 w-4" />}
+        <X className="h-4 w-4" />
       </button>
     );
   },

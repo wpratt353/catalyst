@@ -42,7 +42,7 @@ const PickListItem = forwardRef<ElementRef<RadioItemType>, ComponentPropsWithRef
         ref={ref}
         {...props}
       >
-        {children || <PickListIndicator />}
+        <PickListIndicator />
       </RadioGroupPrimitive.Item>
     );
   },

@@ -34,12 +34,7 @@ const TabsTrigger = forwardRef<
 
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
 
-const TabsContent = forwardRef<
-  ElementRef<typeof TabsPrimitive.Content>,
-  ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
->(({ className, ...props }, ref) => (
-  <TabsPrimitive.Content className={cn('', className)} ref={ref} {...props} />
-));
+const TabsContent = TabsPrimitive.Content;
 
 TabsContent.displayName = TabsPrimitive.Content.displayName;
 

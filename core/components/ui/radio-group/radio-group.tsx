@@ -1,10 +1,9 @@
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 import { cva } from 'class-variance-authority';
 import { ComponentPropsWithRef, ElementRef, forwardRef } from 'react';
+// DELETE CVA
 
 import { cn } from '~/lib/utils';
-
-type RadioIndicatorType = typeof RadioGroupPrimitive.Indicator;
 
 const radioGroupVariants = cva(
   'flex h-6 w-6 items-center justify-center rounded-full border-2 border-gray-200 hover:border-secondary focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20 focus-visible:hover:border-secondary radix-state-checked:border-primary radix-state-checked:bg-primary radix-state-checked:hover:border-secondary radix-state-checked:hover:bg-secondary disabled:pointer-events-none disabled:bg-gray-100 radix-state-checked:disabled:border-gray-400 radix-state-checked:disabled:bg-gray-400',
@@ -17,23 +16,6 @@ const radioGroupVariants = cva(
     },
   },
 );
-
-const RadioIndicator = forwardRef<
-  ElementRef<RadioIndicatorType>,
-  ComponentPropsWithRef<RadioIndicatorType>
->(({ children, className, ...props }, ref) => {
-  return (
-    <RadioGroupPrimitive.Indicator
-      className={cn('h-2 w-2 rounded-full bg-white', className)}
-      {...props}
-      ref={ref}
-    >
-      {children}
-    </RadioGroupPrimitive.Indicator>
-  );
-});
-
-RadioIndicator.displayName = 'RadioIndicator';
 
 type RadioItemType = typeof RadioGroupPrimitive.Item;
 
@@ -49,7 +31,7 @@ const RadioItem = forwardRef<ElementRef<RadioItemType>, RadioItemProps>(
         ref={ref}
         {...props}
       >
-        {children || <RadioIndicator />}
+        <RadioGroupPrimitive.Indicator className="h-2 w-2 rounded-full bg-white" />
       </RadioGroupPrimitive.Item>
     );
   },
@@ -71,4 +53,4 @@ const RadioGroup = forwardRef<ElementRef<RadioGroupType>, ComponentPropsWithRef<
 
 RadioGroup.displayName = 'RadioGroup';
 
-export { RadioGroup, RadioItem, RadioIndicator };
+export { RadioGroup, RadioItem };

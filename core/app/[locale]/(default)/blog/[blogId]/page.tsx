@@ -1,3 +1,5 @@
+// REMOVE THIS COMPONENT FOR CARD?
+
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getFormatter } from 'next-intl/server';

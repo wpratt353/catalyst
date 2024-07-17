@@ -45,14 +45,7 @@ const Field = forwardRef<
 
 Field.displayName = 'Field';
 
-const FieldMessage = forwardRef<
-  ElementRef<typeof FormPrimitive.Message>,
-  ComponentPropsWithRef<typeof FormPrimitive.Message>
->(({ className, children, ...props }, ref) => (
-  <FormPrimitive.Message className={cn(className)} ref={ref} {...props}>
-    {children}
-  </FormPrimitive.Message>
-));
+const FieldMessage = FormPrimitive.Message;
 
 FieldMessage.displayName = 'FieldMessage';
 
@@ -75,25 +68,11 @@ const FieldLabel = forwardRef<ElementRef<typeof Label>, FieldLabelProps>(
 
 FieldLabel.displayName = 'FieldLabel';
 
-const FieldControl = forwardRef<
-  ElementRef<typeof FormPrimitive.Control>,
-  ComponentPropsWithRef<typeof FormPrimitive.Control>
->(({ className, children, ...props }, ref) => (
-  <FormPrimitive.Control className={cn(className)} ref={ref} {...props}>
-    {children}
-  </FormPrimitive.Control>
-));
+const FieldControl = FormPrimitive.Control;
 
 FieldControl.displayName = 'FieldControl';
 
-const FormSubmit = forwardRef<
-  ElementRef<typeof FormPrimitive.Submit>,
-  ComponentPropsWithRef<typeof FormPrimitive.Submit>
->(({ className, children, ...props }, ref) => (
-  <FormPrimitive.Submit className={cn(className)} ref={ref} {...props}>
-    {children}
-  </FormPrimitive.Submit>
-));
+const FormSubmit = FormPrimitive.Submit;
 
 FormSubmit.displayName = 'FormSubmit';
 

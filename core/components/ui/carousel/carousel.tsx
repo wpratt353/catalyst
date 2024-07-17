@@ -1,3 +1,6 @@
+// MAYBE MERGE SLIDER AND CAROUSEL INTO ONE COMPONENT
+// BUILD OPINIONATED DESIGN HERE?
+// LOOK AT SHADCN DESIGNS
 import useEmblaCarousel, { UseEmblaCarouselType } from 'embla-carousel-react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import {

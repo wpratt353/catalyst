@@ -4,6 +4,8 @@ import { ComponentPropsWithRef, ElementRef, forwardRef } from 'react';
 
 import { cn } from '~/lib/utils';
 
+// REMOVE CVA
+
 const messageVariants = cva('flex w-full gap-x-2.5 justify-start p-3 text-base', {
   variants: {
     variant: {

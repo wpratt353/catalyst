@@ -6,14 +6,7 @@ import { cn } from '~/lib/utils';
 
 const Accordion = AccordionPrimitive.Root;
 
-const AccordionItem = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
->(({ className, ...props }, ref) => (
-  <AccordionPrimitive.Item className={cn('', className)} ref={ref} {...props} />
-));
-
-AccordionItem.displayName = 'AccordionItem';
+const AccordionItem = AccordionPrimitive.Item;
 
 const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
@@ -29,7 +22,6 @@ const AccordionTrigger = React.forwardRef<
       {...props}
     >
       {children}
-      {/* TODO: For the sake of moving fast we are leaving this in, but in the future we need to figure out how enable custom icons */}
       <ChevronDown className="h-6 w-6 shrink-0 transition-transform duration-200" />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>

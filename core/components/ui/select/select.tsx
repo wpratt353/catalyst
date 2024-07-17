@@ -1,3 +1,4 @@
+// REMOVE CVA
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { cva } from 'class-variance-authority';
 import { Check, ChevronDown, ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
@@ -56,36 +57,6 @@ Select.displayName = SelectPrimitive.Root.displayName;
 
 type SelectContentType = typeof SelectPrimitive.Content;
 
-const SelectScrollUpButton = forwardRef<
-  React.ElementRef<typeof SelectPrimitive.ScrollUpButton>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollUpButton>
->(({ className, ...props }, ref) => (
-  <SelectPrimitive.ScrollUpButton
-    className={cn('flex cursor-default items-center justify-center py-1', className)}
-    ref={ref}
-    {...props}
-  >
-    <ChevronUpIcon />
-  </SelectPrimitive.ScrollUpButton>
-));
-
-SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName;
-
-const SelectScrollDownButton = forwardRef<
-  React.ElementRef<typeof SelectPrimitive.ScrollDownButton>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollDownButton>
->(({ className, ...props }, ref) => (
-  <SelectPrimitive.ScrollDownButton
-    className={cn('flex cursor-default items-center justify-center py-1', className)}
-    ref={ref}
-    {...props}
-  >
-    <ChevronDownIcon />
-  </SelectPrimitive.ScrollDownButton>
-));
-
-SelectScrollDownButton.displayName = SelectPrimitive.ScrollDownButton.displayName;
-
 const SelectContent = forwardRef<
   ElementRef<SelectContentType>,
   ComponentPropsWithRef<SelectContentType>
@@ -103,7 +74,13 @@ const SelectContent = forwardRef<
         )}
         ref={ref}
       >
-        <SelectScrollUpButton />
+        <SelectPrimitive.ScrollUpButton
+          className={cn('flex cursor-default items-center justify-center py-1', className)}
+          ref={ref}
+          {...props}
+        >
+          <ChevronUpIcon />
+        </SelectPrimitive.ScrollUpButton>
         <SelectPrimitive.Viewport
           className={cn(
             'w-full',
@@ -113,7 +90,13 @@ const SelectContent = forwardRef<
         >
           {children}
         </SelectPrimitive.Viewport>
-        <SelectScrollDownButton />
+        <SelectPrimitive.ScrollDownButton
+          className={cn('flex cursor-default items-center justify-center py-1', className)}
+          ref={ref}
+          {...props}
+        >
+          <ChevronDownIcon />
+        </SelectPrimitive.ScrollDownButton>
       </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
   );

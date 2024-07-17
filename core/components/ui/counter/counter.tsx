@@ -1,6 +1,8 @@
 import { cva } from 'class-variance-authority';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { ComponentPropsWithRef, ElementRef, forwardRef, useRef, useState } from 'react';
+// REMVOE CVA
+// MOVE INSIDE PDP
 
 import { cn } from '~/lib/utils';
 
