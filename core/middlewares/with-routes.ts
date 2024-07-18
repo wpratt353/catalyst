@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import { cookies } from 'next/headers';
 import { NextFetchEvent, NextRequest, NextResponse } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
@@ -182,7 +183,24 @@ export const withRoutes: MiddlewareFactory = () => {
       locale = response.cookies.get('NEXT_LOCALE')?.value || '';
     }
 
-    const { route, status } = await getRouteInfo(request, event);
+    let route;
+    let status;
+
+    if (request.headers.get('X-Bc-Route-Result') !== null) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const routeHeader = JSON.parse(request.headers.get('X-Bc-Route-Result') || '{}');
+
+      console.log(routeHeader);
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      route = routeHeader;
+      status = 'LAUNCHED';
+    } else {
+      const { route: kvRoute, status: kvStatus } = await getRouteInfo(request, event);
+
+      route = kvRoute;
+      status = kvStatus;
+    }
 
     if (status === 'MAINTENANCE') {
       // 503 status code not working - https://github.com/vercel/next.js/issues/50155
