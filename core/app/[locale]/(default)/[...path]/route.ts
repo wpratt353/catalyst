@@ -79,7 +79,7 @@ export async function GET(req: NextRequest) {
   if (!req.nextUrl.search && !customerId) {
     // todo figure out if we need to do anything about  // && req.method === 'GET')
     postfix = '/static';
-    postfix = '';
+    // postfix = '';
   }
 
   const node = route.node;
@@ -97,7 +97,7 @@ export async function GET(req: NextRequest) {
     }
 
     case 'Product': {
-      url = `/${locale}/product/${node.entityId}${postfix}`;
+      url = `/_catalyst/${locale}/product/${node.entityId}${postfix}`;
       break;
     }
 
@@ -120,7 +120,7 @@ export async function GET(req: NextRequest) {
     }
 
     default: {
-      url = `/_catalyst/404`;
+      url = `/_catalyst/${locale}/404`;
     }
   }
 
@@ -130,5 +130,23 @@ export async function GET(req: NextRequest) {
 
   console.log('routeURL', JSON.stringify(routeURL));
 
-  return fetch(routeURL, req);
+  // clone req
+  const clonedReq = req.clone();
+
+  // remove accept-encoding header to prevent double gzip compression
+  clonedReq.headers.delete('accept-encoding');
+
+  return fetch(routeURL, clonedReq).then((response) => {
+    console.log('headers', response.headers);
+
+    // remove content-encoding header to prevent double gzip compression
+    // clone the request to avoid mutating the original request
+    const clonedResponse = new Response(response.body, response);
+
+    clonedResponse.headers.delete('content-encoding');
+    clonedResponse.headers.delete('content-length');
+    clonedResponse.headers.delete('transfer-encoding');
+
+    return clonedResponse;
+  });
 }
