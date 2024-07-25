@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 
 import { CheckedProduct, useCompareProductsContext } from '~/app/contexts/compare-products-context';
 import { Link } from '~/components/link';
-import { Accordions } from '~/components/ui/accordion';
+import { Accordions } from '~/components/ui/accordions';
 import { Button } from '~/components/ui/button';
 
 import { BcImage } from '../bc-image';

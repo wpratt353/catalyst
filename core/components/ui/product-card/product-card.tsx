@@ -8,10 +8,10 @@ import { Compare } from './compare';
 
 interface Props extends ComponentPropsWithRef<'div'> {
   addToCart?: ReactNode;
-  brand?: string;
+  brand?: string; // category
   image?: { url: string; altText: string } | null;
   imagePriority?: boolean;
-  imageSize?: 'square' | 'tall' | 'wide';
+  imageSize?: 'square' | 'tall' | 'wide'; // remove when design change
   link: string;
   price?: ReactNode;
   productId: number;

@@ -10,8 +10,9 @@ interface Image {
 }
 
 interface Props extends ComponentPropsWithoutRef<'div'> {
-  images: Image[] | [];
+  images: Image[];
   defaultImageIndex?: number;
+  // should we make this controlled?
 }
 
 const Gallery = ({ className, children, images, defaultImageIndex = 0, ...props }: Props) => {

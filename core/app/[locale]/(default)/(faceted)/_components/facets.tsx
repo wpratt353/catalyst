@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { FormEvent, useRef, useTransition } from 'react';
 
 import { Link } from '~/components/link';
-import { Accordions } from '~/components/ui/accordion';
+import { Accordions } from '~/components/ui/accordions';
 import { Button } from '~/components/ui/button';
 import { Checkbox } from '~/components/ui/checkbox';
 import { Input } from '~/components/ui/input';

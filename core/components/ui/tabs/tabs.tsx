@@ -3,7 +3,7 @@ import { ComponentPropsWithoutRef, ReactNode } from 'react';
 
 interface Tab {
   content: ReactNode;
-  title: ReactNode;
+  title: ReactNode; // remove title
   value: string;
 }
 

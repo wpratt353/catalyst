@@ -16,7 +16,8 @@ type CarouselApi = UseEmblaCarouselType[1];
 
 interface Props extends ComponentPropsWithoutRef<'div'> {
   items: ReactNode[];
-  title: string;
+  title: string; // REMOVE TITLE?
+  // Add page size
 }
 
 const Carousel = ({ className, children, title, items, ...props }: Props) => {

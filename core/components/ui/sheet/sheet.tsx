@@ -8,7 +8,6 @@ interface Props extends ComponentPropsWithoutRef<typeof SheetPrimitive.Root> {
   title: string;
   trigger?: React.ReactNode;
   side?: 'top' | 'bottom' | 'left' | 'right';
-  transparentOverlay?: boolean;
 }
 
 const Sheet = ({

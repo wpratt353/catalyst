@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, Pause, Play } from 'lucide-react';
 import { ComponentPropsWithRef, ReactNode, useEffect, useReducer, useState } from 'react';
 
 interface Props extends ComponentPropsWithRef<'section'> {
-  slides: ReactNode[];
+  slides: ReactNode[]; // split props
   interval?: number;
 }
 
