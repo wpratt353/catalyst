@@ -1,4 +1,4 @@
-import { getSessionCustomerId } from '~/auth';
+import { getSessionCustomerAccessToken } from '~/auth';
 import { client } from '~/client';
 import { FormFieldsFragment } from '~/client/fragments/form-fields';
 import { graphql, ResultOf } from '~/client/graphql';
@@ -58,11 +58,11 @@ const FALLBACK_COUNTRY = {
 };
 
 export const CustomerNewAddress = async () => {
-  const customerId = await getSessionCustomerId();
+  const customerAccessToken = await getSessionCustomerAccessToken();
 
   const { data } = await client.fetch({
     document: CustomerNewAdressQuery,
-    customerId,
+    customerAccessToken,
     fetchOptions: { cache: 'no-store' },
     variables: {
       shippingSorting: 'SORT_ORDER',

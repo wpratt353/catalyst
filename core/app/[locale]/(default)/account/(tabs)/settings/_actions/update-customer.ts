@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
 
 import { parseAccountFormData } from '~/app/[locale]/(default)/login/register-customer/_components/register-customer-form/fields/parse-fields';
-import { getSessionCustomerId } from '~/auth';
+import { getSessionCustomerAccessToken } from '~/auth';
 import { client } from '~/client';
 import { graphql, VariablesOf } from '~/client/graphql';
 
@@ -65,8 +65,7 @@ interface UpdateCustomerForm {
 
 export const updateCustomer = async ({ formData, reCaptchaToken }: UpdateCustomerForm) => {
   const t = await getTranslations('Account.Settings.UpdateCustomer');
-
-  const customerId = await getSessionCustomerId();
+  const customerAccessToken = await getSessionCustomerAccessToken();
 
   formData.delete('g-recaptcha-response');
 
@@ -81,7 +80,7 @@ export const updateCustomer = async ({ formData, reCaptchaToken }: UpdateCustome
 
   const response = await client.fetch({
     document: UpdateCustomerMutation,
-    customerId,
+    customerAccessToken,
     fetchOptions: { cache: 'no-store' },
     variables: {
       input: parsed,

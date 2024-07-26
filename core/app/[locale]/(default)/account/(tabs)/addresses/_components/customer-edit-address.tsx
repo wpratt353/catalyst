@@ -1,4 +1,4 @@
-import { getSessionCustomerId } from '~/auth';
+import { getSessionCustomerAccessToken } from '~/auth';
 import { client } from '~/client';
 import { FormFieldsFragment } from '~/client/fragments/form-fields';
 import { graphql, ResultOf } from '~/client/graphql';
@@ -64,11 +64,11 @@ export async function CustomerEditAddress({
   address: Address;
   isAddressRemovable: boolean;
 }) {
-  const customerId = await getSessionCustomerId();
+  const customerAccessToken = await getSessionCustomerAccessToken();
 
   const { data } = await client.fetch({
     document: CustomerEditAdressQuery,
-    customerId,
+    customerAccessToken,
     fetchOptions: { cache: 'no-store' },
     variables: {
       countryCode: null,
