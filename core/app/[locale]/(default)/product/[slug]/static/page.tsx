@@ -59,16 +59,17 @@ const getFeaturedProducts = cache(async ({ first = 12 }: Options = {}) => {
   return removeEdgesAndNodes(response.data.site.products);
 });
 
-
-
 export async function generateStaticParams() {
   const products = await getFeaturedProducts();
 
   return locales.map((locale) => {
-    return products.map((product) => ({
-      locale,
-      slug: product.entityId.toString(),
-    }));
+    return products.map((product) => {
+      console.log('Generated product ID:', product.entityId);
+      return {
+        locale,
+        slug: product.entityId.toString(),
+      };
+    });
   });
 }
 
