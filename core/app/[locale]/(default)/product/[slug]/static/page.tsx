@@ -27,6 +27,20 @@ const FeaturedProductsQuery = graphql(`
   }
 `);
 
+const AllProductsQuery = graphql(`
+  query {
+    site {
+      products(first: 50) {
+        edges {
+          node {
+            entityId
+          }
+        }
+      }
+    }
+  }
+`);
+
 interface Options {
   first?: number;
 }
@@ -35,15 +49,17 @@ const getFeaturedProducts = cache(async ({ first = 12 }: Options = {}) => {
   const customerId = await getSessionCustomerId();
 
   const response = await client.fetch({
-    document: FeaturedProductsQuery,
+    document: AllProductsQuery,
     variables: { first },
     customerId,
     fetchOptions: customerId ? { cache: 'no-store' } : { next: { revalidate: revalidateTarget } },
     channelId: getChannelIdFromLocale(), // Using default channel id
   });
 
-  return removeEdgesAndNodes(response.data.site.featuredProducts);
+  return removeEdgesAndNodes(response.data.site.products);
 });
+
+
 
 export async function generateStaticParams() {
   const products = await getFeaturedProducts();
