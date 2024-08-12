@@ -160,7 +160,7 @@ export const GET = async (request: NextRequest) => {
     }
 
     default: {
-      const { pathname } = new URL(request.url);
+      const { pathname } = new URL(request.nextUrl.toString());
       const cleanPathName = clearLocaleFromPath(pathname);
 
       if (cleanPathName === '/' && postfix) {
@@ -176,16 +176,17 @@ export const GET = async (request: NextRequest) => {
 
   // remove accept-encoding header to prevent double gzip compression
   clonedReq.headers.delete('accept-encoding');
-  clonedReq.headers.delete('x-middleware-rewrite');
-
-  // http://localhost:3000/shop-all/
-  console.log(clonedReq.url.toString());
+  // clonedReq.headers.delete('x-middleware-rewrite');
 
   const response = await fetch(url, clonedReq);
 
   // remove content-encoding header to prevent double gzip compression
   // clone the request to avoid mutating the original request
   const clonedResponse = new Response(response.body, response);
+
+  clonedResponse.headers.set('Cache-Control', 'max-age=10');
+  clonedResponse.headers.set('CDN-Cache-Control', 'max-age=60');
+  clonedResponse.headers.set('Vercel-CDN-Cache-Control', 'max-age=3600');
 
   clonedResponse.headers.delete('x-middleware-rewrite');
   clonedResponse.headers.delete('content-encoding');
