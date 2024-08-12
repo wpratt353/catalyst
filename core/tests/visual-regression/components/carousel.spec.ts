@@ -9,5 +9,5 @@ test('Carousel', async ({ page }) => {
   const slides = page.getByRole('region', { name: 'Featured products' });
 
   // Assert
-  await expect(slides).toHaveScreenshot();
+  await expect(slides).toHaveScreenshot({ animations: 'disabled' });
 });

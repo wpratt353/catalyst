@@ -27,5 +27,5 @@ test('accordion closed', async ({ page }) => {
     .filter({ has: page.getByRole('button', { name: 'Brand', expanded: false }) });
 
   // Assert
-  await expect(accordion).toHaveScreenshot();
+  await expect(accordion).toHaveScreenshot({ animations: 'disabled' });
 });

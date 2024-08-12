@@ -10,7 +10,7 @@ test('Slideshow multiple slides', async ({ page }) => {
   await slideshow.waitFor();
 
   // Assert
-  await expect(slideshow).toHaveScreenshot();
+  await expect(slideshow).toHaveScreenshot({ animations: 'disabled' });
 });
 
 test('Slideshow paused', async ({ page }) => {
@@ -24,5 +24,5 @@ test('Slideshow paused', async ({ page }) => {
   await page.getByLabel('Pause slideshow').click();
 
   // Assert
-  await expect(slideshow).toHaveScreenshot();
+  await expect(slideshow).toHaveScreenshot( { animations: 'disabled' });
 });
