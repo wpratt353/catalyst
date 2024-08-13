@@ -173,14 +173,22 @@ export const GET = async (request: NextRequest, { params }: { params: { locale: 
     }
   }
 
-  const clonedReq = new NextRequest(request, { ...request, next: { revalidate: 3600 } });
+  const h = new Headers(request.headers);
+
+  h.append('x-middleware-rewrite', 'true');
+
+  const clonedReq = new NextRequest(request, {
+    ...request,
+    next: { revalidate: 3600 },
+    headers: h,
+  });
 
   // remove accept-encoding header to prevent double gzip compression
   clonedReq.headers.delete('accept-encoding');
   clonedReq.headers.delete('x-middleware-rewrite');
 
   // http://localhost:3000/shop-all/
-  console.log(clonedReq.url.toString());
+  // console.log(clonedReq.url.toString());
 
   const response = await fetch(url, clonedReq);
 
