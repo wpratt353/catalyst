@@ -1,45 +1,59 @@
-// import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
+import { getSessionCustomerId } from './auth';
 import { composeMiddlewares, MiddlewareFactory } from './middlewares/compose-middlewares';
 import { withAuth } from './middlewares/with-auth';
 import { withIntl } from './middlewares/with-intl';
 
-export const withDeini: MiddlewareFactory = (next) => {
+const alwaysDynamic = ['/login', '/account'];
+
+export const withLogs: MiddlewareFactory = (next) => {
   return async (request, event) => {
-    console.log('=============');
-    console.log('Middleware run attempt');
-    console.log('URL:', request.url);
-    console.log('x-bc-bypass-middleware header:', request.headers.get('x-bc-bypass-middleware'));
+    console.log('=========== withLogs');
 
-    // const url = new URL(request.url);
-    // const parts = url.pathname.split('/').filter(Boolean);
+    const customerId = await getSessionCustomerId();
 
-    // // Clone the request and add the query parameter
-    // const url = new URL(request.url);
+    // If customer is logged in or it's already a static route, proceed with regular catch-all
+    if (customerId) {
+      console.log('=========== withLogs: customer logged in', customerId);
 
-    // url.searchParams.set('static', 'true');
-
-    // // Create a new request with the modified URL
-    // const newRequest = new NextRequest(url, request);
-
-    // return next(newRequest, event);
-
-    // // return next(request, event);
-    // //     // Check if the user is logged in (you'll need to implement this logic)
-
-    // If the user is logged in or it's the home page, continue with the regular middleware chain
-    const response = await next(request, event);
-
-    if (response) {
-      // Add x-bc-bypass-middleware header to the response
-      response.headers.append('x-bc-bypass-middleware', 'true');
+      return next(request, event);
     }
 
-    return response;
+    if (request.nextUrl.pathname.includes('/static')) {
+      console.log(request.nextUrl.pathname);
+      console.log('=========== withLogs: lets go with static because /static already there');
+
+      return next(request, event);
+    }
+
+    // if pathname is partially one of alwaysDynamic, proceed with regular catch-all
+    if (alwaysDynamic.some((path) => request.nextUrl.pathname.includes(path))) {
+      console.log('=========== withLogs: alwaysDynamic');
+
+      return next(request, event);
+    }
+
+    console.log('=========== withLogs: lets go with static');
+
+    // For non-logged-in users, rewrite to static route
+    const url = request.nextUrl.clone();
+
+    console.log('=========== withLogs: url', url.toString());
+
+    url.pathname = `/static/${url.pathname}`.replace(/\/+/g, '/');
+
+    // Create a new request with the modified URL
+    // const newRequest = new NextRequest(new Request(url, request), {
+    const newRequest = new NextRequest(new Request(url, request), request);
+
+    console.log('===== After new request');
+
+    return next(newRequest, event);
   };
 };
 
-export const middleware = composeMiddlewares(withAuth, withDeini, withIntl);
+export const middleware = composeMiddlewares(withAuth, withLogs, withIntl);
 
 export const config = {
   matcher: [
@@ -62,3 +76,7 @@ export const config = {
     },
   ],
 };
+
+/* TODO: deini
+  - /login que funcione
+*/

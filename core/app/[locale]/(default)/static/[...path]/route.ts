@@ -1,15 +1,16 @@
-// Catch-all route
+// Catch-all route - Static
 
 import { permanentRedirect } from 'next/navigation';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
-import { getSessionCustomerId } from '~/auth';
 import { getChannelIdFromLocale } from '~/channels.config';
 import { getRawWebPageContent } from '~/client/queries/get-raw-web-page-content';
 import { getRoute } from '~/client/queries/get-route';
 import { getStoreStatus } from '~/client/queries/get-store-status';
 import { defaultLocale, localePrefix, LocalePrefixes } from '~/i18n';
+
+export const dynamic = 'force-dynamic';
 
 const StorefrontStatusSchema = z.union([
   z.literal('HIBERNATION'),
@@ -87,7 +88,9 @@ const getRouteInfo = async (request: NextRequest, locale?: string) => {
 };
 
 export const GET = async (request: NextRequest, { params }: { params: { locale: string } }) => {
-  console.log('======== Dynamic catch all route');
+  console.log('===== STATIC CATCH ALL ROUTE');
+
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
   // const locale = request.cookies.get('NEXT_LOCALE')?.value || '';
   const locale = params.locale;
@@ -98,12 +101,7 @@ export const GET = async (request: NextRequest, { params }: { params: { locale: 
     return fetch(new URL(`/${locale}/maintenance`, request.url), { next: { revalidate: 300 } });
   }
 
-  const customerId = await getSessionCustomerId();
-  let postfix = '';
-
-  if (!request.nextUrl.search && !customerId && request.method === 'GET') {
-    postfix = '/static';
-  }
+  const postfix = '/static';
 
   if (route?.redirect) {
     switch (route.redirect.to.__typename) {
@@ -166,7 +164,7 @@ export const GET = async (request: NextRequest, { params }: { params: { locale: 
       const { pathname } = new URL(request.url);
       const cleanPathName = clearLocaleFromPath(pathname);
 
-      if (cleanPathName === '/' && postfix) {
+      if (cleanPathName === '/') {
         url.pathname = `/${locale}${postfix}`;
         break;
       }
@@ -188,6 +186,7 @@ export const GET = async (request: NextRequest, { params }: { params: { locale: 
     statusText: response.statusText,
     headers: {
       'content-type': response.headers.get('content-type') || 'text/html',
+      'cache-control': 'public, max-age=3600',
       'x-bc-bypass-middleware': 'true',
     },
   });
@@ -198,4 +197,39 @@ export const GET = async (request: NextRequest, { params }: { params: { locale: 
   newResponse.headers.delete('x-middleware-rewrite');
 
   return newResponse;
+
+  // const headers = new Headers(request.headers);
+
+  // headers.append('x-bc-bypass-middleware', 'true');
+
+  // const clonedReq = new NextRequest(request, {
+  //   ...request,
+  //   next: { revalidate: 3600 },
+  //   headers,
+  // });
+
+  // // remove accept-encoding header to prevent double gzip compression
+  // // clonedReq.headers.delete('accept-encoding');
+  // // clonedReq.headers.delete('x-middleware-rewrite');
+
+  // const response = await fetch(url, clonedReq);
+
+  // // clone the request to avoid mutating the original request
+  // const clonedResponse = new Response(response.body, response);
+
+  // console.log('========================== HEADERS:');
+  // console.log(clonedResponse.headers);
+
+  // console.log('+++++++++++++++++++++++++++++ HEADERS:');
+  // console.log(request.headers);
+
+  // // remove content-encoding header to prevent double gzip compression
+  // clonedResponse.headers.delete('content-encoding');
+  // clonedResponse.headers.delete('content-length');
+  // clonedResponse.headers.delete('transfer-encoding');
+  // clonedResponse.headers.delete('x-middleware-rewrite');
+
+  // clonedResponse.headers.append('x-bc-bypass-middleware', 'true');
+
+  // return clonedResponse;
 };

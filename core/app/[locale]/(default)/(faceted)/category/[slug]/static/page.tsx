@@ -48,16 +48,7 @@ const getEntityIdsOfChildren = (categories: Category[] = []): number[] =>
   );
 
 export async function generateStaticParams() {
-  const categories = await getCategoryTree();
-
-  const entityIds = getEntityIdsOfChildren(categories);
-
-  return locales.map((locale) => {
-    return entityIds.map((entityId) => ({
-      locale,
-      slug: entityId.toString(),
-    }));
-  });
+  return [];
 }
 
 export const dynamic = 'force-static';

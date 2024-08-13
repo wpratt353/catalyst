@@ -41,14 +41,7 @@ const getBrands = cache(async (variables: BrandsQueryVariables = {}) => {
 });
 
 export async function generateStaticParams() {
-  const brands = await getBrands();
-
-  return locales.map((locale) => {
-    return brands.map((brand) => ({
-      locale,
-      slug: brand.entityId.toString(),
-    }));
-  });
+  return [];
 }
 
 export const dynamic = 'force-static';
