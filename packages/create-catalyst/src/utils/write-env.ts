@@ -8,13 +8,11 @@ export const writeEnv = (
     channelId,
     storeHash,
     accessToken,
-    customerImpersonationToken,
     storefrontToken,
   }: {
     channelId: string;
     storeHash: string;
     accessToken: string;
-    customerImpersonationToken: string;
     storefrontToken?: string;
   },
 ) => {
@@ -25,7 +23,6 @@ export const writeEnv = (
       `BIGCOMMERCE_STORE_HASH=${storeHash}`,
       `BIGCOMMERCE_CHANNEL_ID=${channelId}`,
       `BIGCOMMERCE_ACCESS_TOKEN=${accessToken}`,
-      `BIGCOMMERCE_CUSTOMER_IMPERSONATION_TOKEN=${customerImpersonationToken}`,
       `BIGCOMMERCE_STOREFRONT_TOKEN=${storefrontToken}`,
       `CLIENT_LOGGER=false`,
       `ENABLE_ADMIN_ROUTE=true`,
