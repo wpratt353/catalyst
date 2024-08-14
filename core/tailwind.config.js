@@ -170,7 +170,7 @@ const config = {
   },
   plugins: [
     // @ts-ignore
-    require('tailwindcss-radix')(),
+    // require('tailwindcss-radix')(),
     require('tailwindcss-animate'),
     require('@tailwindcss/typography'),
     require('@tailwindcss/container-queries'),

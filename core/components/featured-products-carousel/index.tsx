@@ -94,6 +94,7 @@ export const FeaturedProductsCarousel = async ({
       : undefined,
     price: pricesTransformer(product.prices, format),
     subtitle: product.brand?.name ?? undefined,
+    badge: 'new',
   }));
 
   return <ComponentsFeaturedProductsCarousel products={formattedProducts} title={title} />;
