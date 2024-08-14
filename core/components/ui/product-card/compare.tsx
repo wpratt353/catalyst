@@ -1,64 +1,26 @@
-'use client';
+// import Checkbox from '@/vibes/soul/components/checkbox';
 
-import { useEffect, useId, useState } from 'react';
-
-import { useCompareDrawerContext } from '../compare-drawer';
-import { Checkbox } from '../form/checkbox';
-import { Label } from '../form/label';
-
-interface Image {
-  altText?: string;
-  src?: string;
-}
+import { Checkbox } from '../form';
 
 interface Props {
-  id: string;
-  image?: Image;
-  name: string;
+  label?: string;
+  checked: boolean;
+  setChecked: (checked: boolean) => void;
 }
 
-export const Compare = ({ id, image, name }: Props) => {
-  const checkboxId = useId();
-
-  const [checkedState, setCheckedState] = useState(false);
-  const { products, setProducts } = useCompareDrawerContext();
-
-  useEffect(() => {
-    setCheckedState(products.some(({ id: productId }) => productId === id));
-  }, [products, id]);
-
-  const handleOnCheckedChange = (isChecked: boolean) => {
-    setCheckedState(isChecked);
-
-    if (isChecked) {
-      setProducts([
-        ...products,
-        {
-          id,
-          image: image?.src ? { src: image.src, altText: image.altText ?? name } : undefined,
-          name,
-        },
-      ]);
-    } else {
-      setProducts(
-        products.filter(({ id: productId }) => {
-          return productId !== id;
-        }),
-      );
-    }
-  };
-
+export const Compare = function Compare({ label, checked, setChecked }: Props) {
   return (
-    <div className="flex items-center gap-3">
-      <Checkbox
-        checked={checkedState}
-        className="h-4 w-4"
-        id={checkboxId}
-        onCheckedChange={handleOnCheckedChange}
-      />
-      <Label className="font-normal" htmlFor={checkboxId}>
-        Compare
-      </Label>
+    <div
+      className="absolute right-2.5 top-2.5 z-10 flex cursor-default items-center gap-2 text-foreground @4xl:bottom-4 @4xl:right-4 @4xl:top-auto"
+      onClick={(e) => {
+        e.preventDefault();
+        setChecked(!checked);
+      }}
+    >
+      {label && <span className="hidden @4xl:block">{label}</span>}
+      <Checkbox checked={checked} setChecked={setChecked} />
     </div>
   );
 };
+
+export default Compare;

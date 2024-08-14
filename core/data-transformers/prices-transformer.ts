@@ -2,13 +2,13 @@ import { ResultOf } from 'gql.tada';
 import { getFormatter } from 'next-intl/server';
 
 import { ExistingResultType } from '~/client/util';
-import { PricingFragment } from '~/components/product-card';
-import { Price } from '~/components/ui/product-card';
+import { PricingFragment } from '~/components/featured-products-carousel';
+import { ProductPrice } from '~/components/ui/product-card/price';
 
 export const pricesTransformer = (
   prices: ResultOf<typeof PricingFragment>['prices'],
   format: ExistingResultType<typeof getFormatter>,
-): Price | undefined => {
+): ProductPrice | undefined => {
   if (!prices) {
     return undefined;
   }

@@ -2,7 +2,7 @@ import { removeEdgesAndNodes } from '@bigcommerce/catalyst-client';
 import { cache } from 'react';
 
 import { getSessionCustomerId } from '~/auth';
-import { ProductCardFragment } from '~/components/product-card';
+import { ProductCardFragment } from '~/components/featured-products-carousel';
 
 import { client } from '..';
 import { graphql } from '../graphql';
