@@ -20,7 +20,7 @@ export const config = {
      */
     {
       source:
-        '/((?!api|admin|_next/static|_next/image|_vercel|favicon.ico|xmlsitemap.php|sitemap.xml|robots.txt).*)',
+        '/((?!api|admin|_next/static|_next/image|_vercel|_catalyst|favicon.ico|xmlsitemap.php|sitemap.xml|robots.txt).*)',
       missing: [{ type: 'header', key: 'x-bc-bypass-middleware' }],
     },
   ],
