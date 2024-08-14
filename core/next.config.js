@@ -56,6 +56,15 @@ const nextConfig = {
           },
         ],
       },
+      {
+        source: '/',
+        headers: [
+          {
+            key: 'Supports-Loading-Mode',
+            value: 'credentialed-prerender',
+          },
+        ],
+      },
     ];
   },
 };
