@@ -10,7 +10,7 @@ import { getRoute } from '~/client/queries/get-route';
 import { getStoreStatus } from '~/client/queries/get-store-status';
 import { defaultLocale, localePrefix, LocalePrefixes } from '~/i18n';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-static';
 
 const StorefrontStatusSchema = z.union([
   z.literal('HIBERNATION'),
@@ -175,7 +175,16 @@ export const GET = async (request: NextRequest, { params }: { params: { locale: 
 
   console.log('=== URL', url.toString());
 
-  const response = await fetch(url, {
+  const newUrl = new URL(url);
+
+  if (process.env.VERCEL_URL) {
+    newUrl.host = process.env.VERCEL_URL;
+    newUrl.port = '443';
+  }
+
+  console.log('=== URL after shim', url.toString());
+
+  const response = await fetch(newUrl, {
     headers: {
       'x-bc-bypass-middleware': 'true',
     },
