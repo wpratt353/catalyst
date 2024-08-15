@@ -9,8 +9,13 @@ import {
   FeaturedProductsCarousel,
   ProductCardCarouselFragment,
 } from '~/components/featured-products-carousel';
-import { Hero } from '~/components/hero';
+import { FeaturedProductsList } from '~/components/featured-products-list';
+import { Slideshow } from '~/components/slideshow';
+import FeaturedImage from '~/components/ui/featured-image';
+import SubscribeBasic from '~/components/ui/subscribe-basic';
 import { LocaleType } from '~/i18n';
+
+import image from './_images/featured1.jpg';
 
 interface Props {
   params: {
@@ -57,19 +62,39 @@ export default async function Home({ params: { locale } }: Props) {
     fetchOptions: customerId ? { cache: 'no-store' } : { next: { revalidate } },
   });
 
-  // const featuredProducts = removeEdgesAndNodes(data.site.featuredProducts);
+  const featuredProducts = removeEdgesAndNodes(data.site.featuredProducts);
   const newestProducts = removeEdgesAndNodes(data.site.newestProducts);
 
   return (
     <>
-      <Hero />
+      <Slideshow />
 
       <div className="my-10">
-        {/* <FeaturedProductsCarousel
-          products={featuredProducts}
-          title={t('Carousel.featuredProducts')}
-        /> */}
         <FeaturedProductsCarousel products={newestProducts} title="New arrivals" />
+
+        <FeaturedImage
+          cta={{ href: '/#', label: 'Shop now' }}
+          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
+          image={{
+            src: image,
+            altText: 'An assortment of brandless products against a blank background',
+          }}
+          title="Title"
+        />
+
+        <FeaturedProductsList
+          cta={{ href: '/#', label: 'Shop now' }}
+          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          products={featuredProducts}
+          title="Featured products"
+        />
+
+        <FeaturedProductsCarousel products={featuredProducts} title="Recently viewed" />
+
+        <SubscribeBasic
+          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+          title="Sign up for our newsletter"
+        />
       </div>
     </>
   );

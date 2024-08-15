@@ -1,7 +1,7 @@
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Roboto_Mono } from 'next/font/google';
 import { NextIntlClientProvider, useMessages } from 'next-intl';
 import { unstable_setRequestLocale } from 'next-intl/server';
 import { PropsWithChildren } from 'react';
@@ -15,10 +15,22 @@ import { revalidate } from '~/client/revalidate-target';
 import { Notifications } from '../notifications';
 import { Providers } from '../providers';
 
-const inter = Inter({
+const inter_heading = Inter({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-inter',
+  variable: '--font-family-heading',
+});
+
+const inter_body = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-family-body',
+});
+
+const roboto_mono = Roboto_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-family-mono',
 });
 
 const RootLayoutMetadataQuery = graphql(`
@@ -74,7 +86,10 @@ export default function RootLayout({ children, params: { locale } }: RootLayoutP
   const messages = useMessages();
 
   return (
-    <html className={`${inter.variable} font-sans`} lang={locale}>
+    <html
+      className={`${inter_heading.variable} ${inter_body.variable} ${roboto_mono.variable}`}
+      lang={locale}
+    >
       <body className="flex h-screen min-w-[375px] flex-col">
         <Notifications />
         <NextIntlClientProvider locale={locale} messages={{ Providers: messages.Providers ?? {} }}>
