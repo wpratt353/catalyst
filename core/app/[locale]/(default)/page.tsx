@@ -38,7 +38,7 @@ const HomePageQuery = graphql(
             }
           }
         }
-        featuredProducts(first: 12) {
+        featuredProducts(first: 6) {
           edges {
             node {
               ...ProductCardCarouselFragment
