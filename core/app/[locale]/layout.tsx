@@ -1,3 +1,4 @@
+import { DraftModeScript } from '@makeswift/runtime/next/server';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
@@ -88,6 +89,9 @@ export default function RootLayout({ children, params: { locale } }: RootLayoutP
 
   return (
     <html className={`${heading.variable} ${body.variable} ${mono.variable}`} lang={locale}>
+      <head>
+        <DraftModeScript />
+      </head>
       <body className="flex h-screen min-w-[375px] flex-col font-body">
         <Notifications />
         <NextIntlClientProvider locale={locale} messages={{ Providers: messages.Providers ?? {} }}>
