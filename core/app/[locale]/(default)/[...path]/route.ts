@@ -79,7 +79,7 @@ export const GET = async (request: NextRequest) => {
   }
 
   const customerId = await getSessionCustomerId();
-  let postfix = '';
+  const postfix = '';
 
   // if (!request.nextUrl.search && !customerId && request.method === 'GET') {
   //   postfix = '/static';
@@ -106,7 +106,9 @@ export const GET = async (request: NextRequest) => {
   }
 
   const node = route?.node;
+
   console.log('request.nextUrl', request.nextUrl.toString());
+
   const url = new URL(request.nextUrl.toString());
 
   switch (node?.__typename) {
@@ -144,7 +146,7 @@ export const GET = async (request: NextRequest) => {
     }
 
     default: {
-      //todo fix 404 page render
+      // todo fix 404 page render
       notFound();
     }
   }
