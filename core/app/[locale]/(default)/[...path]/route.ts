@@ -1,6 +1,6 @@
 // Catch-all route
 
-import { permanentRedirect } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -144,9 +144,8 @@ export const GET = async (request: NextRequest) => {
     }
 
     default: {
-      const { pathname } = new URL(request.nextUrl.toString());
-      const cleanPathName = clearLocaleFromPath(pathname);
-      url.pathname = `${locale}${cleanPathName}`;
+      //todo fix 404 page render
+      notFound();
     }
   }
 
