@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import { NextIntlClientProvider, useMessages } from 'next-intl';
 import { unstable_setRequestLocale } from 'next-intl/server';
 import { PropsWithChildren } from 'react';
+import { locales } from '~/i18n';
 
 import '../globals.css';
 
@@ -81,4 +82,8 @@ export default function RootLayout({ children, params: { locale } }: RootLayoutP
       </body>
     </html>
   );
+}
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({locale}));
 }
