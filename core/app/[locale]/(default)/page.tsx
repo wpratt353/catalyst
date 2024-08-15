@@ -1,18 +1,17 @@
 import { removeEdgesAndNodes } from '@bigcommerce/catalyst-client';
-import { unstable_setRequestLocale } from 'next-intl/server';
+import { getFormatter, unstable_setRequestLocale } from 'next-intl/server';
 
 import { getSessionCustomerId } from '~/auth';
 import { client } from '~/client';
+import { ProductCardFragment } from '~/client/fragments/product-card';
 import { graphql } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
-import {
-  FeaturedProductsCarousel,
-  ProductCardCarouselFragment,
-} from '~/components/featured-products-carousel';
-import { FeaturedProductsList } from '~/components/featured-products-list';
 import { Slideshow } from '~/components/slideshow';
 import FeaturedImage from '~/components/ui/featured-image';
+import FeaturedProductsList from '~/components/ui/featured-product-list';
+import FeaturedProductsCarousel from '~/components/ui/featured-products-carousel';
 import SubscribeBasic from '~/components/ui/subscribe-basic';
+import { productCardTransformer } from '~/data-transformers/product-card-transformer';
 import { LocaleType } from '~/i18n';
 
 import image from './_images/featured1.jpg';
@@ -27,32 +26,30 @@ const HomePageQuery = graphql(
   `
     query HomePageQuery {
       site {
-        categoryTree {
-          name
-          path
-        }
         newestProducts(first: 12) {
           edges {
             node {
-              ...ProductCardCarouselFragment
+              ...ProductCardFragment
             }
           }
         }
         featuredProducts(first: 6) {
           edges {
             node {
-              ...ProductCardCarouselFragment
+              ...ProductCardFragment
             }
           }
         }
       }
     }
   `,
-  [ProductCardCarouselFragment],
+  [ProductCardFragment],
 );
 
 export default async function Home({ params: { locale } }: Props) {
   unstable_setRequestLocale(locale);
+
+  const format = await getFormatter({ locale });
 
   const customerId = await getSessionCustomerId();
 
@@ -62,40 +59,42 @@ export default async function Home({ params: { locale } }: Props) {
     fetchOptions: customerId ? { cache: 'no-store' } : { next: { revalidate } },
   });
 
-  const featuredProducts = removeEdgesAndNodes(data.site.featuredProducts);
-  const newestProducts = removeEdgesAndNodes(data.site.newestProducts);
+  const featuredProducts = removeEdgesAndNodes(data.site.featuredProducts).map((product) =>
+    productCardTransformer(product, format),
+  );
+  const newestProducts = removeEdgesAndNodes(data.site.newestProducts).map((product) =>
+    productCardTransformer(product, format),
+  );
 
   return (
     <>
       <Slideshow />
 
-      <div className="my-10">
-        <FeaturedProductsCarousel products={newestProducts} title="New arrivals" />
+      <FeaturedProductsCarousel products={newestProducts} title="New arrivals" />
 
-        <FeaturedImage
-          cta={{ href: '/#', label: 'Shop now' }}
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
-          image={{
-            src: image,
-            altText: 'An assortment of brandless products against a blank background',
-          }}
-          title="Title"
-        />
+      <FeaturedImage
+        cta={{ href: '/#', label: 'Shop now' }}
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
+        image={{
+          src: image,
+          altText: 'An assortment of brandless products against a blank background',
+        }}
+        title="Title"
+      />
 
-        <FeaturedProductsList
-          cta={{ href: '/#', label: 'Shop now' }}
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-          products={featuredProducts}
-          title="Featured products"
-        />
+      <FeaturedProductsList
+        cta={{ href: '/#', label: 'Shop now' }}
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        products={featuredProducts}
+        title="Featured products"
+      />
 
-        <FeaturedProductsCarousel products={featuredProducts} title="Recently viewed" />
+      <FeaturedProductsCarousel products={featuredProducts} title="Recently viewed" />
 
-        <SubscribeBasic
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
-          title="Sign up for our newsletter"
-        />
-      </div>
+      <SubscribeBasic
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+        title="Sign up for our newsletter"
+      />
     </>
   );
 }
