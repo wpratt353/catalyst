@@ -9,7 +9,8 @@ import { getChannelIdFromLocale } from '~/channels.config';
 import { getRawWebPageContent } from '~/client/queries/get-raw-web-page-content';
 import { getRoute } from '~/client/queries/get-route';
 import { getStoreStatus } from '~/client/queries/get-store-status';
-import { defaultLocale, localePrefix, LocalePrefixes } from '~/i18n';
+import { defaultLocale } from '~/i18n';
+import { clearLocaleFromPath } from '~/lib/clearLocaleFromPath';
 
 const StorefrontStatusSchema = z.union([
   z.literal('HIBERNATION'),
@@ -39,24 +40,6 @@ const RouteSchema = z.object({
   redirect: z.nullable(RedirectSchema),
   node: z.nullable(NodeSchema),
 });
-
-const clearLocaleFromPath = (path: string, locale?: string) => {
-  let res: string;
-
-  if (localePrefix === LocalePrefixes.ALWAYS) {
-    res = locale ? `/${path.split('/').slice(2).join('/')}` : path;
-
-    return res;
-  }
-
-  if (localePrefix === LocalePrefixes.ASNEEDED) {
-    res = locale && locale !== defaultLocale ? `/${path.split('/').slice(2).join('/')}` : path;
-
-    return res;
-  }
-
-  return path;
-};
 
 const getRouteInfo = async (request: NextRequest, locale?: string) => {
   try {
@@ -128,19 +111,17 @@ export const GET = async (request: NextRequest) => {
 
   switch (node?.__typename) {
     case 'Brand': {
-      url.pathname = `/${locale}/brand/${node.entityId}${postfix}`;
+      url.pathname = `/_catalyst/${locale}/brand/${node.entityId}`;
       break;
     }
 
     case 'Category': {
-      url.pathname = `/${locale}/category/${node.entityId}${postfix}`;
+      url.pathname = `/_catalyst/${locale}/category/${node.entityId}`;
       break;
     }
 
     case 'Product': {
-      url.pathname = `/_catalyst/${locale}/product/${node.entityId}${postfix}`;
-      console.log('url.pathname', url.pathname);
-      console.log('url.toString()', url.toString());
+      url.pathname = `/_catalyst/${locale}/product/${node.entityId}`;
       break;
     }
 
@@ -165,14 +146,6 @@ export const GET = async (request: NextRequest) => {
     default: {
       const { pathname } = new URL(request.nextUrl.toString());
       const cleanPathName = clearLocaleFromPath(pathname);
-
-      if (cleanPathName === '/' && postfix) {
-        url.pathname = `/${locale}${postfix}`;
-        break;
-      }
-      
-      console.log('url.pathname in default case', url.pathname);
-
       url.pathname = `${locale}${cleanPathName}`;
     }
   }

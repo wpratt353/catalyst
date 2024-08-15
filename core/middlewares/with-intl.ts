@@ -7,6 +7,7 @@ import { getSessionCustomerId } from '~/auth';
 import { NextResponse } from 'next/server';
 import { boolean } from 'zod';
 import { cookies } from 'next/headers';
+import { clearLocaleFromPath } from '~/lib/clearLocaleFromPath';
 
 let locale: string;
 
@@ -42,16 +43,20 @@ export const withIntl: MiddlewareFactory = () => {
     console.log('customerId', customerId, !customerId)
     console.log('request.method', request.method, request.method === 'GET')
 
+    const isHomePage = clearLocaleFromPath(request.nextUrl.pathname) === '/'; //todo handle trailing slash config
+
+    // todo exempt internal routes from going to the catch-all route
     if (!request.nextUrl.search && !customerId && request.method === 'GET' && !request.nextUrl.pathname.startsWith('/_catalyst')) {
       console.log(`Redirecting to static path for ${request.nextUrl.pathname}`);
-      if (request.nextUrl.pathname === '/' || request.nextUrl.pathname === '/${locale}/') { //todo handle trailing slash config
-        console.log(`Redirecting to static home for ${request.nextUrl.pathname}`);
+
+      if (isHomePage) {
         rewriteUrl.pathname = `/_catalyst/${locale}/staticHome/`;
         // rewrite immediately for home page to avoid infinite loop
         return NextResponse.rewrite(rewriteUrl);
       }
+
       rewriteUrl.pathname = `/_catalyst/static${request.nextUrl.pathname}`;
-    } else if (request.nextUrl.pathname === '/' || request.nextUrl.pathname === '/${locale}/') { //todo handle trailing slash config
+    } else if (isHomePage) { //todo handle trailing slash config
       return response;
     }
 
