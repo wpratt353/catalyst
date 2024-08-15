@@ -1,6 +1,6 @@
 import { locales } from '~/i18n';
 
-import HomePage from '../page';
+import HomePage from '../../../[locale]/(default)/page';
 
 export default HomePage;
 

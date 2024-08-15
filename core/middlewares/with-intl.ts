@@ -6,19 +6,14 @@ import { type MiddlewareFactory } from './compose-middlewares';
 import { getSessionCustomerId } from '~/auth';
 import { NextResponse } from 'next/server';
 import { boolean } from 'zod';
+import { cookies } from 'next/headers';
+
+let locale: string;
 
 export const withIntl: MiddlewareFactory = () => {
   return async (request) => {
-    const customerId = await getSessionCustomerId();
 
-    console.log('request.nextUrl.search',request.nextUrl.search, !request.nextUrl.search)
-    console.log('customerId', customerId, !customerId)
-    console.log('request.method', request.method, request.method === 'GET')
-
-    if (!request.nextUrl.search && !customerId && request.method === 'GET' && !request.nextUrl.pathname.startsWith('/_catalyst')) {
-      console.log(`Redirecting to static path for ${request.nextUrl.pathname}`);
-      return NextResponse.rewrite(new URL(`/_catalyst/static${request.nextUrl.pathname}`, request.url));
-    }
+    locale = cookies().get('NEXT_LOCALE')?.value || '';
 
     const intlMiddleware = createMiddleware({
       locales,
@@ -27,6 +22,44 @@ export const withIntl: MiddlewareFactory = () => {
       localeDetection: true,
     });
 
-    return intlMiddleware(request);
+    const response = intlMiddleware(request);
+
+    // Early redirect to detected locale if needed
+    if (response.redirected) {
+      return response;
+    }
+
+    if (!locale) {
+      // Try to get locale detected by next-intl
+      locale = response.cookies.get('NEXT_LOCALE')?.value || '';
+    }
+
+    const customerId = await getSessionCustomerId();
+
+    let rewriteUrl = new URL(request.url);
+
+    console.log('request.nextUrl.search',request.nextUrl.search, !request.nextUrl.search)
+    console.log('customerId', customerId, !customerId)
+    console.log('request.method', request.method, request.method === 'GET')
+
+    if (!request.nextUrl.search && !customerId && request.method === 'GET' && !request.nextUrl.pathname.startsWith('/_catalyst')) {
+      console.log(`Redirecting to static path for ${request.nextUrl.pathname}`);
+      if (request.nextUrl.pathname === '/' || request.nextUrl.pathname === '/${locale}/') { //todo handle trailing slash config
+        console.log(`Redirecting to static home for ${request.nextUrl.pathname}`);
+        rewriteUrl.pathname = `/_catalyst/${locale}/staticHome/`;
+        // rewrite immediately for home page to avoid infinite loop
+        return NextResponse.rewrite(rewriteUrl);
+      }
+      rewriteUrl.pathname = `/_catalyst/static${request.nextUrl.pathname}`;
+    } else if (request.nextUrl.pathname === '/' || request.nextUrl.pathname === '/${locale}/') { //todo handle trailing slash config
+      return response;
+    }
+
+    const rewrite = NextResponse.rewrite(rewriteUrl);
+
+    // Add rewrite header to response provided by next-intl
+    rewrite.headers.forEach((v, k) => response.headers.set(k, v));
+
+    return response;
   };
 };
