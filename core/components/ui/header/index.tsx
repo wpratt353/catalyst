@@ -102,7 +102,7 @@ export const Header = forwardRef(function Header(
           </div>
 
           <Link
-            className="mx-auto rounded-xl py-3 text-2xl font-semibold text-foreground ring-primary focus-visible:outline-0 focus-visible:ring-2"
+            className="mx-auto rounded-xl py-3 font-heading text-2xl font-semibold text-foreground ring-primary focus-visible:outline-0 focus-visible:ring-2"
             href="/"
           >
             {typeof logo === 'object' && logo.url ? (

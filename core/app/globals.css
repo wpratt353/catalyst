@@ -18,12 +18,6 @@
   --contrast-400: 0 0% 60%;
   --contrast-500: 0 0% 53%;
 
-  /* --font-family-heading: inter.style.fontFamily;
-  --font-family-body: inter.style.fontFamily;
-  --font-family-mono: roboto_mono.style.fontFamily; */
-  --font-variation-settings-body: "slnt" 0;
-  --font-variation-settings-heading: "slnt" 0;
-
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
@@ -36,4 +30,8 @@
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-heading;
 }
