@@ -87,7 +87,7 @@ const getRouteInfo = async (request: NextRequest, locale?: string) => {
 };
 
 export const GET = async (request: NextRequest) => {
-  const locale = request.cookies.get('NEXT_LOCALE')?.value || '';
+  const locale = request.cookies.get('NEXT_LOCALE')?.value || defaultLocale;
 
   const { route, status } = await getRouteInfo(request, locale);
 
@@ -98,9 +98,9 @@ export const GET = async (request: NextRequest) => {
   const customerId = await getSessionCustomerId();
   let postfix = '';
 
-  if (!request.nextUrl.search && !customerId && request.method === 'GET') {
-    postfix = '/static';
-  }
+  // if (!request.nextUrl.search && !customerId && request.method === 'GET') {
+  //   postfix = '/static';
+  // }
 
   if (route?.redirect) {
     switch (route.redirect.to.__typename) {
@@ -123,7 +123,8 @@ export const GET = async (request: NextRequest) => {
   }
 
   const node = route?.node;
-  const url = request.nextUrl.clone();
+  console.log('request.nextUrl', request.nextUrl.toString());
+  const url = new URL(request.nextUrl.toString());
 
   switch (node?.__typename) {
     case 'Brand': {
@@ -137,7 +138,9 @@ export const GET = async (request: NextRequest) => {
     }
 
     case 'Product': {
-      url.pathname = `/${locale}/product/${node.entityId}${postfix}`;
+      url.pathname = `/_catalyst/${locale}/product/${node.entityId}${postfix}`;
+      console.log('url.pathname', url.pathname);
+      console.log('url.toString()', url.toString());
       break;
     }
 
@@ -167,8 +170,10 @@ export const GET = async (request: NextRequest) => {
         url.pathname = `/${locale}${postfix}`;
         break;
       }
+      
+      console.log('url.pathname in default case', url.pathname);
 
-      url.pathname = `/${locale}${cleanPathName}`;
+      url.pathname = `${locale}${cleanPathName}`;
     }
   }
 
@@ -176,7 +181,10 @@ export const GET = async (request: NextRequest) => {
 
   // remove accept-encoding header to prevent double gzip compression
   clonedReq.headers.delete('accept-encoding');
-  // clonedReq.headers.delete('x-middleware-rewrite');
+  clonedReq.headers.delete('x-middleware-rewrite');
+  clonedReq.headers.set('x-bc-bypass-middleware', 'true');
+
+  console.log('url right before fetch', url.toString());
 
   const response = await fetch(url, clonedReq);
 
