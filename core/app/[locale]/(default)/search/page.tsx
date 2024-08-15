@@ -1,15 +1,15 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 
-import { ProductCard } from '~/components/product-card';
-import { SearchForm } from '~/components/search-form';
-import { Pagination } from '~/components/ui/pagination';
-import { LocaleType } from '~/i18n';
+import { ProductCard } from '../../../../components/product-card';
+import { SearchForm } from '../../../../components/search-form';
+import { Pagination } from '../../../../components/ui/pagination';
+import { LocaleType } from '../../../../i18n';
 
-import { FacetedSearch } from '../_components/faceted-search';
-import { MobileSideNav } from '../_components/mobile-side-nav';
-import { SortBy } from '../_components/sort-by';
-import { fetchFacetedSearch } from '../fetch-faceted-search';
+import { FacetedSearch } from '../../../%5Fcatalyst/[locale]/(faceted)/_components/faceted-search';
+import { MobileSideNav } from '../../../%5Fcatalyst/[locale]/(faceted)/_components/mobile-side-nav';
+import { SortBy } from '../../../%5Fcatalyst/[locale]/(faceted)/_components/sort-by';
+import { fetchFacetedSearch } from '../../../%5Fcatalyst/[locale]/(faceted)/fetch-faceted-search';
 
 interface Props {
   params: { locale: LocaleType };

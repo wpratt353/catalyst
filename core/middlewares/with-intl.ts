@@ -45,14 +45,27 @@ export const withIntl: MiddlewareFactory = () => {
 
     const isHomePage = clearLocaleFromPath(request.nextUrl.pathname) === '/'; //todo handle trailing slash config
 
+    const exemptedRoutes = [
+      '/_catalyst',
+      '/search',
+      '/cart',
+    ];
+
     // todo exempt internal routes from going to the catch-all route
-    if (!request.nextUrl.search && !customerId && request.method === 'GET' && !request.nextUrl.pathname.startsWith('/_catalyst')) {
+    if (
+      !request.nextUrl.search // does not have query params
+      && !customerId // customer is not logged in
+      && request.method === 'GET' // is a GET request
+      && !exemptedRoutes.some( // is not an exempted route
+        route => request.nextUrl.pathname.startsWith(route)
+      ) 
+    ) {
       console.log(`Redirecting to static path for ${request.nextUrl.pathname}`);
 
       if (isHomePage) {
-        rewriteUrl.pathname = `/_catalyst/${locale}/staticHome/`;
-        // rewrite immediately for home page to avoid infinite loop
-        return NextResponse.rewrite(rewriteUrl);
+      rewriteUrl.pathname = `/_catalyst/${locale}/staticHome/`;
+      // rewrite immediately for home page to avoid infinite loop
+      return NextResponse.rewrite(rewriteUrl);
       }
 
       rewriteUrl.pathname = `/_catalyst/static${request.nextUrl.pathname}`;
