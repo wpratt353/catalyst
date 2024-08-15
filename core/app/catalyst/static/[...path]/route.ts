@@ -11,7 +11,7 @@ export const GET = async (request: NextRequest) => {
     newUrl.port = '443';
   }
 
-  newUrl.pathname = newUrl.pathname.replace('/_catalyst/static', '');
+  newUrl.pathname = newUrl.pathname.replace('/catalyst/static', '');
 
   return proxiedGET(new NextRequest(newUrl));
 };

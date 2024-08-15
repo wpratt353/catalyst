@@ -60,7 +60,8 @@ export const withIntl: MiddlewareFactory = () => {
       console.log(`Redirecting to static path for ${request.nextUrl.pathname}`);
 
       if (isHomePage) {
-        rewriteUrl.pathname = `/_catalyst/${locale}/staticHome/`;
+        rewriteUrl.pathname = `/catalyst/${locale}/staticHome/`;
+        console.log('rewriteUrl.pathname', rewriteUrl.pathname);
 
         // rewrite immediately for home page to avoid infinite loop
         return NextResponse.rewrite(rewriteUrl);
@@ -69,6 +70,8 @@ export const withIntl: MiddlewareFactory = () => {
       rewriteUrl.pathname = `/_catalyst/static${request.nextUrl.pathname}`;
     } else if (isHomePage) {
       // todo handle trailing slash config
+      console.log('Return dynamic path for home page');
+
       return response;
     }
 

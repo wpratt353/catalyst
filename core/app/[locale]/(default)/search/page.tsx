@@ -1,14 +1,15 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 
-import { FacetedSearch } from '../../../%5Fcatalyst/[locale]/(faceted)/_components/faceted-search';
-import { MobileSideNav } from '../../../%5Fcatalyst/[locale]/(faceted)/_components/mobile-side-nav';
-import { SortBy } from '../../../%5Fcatalyst/[locale]/(faceted)/_components/sort-by';
-import { fetchFacetedSearch } from '../../../%5Fcatalyst/[locale]/(faceted)/fetch-faceted-search';
 import { ProductCard } from '../../../../components/product-card';
 import { SearchForm } from '../../../../components/search-form';
 import { Pagination } from '../../../../components/ui/pagination';
 import { LocaleType } from '../../../../i18n';
+
+import { FacetedSearch } from '../../../catalyst/[locale]/(faceted)/_components/faceted-search';
+import { MobileSideNav } from '../../../catalyst/[locale]/(faceted)/_components/mobile-side-nav';
+import { SortBy } from '../../../catalyst/[locale]/(faceted)/_components/sort-by';
+import { fetchFacetedSearch } from '../../../catalyst/[locale]/(faceted)/fetch-faceted-search';
 
 interface Props {
   params: { locale: LocaleType };
@@ -21,6 +22,7 @@ export const metadata = {
 
 export default async function Search({ params: { locale }, searchParams }: Props) {
   const t = await getTranslations('Search');
+  const tPagination = await getTranslations({ locale, namespace: 'Pagination' });
 
   const messages = await getMessages({ locale });
   const searchTerm = typeof searchParams.term === 'string' ? searchParams.term : undefined;
@@ -113,10 +115,12 @@ export default async function Search({ params: { locale }, searchParams }: Props
             </div>
 
             <Pagination
-              endCursor={endCursor ?? undefined}
+              endCursor={endCursor}
               hasNextPage={hasNextPage}
               hasPreviousPage={hasPreviousPage}
-              startCursor={startCursor ?? undefined}
+              nextLabel={tPagination('next')}
+              prevLabel={tPagination('prev')}
+              startCursor={startCursor}
             />
           </section>
         </div>

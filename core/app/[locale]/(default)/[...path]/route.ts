@@ -113,17 +113,17 @@ export const GET = async (request: NextRequest) => {
 
   switch (node?.__typename) {
     case 'Brand': {
-      url.pathname = `/_catalyst/${locale}/brand/${node.entityId}`;
+      url.pathname = `/catalyst/${locale}/brand/${node.entityId}`;
       break;
     }
 
     case 'Category': {
-      url.pathname = `/_catalyst/${locale}/category/${node.entityId}`;
+      url.pathname = `/catalyst/${locale}/category/${node.entityId}`;
       break;
     }
 
     case 'Product': {
-      url.pathname = `/_catalyst/${locale}/product/${node.entityId}`;
+      url.pathname = `/catalyst/${locale}/product/${node.entityId}`;
       break;
     }
 
