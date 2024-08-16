@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import Image from 'next/image';
-// import Link from 'next/link';
 import { ReactNode } from 'react';
 
 import { Link as CustomLink } from '~/components/link';
@@ -58,11 +57,10 @@ export const Footer = function Footer({
     >
       <div className="mx-auto max-w-screen-2xl">
         <div className="mx-3 flex flex-col justify-between gap-10 border-t border-t-contrast-100 pt-16 @xl:mx-6 @xl:py-20 @2xl:flex-row @5xl:mx-20">
-          {/* Contact Info || Logo */}
-          <div className="@2xl:w-1/3">
+          <div className="flex flex-col @2xl:w-1/3">
             {/* Contact Information */}
             {contactInformation?.address || contactInformation?.phone ? (
-              <div className="text-2xl font-medium">
+              <div className="text-[20px] font-medium @lg:text-2xl">
                 <h3 className="text-contrast-300">Contact Us</h3>
                 <div>
                   {contactInformation.address && <p>{contactInformation.address}</p>}
@@ -76,13 +74,14 @@ export const Footer = function Footer({
                 href="#"
               >
                 {typeof logo === 'string' ? (
-                  <span className="text-2xl font-semibold">{logo}</span>
+                  <span className="font-heading text-2xl font-semibold">{logo}</span>
                 ) : (
                   logo?.src && (
                     <Image
                       alt={logo.altText ?? 'Logo'}
                       className="object-contain"
                       fill
+                      sizes="400px"
                       src={logo.src}
                     />
                   )
@@ -92,13 +91,11 @@ export const Footer = function Footer({
 
             {/* Social Media Links */}
             {socialMediaLinks && (
-              <div className="mt-4 flex">
+              <div className="mt-auto flex items-center gap-4 pt-8">
                 {socialMediaLinks.map(({ href, icon }, i) => {
-                  console.log('icon', icon);
-
                   return (
                     <CustomLink
-                      className="block rounded-full p-2 ring-primary focus-visible:outline-0 focus-visible:ring-2"
+                      className="flex items-center justify-center rounded-lg fill-contrast-400 p-1 ring-primary transition-colors duration-300 ease-out hover:fill-foreground focus-visible:outline-0 focus-visible:ring-2"
                       href={href}
                       key={i}
                     >

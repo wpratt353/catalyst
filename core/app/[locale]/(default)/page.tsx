@@ -8,9 +8,9 @@ import { graphql } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
 import { Slideshow } from '~/components/slideshow';
 import FeaturedImage from '~/components/ui/featured-image';
-import FeaturedProductsList from '~/components/ui/featured-product-list';
 import FeaturedProductsCarousel from '~/components/ui/featured-products-carousel';
-import SubscribeBasic from '~/components/ui/subscribe-basic';
+import FeaturedProductsList from '~/components/ui/featured-products-list';
+import Subscribe from '~/components/ui/subscribe';
 import { productCardTransformer } from '~/data-transformers/product-card-transformer';
 import { LocaleType } from '~/i18n';
 
@@ -91,7 +91,7 @@ export default async function Home({ params: { locale } }: Props) {
 
       <FeaturedProductsCarousel products={featuredProducts} title="Recently viewed" />
 
-      <SubscribeBasic
+      <Subscribe
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
         title="Sign up for our newsletter"
       />

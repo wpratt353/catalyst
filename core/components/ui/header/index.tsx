@@ -1,9 +1,14 @@
 'use client';
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@radix-ui/react-dropdown-menu';
 import clsx from 'clsx';
-import { Search, ShoppingBag, User } from 'lucide-react';
+import { ChevronDown, Search, ShoppingBag, User } from 'lucide-react';
 import Image from 'next/image';
-// import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { forwardRef, Ref, useEffect, useRef, useState } from 'react';
 import ReactHeadroom from 'react-headroom';
@@ -11,8 +16,6 @@ import ReactHeadroom from 'react-headroom';
 import { Link } from '~/components/link';
 
 import HamburgerMenuButton from './hamburguer-menu-button';
-
-// import HamburgerMenuButton from '@/vibes/soul/components/header/hamburger-menu-button';
 
 interface Image {
   url?: string;
@@ -52,6 +55,7 @@ export const Header = forwardRef(function Header(
   const container = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(0);
+  const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(activeLocale);
 
   useEffect(() => {
     setNavOpen(false);
@@ -84,8 +88,8 @@ export const Header = forwardRef(function Header(
         onMouseLeave={() => setNavOpen(false)}
         ref={ref}
       >
-        <nav className="grid h-[60px] grid-cols-3 items-stretch justify-between gap-x-3 bg-background shadow-[2px_4px_24px_#00000010] @4xl:mx-5 @4xl:rounded-[24px]">
-          <div className="relative flex items-stretch px-2.5" ref={container}>
+        <nav className="grid h-[60px] grid-cols-[1fr,auto,1fr] items-stretch justify-between bg-background shadow-[2px_4px_24px_#00000010] @4xl:mx-5 @4xl:rounded-[24px]">
+          <div className="relative flex items-stretch pl-2.5" ref={container}>
             {links.map((item, i) => (
               <Link
                 className="relative mx-0.5 my-2.5 hidden items-center rounded-xl p-2.5 text-sm font-medium ring-primary transition-colors duration-200 hover:bg-contrast-100 focus-visible:outline-0 focus-visible:ring-2 @4xl:inline-flex"
@@ -106,13 +110,13 @@ export const Header = forwardRef(function Header(
             href="/"
           >
             {typeof logo === 'object' && logo.url ? (
-              <Image alt={logo.altText} height={29} src={logo.url} width={64} />
+              <Image alt={logo.altText} fill sizes="400px" src={logo.url} />
             ) : (
               typeof logo === 'string' && logo
             )}
           </Link>
 
-          <div className="ml-auto flex items-center gap-2 px-3.5 @4xl:px-6">
+          <div className="ml-auto flex items-center gap-2 pr-3.5 @4xl:pr-2.5">
             <div className="absolute left-5 flex items-center @4xl:relative @4xl:left-0">
               <HamburgerMenuButton navOpen={navOpen} setNavOpen={setNavOpen} />
               <button
@@ -142,6 +146,34 @@ export const Header = forwardRef(function Header(
                 </span>
               )}
             </Link>
+
+            {/* Locale / Language Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger className="hidden items-center gap-1 rounded-lg bg-white p-2 text-xs text-foreground transition-colors hover:bg-contrast-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary @sm:flex">
+                {selectedLanguage}
+                <ChevronDown
+                  className="h-4 w-4 text-foreground transition-transform"
+                  strokeWidth={1.5}
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="z-50 mt-4 max-h-[20rem] w-20 overflow-y-scroll rounded-xl bg-background p-2 shadow-[2px_4px_24px_#00000010] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 @4xl:-ml-14 @4xl:w-32 @4xl:rounded-3xl @4xl:p-4">
+                {locales?.map(({ id, language }) => (
+                  <DropdownMenuItem
+                    className={clsx(
+                      'cursor-default rounded-xl px-3 py-2 text-sm font-medium text-contrast-400 outline-none transition-colors',
+                      'hover:text-foreground focus:bg-contrast-100 @4xl:text-[15px]',
+                      {
+                        'text-foreground': selectedLanguage === language,
+                      },
+                    )}
+                    key={id}
+                    onSelect={() => setSelectedLanguage(language)}
+                  >
+                    {language}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </nav>
 

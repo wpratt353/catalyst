@@ -1,15 +1,12 @@
 'use client';
 
 import clsx from 'clsx';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 import Button from '../button';
 
 import ProgressSection from './progress-section';
-
-// import Button from '@/vibes/soul/components/button';
-// import ProgressSection from '@/vibes/soul/components/slideshow/progress-section';
 
 interface Link {
   label: string;
@@ -19,7 +16,7 @@ interface Link {
 interface Image {
   altText: string;
   blurDataUrl?: string;
-  src: string | StaticImageData;
+  src: string;
 }
 
 export interface Slide {
@@ -61,7 +58,9 @@ export const Slideshow = function Slideshow({ slides, className = '' }: Props) {
             key={idx}
           >
             <div className="absolute bottom-0 left-1/2 z-10 w-full max-w-screen-2xl -translate-x-1/2 px-3 text-background @xl:px-6 @5xl:px-20">
-              <h1 className="mb-1 text-5xl font-medium leading-none @2xl:text-[90px]">{title}</h1>
+              <h1 className="mb-1 font-heading text-5xl font-medium leading-none @2xl:text-[90px]">
+                {title}
+              </h1>
               {description && <p>{description}</p>}
               {cta?.href && (
                 <Button className="mt-4" variant="tertiary">
@@ -85,6 +84,8 @@ export const Slideshow = function Slideshow({ slides, className = '' }: Props) {
                 className="object-cover"
                 fill
                 placeholder={image.blurDataUrl ? 'blur' : 'empty'}
+                priority
+                sizes="100vw"
                 src={image.src}
               />
             )}

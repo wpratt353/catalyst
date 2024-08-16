@@ -4,9 +4,6 @@ import ProgressBar from './progress-bar';
 
 import { Slide } from '.';
 
-// import { Slide } from '@/vibes/soul/components/slideshow';
-// import ProgressBar from '@/vibes/soul/components/slideshow/progress-bar';
-
 interface Props {
   currentIndex: number;
   setCurrentIndex: (index: number) => void;

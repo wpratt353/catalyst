@@ -16,10 +16,6 @@ export const ProductCardFragment = graphql(
         name
         path
       }
-      reviewSummary {
-        numberOfReviews
-        averageRating
-      }
       ...PricingFragment
     }
   `,

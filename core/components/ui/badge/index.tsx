@@ -6,11 +6,11 @@ export interface Badge {
   className?: string;
 }
 
-export const Badge = ({ children, className = '' }: Badge) => {
+export const Badge = function Badge({ children, className = '' }: Badge) {
   return (
     <span
       className={clsx(
-        'z-10 rounded-full bg-primary-highlight px-2.5 py-[3px] font-mono text-[13px] uppercase tracking-tighter text-foreground',
+        'z-10 rounded-full bg-primary-highlight px-2 py-0.5 font-mono text-xs uppercase tracking-tighter text-foreground',
         className,
       )}
     >
