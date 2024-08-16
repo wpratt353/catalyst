@@ -8,12 +8,12 @@ import Button from '../button';
 interface Props {
   title: string;
   description: string;
-  image: {
+  image?: {
     src: string;
     blurDataUrl?: string;
     altText: string;
   };
-  cta: {
+  cta?: {
     href: string;
     label: string;
   };
@@ -30,7 +30,7 @@ export const FeaturedImage = function FeaturedImage({
   return (
     <section
       className={clsx(
-        'bg-primary-shadow relative @container',
+        'relative bg-primary-shadow @container',
         mediaAlign == 'full' && 'h-dvh max-h-[780px]',
       )}
     >
@@ -47,26 +47,28 @@ export const FeaturedImage = function FeaturedImage({
             },
           )}
         >
-          <Image
-            alt={image.altText}
-            blurDataURL={image.blurDataUrl}
-            className="object-cover"
-            fill
-            placeholder={image.blurDataUrl ? 'blur' : 'empty'}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 60vw"
-            src={image.src}
-          />
+          {image && (
+            <Image
+              alt={image.altText}
+              blurDataURL={image.blurDataUrl}
+              className="object-cover"
+              fill
+              placeholder={image.blurDataUrl ? 'blur' : 'empty'}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 60vw"
+              src={image.src}
+            />
+          )}
         </div>
         <div
           className={clsx(
-            'text-background z-10 mx-auto flex flex-col items-start gap-4 px-3 py-10 @5xl:p-20',
+            'z-10 mx-auto flex flex-col items-start gap-4 px-3 py-10 text-background @5xl:p-20',
             mediaAlign == 'full'
               ? '5xl:px-20 mx-auto mt-auto w-full max-w-screen-2xl px-3 @xl:px-6'
               : 'w-full justify-end @xl:px-6 @3xl:w-1/2 @5xl:w-2/5',
             { '@3xl:order-1': mediaAlign === 'right' },
           )}
         >
-          <h2 className="font-heading max-w-xl text-4xl font-medium leading-none @xl:text-5xl">
+          <h2 className="max-w-xl font-heading text-4xl font-medium leading-none @xl:text-5xl">
             {title}
           </h2>
           <p className="max-w-md pb-2">{description}</p>
@@ -75,7 +77,7 @@ export const FeaturedImage = function FeaturedImage({
             className={clsx(mediaAlign == 'full' ? 'text-background' : 'text-foreground')}
             variant={mediaAlign == 'full' ? 'tertiary' : 'primary'}
           >
-            <CustomLink href={cta.href}>{cta.label}</CustomLink>
+            {cta && <CustomLink href={cta.href}>{cta.label}</CustomLink>}
           </Button>
         </div>
       </div>
