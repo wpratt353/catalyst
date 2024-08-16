@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { Link as CustomLink } from '~/components/link';
+import { Link } from '~/components/link';
 
 import Button from '../button';
 
@@ -22,7 +22,7 @@ export const FeaturedImage = function FeaturedImage({ title, description, image,
   return (
     <section className="relative h-[100dvh] max-h-[880px] bg-primary-shadow @container">
       <div className="mx-auto flex h-full max-w-screen-2xl flex-col @3xl:flex-row">
-        <div className="relative h-full w-full @3xl:w-1/2 @5xl:w-3/5">
+        <div className="relative h-full w-full @3xl:w-1/2 @5xl:w-3/5 @7xl:ml-20">
           <Image
             alt={image.altText}
             blurDataURL={image.blurDataUrl}
@@ -37,7 +37,7 @@ export const FeaturedImage = function FeaturedImage({ title, description, image,
           <h2 className="max-w-xl font-heading text-[40px] font-medium leading-none">{title}</h2>
           <p className="max-w-xl pb-2">{description}</p>
           <Button asChild>
-            <CustomLink href={cta.href}>{cta.label}</CustomLink>
+            <Link href={cta.href}>{cta.label}</Link>
           </Button>
         </div>
       </div>
