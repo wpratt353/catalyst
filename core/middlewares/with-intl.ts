@@ -45,7 +45,7 @@ export const withIntl: MiddlewareFactory = () => {
 
     const isHomePage = clearLocaleFromPath(request.nextUrl.pathname) === '/'; // todo handle trailing slash config
 
-    const exemptedRoutes = ['/_catalyst', '/search', '/cart'];
+    const exemptedRoutes = ['/catalyst', '/search', '/cart'];
 
     // todo exempt internal routes from going to the catch-all route
     if (
@@ -74,12 +74,12 @@ export const withIntl: MiddlewareFactory = () => {
 
       return response;
     }
-
+    console.log('DYNAMIC: rewriteUrl.pathname', rewriteUrl.pathname);
     const rewrite = NextResponse.rewrite(rewriteUrl);
 
     // Add rewrite header to response provided by next-intl
     rewrite.headers.forEach((v, k) => response.headers.set(k, v));
 
-    return response;
+    return rewrite;
   };
 };
