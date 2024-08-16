@@ -2,7 +2,6 @@ import { getLocale } from 'next-intl/server';
 
 import { getSessionCustomerId } from '~/auth';
 import { FragmentOf, graphql } from '~/client/graphql';
-import { headerLinksTransformer } from '~/data-transformers/header-links-transformer';
 import { logoTransformer } from '~/data-transformers/logo-transformer';
 import { localeLanguageRegionMap } from '~/i18n';
 
@@ -65,12 +64,25 @@ export const Header = async ({ data }: Props) => {
    */
   const categoryTree = data.categoryTree.slice(0, 6);
 
+  const links = categoryTree.map(({ name, path, children }) => ({
+    label: name,
+    href: path,
+    groups: children.map((firstChild) => ({
+      label: firstChild.name,
+      href: firstChild.path,
+      links: firstChild.children.map((secondChild) => ({
+        label: secondChild.name,
+        href: secondChild.path,
+      })),
+    })),
+  }));
+
   return (
     <ComponentsHeader
       accountHref={customerId ? '/account' : '/login'}
       activeLocale={locale}
       cartHref="/cart"
-      links={headerLinksTransformer(categoryTree)}
+      links={links}
       locales={localeLanguageRegionMap}
       logo={data.settings ? logoTransformer(data.settings) : undefined}
     />
