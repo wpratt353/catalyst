@@ -1,4 +1,6 @@
 import { removeEdgesAndNodes } from '@bigcommerce/catalyst-client';
+import { Page as MakeswiftPage } from '@makeswift/runtime/next';
+import { getSiteVersion } from '@makeswift/runtime/next/server';
 import { getFormatter, unstable_setRequestLocale } from 'next-intl/server';
 
 import { getSessionCustomerId } from '~/auth';
@@ -13,6 +15,8 @@ import FeaturedProductsList from '~/components/ui/featured-products-list';
 import Subscribe from '~/components/ui/subscribe';
 import { productCardTransformer } from '~/data-transformers/product-card-transformer';
 import { LocaleType } from '~/i18n';
+import { client as makeswiftClient } from '~/lib/makeswift/client';
+import { MakeswiftProvider } from '~/lib/makeswift/provider';
 
 import image from './_images/featured1.jpg';
 
@@ -49,6 +53,11 @@ const HomePageQuery = graphql(
 export default async function Home({ params: { locale } }: Props) {
   unstable_setRequestLocale(locale);
 
+  const snapshot = await makeswiftClient.getPageSnapshot('/', {
+    siteVersion: getSiteVersion(),
+    locale,
+  });
+
   const format = await getFormatter({ locale });
 
   const customerId = await getSessionCustomerId();
@@ -66,37 +75,44 @@ export default async function Home({ params: { locale } }: Props) {
     productCardTransformer(product, format),
   );
 
+  if (snapshot == null)
+    return (
+      <>
+        <Slideshow />
+
+        <FeaturedProductsCarousel products={newestProducts} title="New arrivals" />
+
+        <FeaturedImage
+          cta={{ href: '/#', label: 'Shop now' }}
+          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
+          image={{
+            src: image,
+            altText: 'An assortment of brandless products against a blank background',
+          }}
+          title="Title"
+        />
+
+        <FeaturedProductsList
+          cta={{ href: '/#', label: 'Shop now' }}
+          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          products={featuredProducts}
+          title="Featured products"
+        />
+
+        <FeaturedProductsCarousel products={featuredProducts} title="Recently viewed" />
+
+        <Subscribe
+          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+          title="Sign up for our newsletter"
+        />
+      </>
+    );
+
   return (
-    <>
-      <Slideshow />
-
-      <FeaturedProductsCarousel products={newestProducts} title="New arrivals" />
-
-      <FeaturedImage
-        cta={{ href: '/#', label: 'Shop now' }}
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
-        image={{
-          src: image,
-          altText: 'An assortment of brandless products against a blank background',
-        }}
-        title="Title"
-      />
-
-      <FeaturedProductsList
-        cta={{ href: '/#', label: 'Shop now' }}
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        products={featuredProducts}
-        title="Featured products"
-      />
-
-      <FeaturedProductsCarousel products={featuredProducts} title="Recently viewed" />
-
-      <Subscribe
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
-        title="Sign up for our newsletter"
-      />
-    </>
+    <MakeswiftProvider>
+      <MakeswiftPage snapshot={snapshot} />
+    </MakeswiftProvider>
   );
 }
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
