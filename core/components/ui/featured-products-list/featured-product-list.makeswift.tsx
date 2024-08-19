@@ -1,12 +1,12 @@
 import { Select, Style, TextInput } from '@makeswift/runtime/controls';
 import { useFormatter } from 'next-intl';
-import { useEffect, useState } from 'react';
+import useSWR, { Fetcher } from 'swr';
 
 import { ProductCardFragment } from '~/client/fragments/product-card';
 import { ResultOf } from '~/client/graphql';
 import { FeaturedProductsList } from '~/components/ui/featured-products-list';
-import { Product } from '~/components/ui/product-card';
 import { productCardTransformer } from '~/data-transformers/product-card-transformer';
+import { fetcher } from '~/lib/fetcher';
 import { runtime } from '~/lib/makeswift/runtime';
 
 interface Props {
@@ -18,31 +18,42 @@ interface Props {
 
 type ProductData = ResultOf<typeof ProductCardFragment>;
 
+const typedFetcher: Fetcher<ProductData[], string> = fetcher;
+
 runtime.registerComponent(
   function MakeswiftProductList({ title, description, type, className }: Props) {
     const format = useFormatter();
-    const [products, setProducts] = useState<Product[]>([]);
 
-    useEffect(() => {
-      const fetchProducts = async () => {
-        const response = await fetch(`/api/carousel/${type}`);
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        const data = (await response.json()) as ProductData[];
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const { data, error, isLoading } = useSWR(`/api/carousel/${type}`, typedFetcher);
 
-        const newestProducts = data.map((product) => productCardTransformer(product, format));
+    if (isLoading) {
+      return (
+        <div className={className}>
+          <div className="flex h-96 w-96 gap-4">
+            <div className="aspect-[4/3] animate-pulse bg-contrast-100" />
+            <div className="aspect-[4/3] animate-pulse bg-contrast-100" />
+            <div className="aspect-[4/3] animate-pulse bg-contrast-100" />
+            <div className="aspect-[4/3] animate-pulse bg-contrast-100" />
+          </div>{' '}
+        </div>
+      );
+    }
 
-        setProducts(newestProducts);
-      };
+    if (error) {
+      return <div className={className}>Error loading products</div>;
+    }
 
-      void fetchProducts();
-    }, [type, format]);
+    if (!data) {
+      return <div className={className}>No products found</div>;
+    }
 
     return (
       <div className={className}>
         <FeaturedProductsList
           cta={{ href: '/#', label: 'Shop now' }}
           description={description}
-          products={products}
+          products={data.map((product) => productCardTransformer(product, format))}
           title={title}
         />
       </div>
