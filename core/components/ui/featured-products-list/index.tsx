@@ -13,7 +13,7 @@ interface Props {
   title: string;
   description?: string;
   cta?: Link;
-  products: Product[];
+  products?: Product[];
 }
 
 export const FeaturedProductsList = function FeaturedProductsList({
@@ -28,11 +28,11 @@ export const FeaturedProductsList = function FeaturedProductsList({
         <div className="4xl:w-1/2 top-28 flex w-full items-start justify-between gap-4 self-start px-3 @xl:px-6 @4xl:sticky @4xl:max-w-md @4xl:flex-col @4xl:items-start @4xl:justify-start @5xl:px-0 @6xl:w-4/12">
           <div>
             {title && (
-              <h2 className="font-heading text-foreground text-lg font-semibold leading-none @4xl:text-6xl @4xl:font-medium">
+              <h2 className="font-heading text-lg font-semibold leading-none text-foreground @4xl:text-6xl @4xl:font-medium">
                 {title}
               </h2>
             )}
-            {description && <p className="text-foreground mt-1.5 max-w-md pb-2">{description}</p>}
+            {description && <p className="mt-1.5 max-w-md pb-2 text-foreground">{description}</p>}
           </div>
           {cta && (
             <Button

@@ -25,27 +25,10 @@ runtime.registerComponent(
     const format = useFormatter();
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { data, error, isLoading } = useSWR(`/api/carousel/${type}`, typedFetcher);
-
-    if (isLoading) {
-      return (
-        <div className={className}>
-          <div className="flex h-96 w-96 gap-4">
-            <div className="aspect-[4/3] animate-pulse bg-contrast-100" />
-            <div className="aspect-[4/3] animate-pulse bg-contrast-100" />
-            <div className="aspect-[4/3] animate-pulse bg-contrast-100" />
-            <div className="aspect-[4/3] animate-pulse bg-contrast-100" />
-          </div>{' '}
-        </div>
-      );
-    }
+    const { data, error } = useSWR(`/api/carousel/${type}`, typedFetcher);
 
     if (error) {
       return <div className={className}>Error loading products</div>;
-    }
-
-    if (!data) {
-      return <div className={className}>No products found</div>;
     }
 
     return (
@@ -53,7 +36,9 @@ runtime.registerComponent(
         <FeaturedProductsList
           cta={{ href: '/#', label: 'Shop now' }}
           description={description}
-          products={data.map((product) => productCardTransformer(product, format))}
+          products={
+            data ? data.map((product) => productCardTransformer(product, format)) : undefined
+          }
           title={title}
         />
       </div>

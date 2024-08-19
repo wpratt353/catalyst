@@ -2,7 +2,7 @@ import Carousel from '../carousel';
 import ProductCard, { Product, ProductCardSkeleton } from '../product-card';
 
 interface Props {
-  products: Product[];
+  products?: Product[];
 }
 
 export const ProductsCarousel = function ProductsCarousel({ products }: Props) {
