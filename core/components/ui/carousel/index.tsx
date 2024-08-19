@@ -2,7 +2,7 @@
 
 import useEmblaCarousel from 'embla-carousel-react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { ComponentPropsWithoutRef, ReactNode, useCallback, useEffect, useState } from 'react';
+import { ComponentPropsWithoutRef, ReactNode, useEffect, useState } from 'react';
 
 interface Props {
   children: ReactNode;
@@ -53,7 +53,7 @@ export const Carousel = ({ children }: Props & ComponentPropsWithoutRef<'div'>) 
   };
 
   return (
-    <section className="mx-auto flex w-full max-w-screen-2xl flex-col gap-10 pt-8 @container">
+    <div className="mx-auto flex w-full max-w-screen-2xl flex-col gap-10 pt-8 @container">
       {/* Carousel Content */}
       {children && (
         <div className="w-full overflow-hidden px-3 py-0.5 @xl:px-6 @5xl:px-20" ref={emblaRef}>
@@ -73,11 +73,11 @@ export const Carousel = ({ children }: Props & ComponentPropsWithoutRef<'div'>) 
             value={progress}
           />
           {/* Track */}
-          <div className="pointer-events-none absolute h-1 w-full rounded-full bg-contrast-100" />
+          <div className="bg-contrast-100 pointer-events-none absolute h-1 w-full rounded-full" />
 
           {/* Bar */}
           <div
-            className="pointer-events-none absolute h-1 rounded-full bg-foreground transition-all duration-0 ease-linear"
+            className="bg-foreground pointer-events-none absolute h-1 rounded-full transition-all duration-0 ease-linear"
             style={{
               width: `${scrollbarPosition.width}%`,
               left: `${scrollbarPosition.left}%`,
@@ -86,9 +86,9 @@ export const Carousel = ({ children }: Props & ComponentPropsWithoutRef<'div'>) 
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-2 text-foreground">
+        <div className="text-foreground flex gap-2">
           <button
-            className="rounded-lg ring-primary transition-colors duration-300 focus-visible:outline-0 focus-visible:ring-2 disabled:pointer-events-none disabled:text-contrast-300"
+            className="disabled:text-contrast-300 rounded-lg ring-primary transition-colors duration-300 focus-visible:outline-0 focus-visible:ring-2 disabled:pointer-events-none"
             disabled={!canScrollPrev}
             onClick={() => emblaApi?.scrollPrev()}
             role="button"
@@ -96,7 +96,7 @@ export const Carousel = ({ children }: Props & ComponentPropsWithoutRef<'div'>) 
             <ArrowLeft strokeWidth={1.5} />
           </button>
           <button
-            className="rounded-lg ring-primary transition-colors duration-300 focus-visible:outline-0 focus-visible:ring-2 disabled:pointer-events-none disabled:text-contrast-300"
+            className="disabled:text-contrast-300 rounded-lg ring-primary transition-colors duration-300 focus-visible:outline-0 focus-visible:ring-2 disabled:pointer-events-none"
             disabled={!canScrollNext}
             onClick={() => emblaApi?.scrollNext()}
             role="button"
@@ -105,7 +105,7 @@ export const Carousel = ({ children }: Props & ComponentPropsWithoutRef<'div'>) 
           </button>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

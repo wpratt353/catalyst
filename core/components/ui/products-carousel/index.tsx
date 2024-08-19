@@ -1,8 +1,5 @@
-// import Carousel from '@/vibes/soul/components/carousel';
-// import ProductCard, { Product } from '@/vibes/soul/components/product-card';
-
 import Carousel from '../carousel';
-import ProductCard, { Product } from '../product-card';
+import ProductCard, { Product, ProductCardSkeleton } from '../product-card';
 
 interface Props {
   products: Product[];
@@ -11,13 +8,20 @@ interface Props {
 export const ProductsCarousel = function ProductsCarousel({ products }: Props) {
   return (
     <Carousel>
-      {products.map((product) => (
-        <ProductCard
-          key={product.id}
-          {...product}
-          className="[&>div]:min-w-[179px] @4xl:[&>div]:min-w-[360px]"
-        />
-      ))}
+      {products && products.length > 0
+        ? products.map((product) => (
+            <ProductCard
+              key={product.id}
+              {...product}
+              className="[&>div]:min-w-[179px] @4xl:[&>div]:min-w-[360px]"
+            />
+          ))
+        : Array.from({ length: 5 }).map((_, index) => (
+            <ProductCardSkeleton
+              className="[&>div]:min-w-[179px] @4xl:[&>div]:min-w-[360px]"
+              key={index}
+            />
+          ))}
     </Carousel>
   );
 };

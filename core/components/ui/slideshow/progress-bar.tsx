@@ -24,7 +24,7 @@ export const ProgressBar = function ProgressBar({
             {/* White Bar - Current Index Indicator / Progress Bar */}
             <div
               className={clsx(
-                'absolute h-0.5 w-[calc-(228_/_3)] bg-background opacity-100',
+                'bg-background absolute h-0.5 w-[calc-(228_/_3)] opacity-100',
                 index === currentIndex ? 'translate-x-0' : '-translate-x-[101%]',
               )}
               style={{
@@ -35,7 +35,7 @@ export const ProgressBar = function ProgressBar({
 
             {/* Grey Bar */}
             <div
-              className="p h-0.5 w-[calc-(228_/_3)] bg-background opacity-30"
+              className="p bg-background h-0.5 w-[calc-(228_/_3)] opacity-30"
               style={{ width: `${190 / totalItems}px` }}
             />
           </div>

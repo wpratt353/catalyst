@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { ComponentPropsWithoutRef } from 'react';
 
 import { BcImage } from '~/components/bc-image';
-import { Link } from '~/components/link';
+import { Link as CustomLink } from '~/components/link';
 
 import Badge from '../badge';
 
@@ -38,7 +38,7 @@ export const ProductCard = function ProductCard({
   className,
 }: Product & ComponentPropsWithoutRef<'a'>) {
   return (
-    <Link
+    <CustomLink
       className={clsx(
         'group flex cursor-pointer flex-col gap-2 rounded-xl text-foreground ring-primary focus-visible:outline-0 focus-visible:ring-2',
         className,
@@ -70,7 +70,32 @@ export const ProductCard = function ProductCard({
         </h3>
         {price && <Price price={price} />}
       </div>
-    </Link>
+    </CustomLink>
+  );
+};
+
+interface ProductCardSkeletonProps {
+  className?: string;
+}
+
+export const ProductCardSkeleton = function ProductCardSkeleton({
+  className,
+}: ProductCardSkeletonProps) {
+  return (
+    <div className={clsx('animate-pulse cursor-pointer rounded-xl', className)}>
+      {/* Image */}
+      <div className="relative aspect-[5/6] overflow-hidden rounded-xl bg-contrast-100 @6xl:min-w-80" />
+      <div className="flex flex-col gap-2 @sm:gap-2">
+        <h3 className="mt-4 flex flex-col flex-wrap justify-between gap-2 @sm:mt-7 @sm:gap-2 @4xl:flex-row">
+          {/* Name */}
+          <div className="h-4 w-24 rounded-lg bg-contrast-100" />
+          {/* Subtitle */}
+          <div className="h-4 w-20 rounded-lg bg-contrast-100" />
+        </h3>
+        {/* Price */}
+        <div className="h-4 w-16 rounded-lg bg-contrast-100 @4xl:h-6" />
+      </div>
+    </div>
   );
 };
 

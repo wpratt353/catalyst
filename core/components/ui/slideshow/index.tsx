@@ -46,7 +46,7 @@ export const Slideshow = function Slideshow({ slides, className = '' }: Props) {
 
   return (
     <header
-      className={clsx('relative h-[100dvh] max-h-[880px] bg-primary-shadow @container', className)}
+      className={clsx('bg-primary-shadow relative h-[100dvh] max-h-[880px] @container', className)}
     >
       {slides.map(({ title, description, image, cta }, idx) => {
         return (
@@ -57,11 +57,11 @@ export const Slideshow = function Slideshow({ slides, className = '' }: Props) {
             )}
             key={idx}
           >
-            <div className="absolute bottom-0 left-1/2 z-10 w-full max-w-screen-2xl -translate-x-1/2 px-3 text-background @xl:px-6 @5xl:px-20">
-              <h1 className="mb-1 font-heading text-5xl font-medium leading-none @2xl:text-[90px]">
+            <div className="text-background absolute bottom-0 left-1/2 z-10 w-full max-w-screen-2xl -translate-x-1/2 px-3 @xl:px-6 @5xl:px-20">
+              <h1 className="font-heading mb-1 text-5xl font-medium leading-none @2xl:text-[90px]">
                 {title}
               </h1>
-              {description && <p>{description}</p>}
+              {description && <p className="max-w-xl">{description}</p>}
               {cta?.href && (
                 <Button className="mt-4" variant="tertiary">
                   {cta.label}
