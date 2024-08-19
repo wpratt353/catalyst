@@ -1,20 +1,35 @@
-import { Shape, Style, TextInput } from '@makeswift/runtime/controls';
-import { ComponentProps } from 'react';
+import { Image, Shape, Style, TextInput } from '@makeswift/runtime/controls';
 
 import { FeaturedImage } from '~/components/ui/featured-image';
 import { runtime } from '~/lib/makeswift/runtime';
 
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  imageAlt?: string;
+  className: string;
+  cta?: {
+    href: string;
+    label: string;
+  };
+}
+
 runtime.registerComponent(
-  function MakeswiftFeaturedImage({
-    cta,
-    description,
-    image,
-    title,
-    className,
-  }: ComponentProps<typeof FeaturedImage> & { className: string }) {
+  function MakeswiftFeaturedImage({ cta, description, image, imageAlt, title, className }: Props) {
+    const imageFromMakeswiftProps = {
+      src: image ?? '',
+      altText: imageAlt ?? '',
+    };
+
     return (
       <div className={className}>
-        <FeaturedImage cta={cta} description={description} image={image} title={title} />
+        <FeaturedImage
+          cta={cta}
+          description={description}
+          image={imageFromMakeswiftProps}
+          title={title}
+        />
       </div>
     );
   },
@@ -25,12 +40,11 @@ runtime.registerComponent(
       className: Style(),
       title: TextInput({ label: 'Title', defaultValue: 'Title' }),
       description: TextInput({ label: 'Description', defaultValue: 'Description' }),
-      image: Shape({
-        type: {
-          src: TextInput({ label: 'Image URL', defaultValue: '' }),
-          altText: TextInput({ label: 'Alt text', defaultValue: 'Default alt text' }),
-        },
+      image: Image({
+        label: 'Image',
+        format: Image.Format.URL,
       }),
+      imageAlt: TextInput({ label: 'Image alt text', defaultValue: '' }),
       cta: Shape({
         type: {
           label: TextInput({ label: 'Label', defaultValue: 'Shop now' }),
