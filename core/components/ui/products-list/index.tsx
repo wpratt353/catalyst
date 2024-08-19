@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import ProductCard, { Product, ProductCardSkeleton } from '../product-card';
 
 interface Props {
-  products: Product[];
+  products?: Product[];
   className?: string;
 }
 

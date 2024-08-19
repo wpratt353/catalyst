@@ -12,7 +12,7 @@ interface Props {
   title: string;
   description?: string;
   cta?: Link;
-  products: Product[];
+  products?: Product[];
 }
 
 export const FeaturedProductsCarousel = function FeaturedProductsCarousel({
