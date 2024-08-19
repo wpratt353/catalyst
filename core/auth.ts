@@ -35,16 +35,10 @@ const AssignCartToCustomerMutation = graphql(`
   }
 `);
 
-const UnassignCartFromCustomerMutation = graphql(`
-  mutation UnassignCartFromCustomer(
-    $unassignCartFromCustomerInput: UnassignCartFromCustomerInput!
-  ) {
-    cart {
-      unassignCartFromCustomer(input: $unassignCartFromCustomerInput) {
-        cart {
-          entityId
-        }
-      }
+const LogoutMutation = graphql(`
+  mutation LogoutMutation {
+    logout {
+      result
     }
   }
 `);
@@ -112,20 +106,14 @@ const config = {
       }
     },
     async signOut(message) {
-      const cookieCartId = cookies().get('cartId')?.value;
+      const customerAccessToken = 'token' in message ? message.token?.customerAccessToken : null;
 
-      const customerId = 'token' in message ? message.token?.id : null;
-
-      if (customerId && cookieCartId) {
+      if (customerAccessToken) {
         try {
           await client.fetch({
-            document: UnassignCartFromCustomerMutation,
-            variables: {
-              unassignCartFromCustomerInput: {
-                cartEntityId: cookieCartId,
-              },
-            },
-            customerId,
+            document: LogoutMutation,
+            variables: {},
+            customerAccessToken,
             fetchOptions: { cache: 'no-store' },
           });
         } catch (error) {
