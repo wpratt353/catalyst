@@ -14,7 +14,7 @@ import FeaturedProductsCarousel from '~/components/ui/featured-products-carousel
 import FeaturedProductsList from '~/components/ui/featured-products-list';
 import Subscribe from '~/components/ui/subscribe';
 import { productCardTransformer } from '~/data-transformers/product-card-transformer';
-import { LocaleType } from '~/i18n';
+import { locales, LocaleType } from '~/i18n';
 import { client as makeswiftClient } from '~/lib/makeswift/client';
 import { MakeswiftProvider } from '~/lib/makeswift/provider';
 
@@ -49,6 +49,17 @@ const HomePageQuery = graphql(
   `,
   [ProductCardFragment],
 );
+
+export async function generateStaticParams() {
+  const pages = await makeswiftClient.getPages().toArray();
+
+  return pages.flatMap((page) =>
+    locales.map((locale) => ({
+      rest: page.path.split('/').filter((segment) => segment !== ''),
+      locale,
+    })),
+  );
+}
 
 export default async function Home({ params: { locale } }: Props) {
   unstable_setRequestLocale(locale);
