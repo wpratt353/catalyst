@@ -1,3 +1,4 @@
+import '~/components/ui/button/button.makeswift';
 import '~/components/ui/slideshow/slideshow.makeswift';
 import '~/components/ui/featured-products-carousel/featured-products-carousel.makeswift';
 import '~/components/ui/featured-image/featured-image.makeswift';
