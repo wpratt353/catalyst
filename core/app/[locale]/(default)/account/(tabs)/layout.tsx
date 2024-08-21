@@ -8,7 +8,7 @@ import { cn } from '~/lib/utils';
 
 import { AccountStatusProvider } from './_components/account-status-provider';
 
-const tabList = ['addresses', 'settings'] as const;
+const tabList = ['addresses', 'settings', 'orders'] as const;
 
 export type TabType = (typeof tabList)[number];
 
@@ -26,11 +26,15 @@ export default async function AccountTabLayout({ children, params: { locale } }:
   const tabsTitles = {
     addresses: t('addresses'),
     settings: t('settings'),
+    orders: t('orders'),
   };
 
   return (
-    <NextIntlClientProvider locale={locale} messages={{ Account: messages.Account ?? {} }}>
-      <AccountStatusProvider isPermanentBanner={true}>
+    <NextIntlClientProvider
+      locale={locale}
+      messages={{ Account: messages.Account ?? {}, Product: messages.Product ?? {} }}
+    >
+      <AccountStatusProvider>
         <h1 className="my-8 text-4xl font-black lg:my-8 lg:text-5xl">{t('heading')}</h1>
         <nav aria-label={t('accountTabsLabel')}>
           <ul className="mb-8 flex items-start overflow-x-auto">
