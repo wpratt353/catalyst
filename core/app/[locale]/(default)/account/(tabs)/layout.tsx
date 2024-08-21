@@ -35,7 +35,6 @@ export default async function AccountTabLayout({ children, params: { locale } }:
       messages={{ Account: messages.Account ?? {}, Product: messages.Product ?? {} }}
     >
       <AccountStatusProvider>
-        <h1 className="my-8 text-4xl font-black lg:my-8 lg:text-5xl">{t('heading')}</h1>
         <nav aria-label={t('accountTabsLabel')}>
           <ul className="mb-8 flex items-start overflow-x-auto">
             {tabList.map((tab) => (
