@@ -58,6 +58,15 @@ const nextConfig = {
       },
     ];
   },
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.ctfassets.net',
+      },
+    ],
+  },
 };
 
 module.exports = withMakeswift(withNextIntl(nextConfig));
