@@ -13,4 +13,6 @@ playwright-report/
 playwright/.cache/
 bigcommerce.graphql
 bigcommerce-graphql.d.ts
+contentful.graphql
+contentful-graphql.d.ts
 .DS_Store
