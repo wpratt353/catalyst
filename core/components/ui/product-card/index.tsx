@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import Image from 'next/image';
 import { ComponentPropsWithoutRef } from 'react';
 
 import { BcImage } from '~/components/bc-image';
@@ -40,7 +39,7 @@ export const ProductCard = function ProductCard({
   return (
     <CustomLink
       className={clsx(
-        'group flex cursor-pointer flex-col gap-2 rounded-xl text-foreground ring-primary focus-visible:outline-0 focus-visible:ring-2',
+        'group flex cursor-pointer flex-col gap-2 rounded-xl text-foreground ring-primary ring-offset-4 focus-visible:outline-0 focus-visible:ring-2',
         className,
       )}
       href={href}

@@ -37,7 +37,7 @@ export default function Price({
     case 'sale':
       return (
         <span className={clsx('text-sm font-semibold @4xl:text-xl @4xl:font-medium', className)}>
-          <span className="text-contrast-400 font-normal line-through">{price.previousValue}</span>{' '}
+          <span className="font-normal text-contrast-400 line-through">{price.previousValue}</span>{' '}
           {price.currentValue}
         </span>
       );

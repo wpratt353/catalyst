@@ -1,14 +1,16 @@
 'use client';
 
+import clsx from 'clsx';
 import useEmblaCarousel from 'embla-carousel-react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { ComponentPropsWithoutRef, ReactNode, useEffect, useState } from 'react';
 
 interface Props {
+  className?: string;
   children: ReactNode;
 }
 
-export const Carousel = ({ children }: Props & ComponentPropsWithoutRef<'div'>) => {
+export const Carousel = ({ className, children }: Props & ComponentPropsWithoutRef<'div'>) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
@@ -53,15 +55,20 @@ export const Carousel = ({ children }: Props & ComponentPropsWithoutRef<'div'>) 
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-screen-2xl flex-col gap-10 pt-8 @container">
+    <div
+      className={clsx('mx-auto flex w-full max-w-screen-2xl flex-col gap-6 @container', className)}
+    >
       {/* Carousel Content */}
       {children && (
-        <div className="w-full overflow-hidden px-3 py-0.5 @xl:px-6 @5xl:px-20" ref={emblaRef}>
+        <div
+          className="w-full overflow-hidden px-3 pb-2 pt-6 @xl:px-6 @4xl:pt-8 @5xl:px-20"
+          ref={emblaRef}
+        >
           <div className="flex gap-2 @4xl:gap-5">{children}</div>
         </div>
       )}
 
-      <div className="flex items-center justify-between px-3 pb-3 @xl:px-6 @4xl:pb-20 @5xl:px-20">
+      <div className="flex items-center justify-between px-3 pb-9 @xl:px-6 @4xl:pb-16 @5xl:px-20">
         {/* ScrollBar */}
         <div className="relative flex h-6 w-full max-w-56 items-center overflow-hidden">
           <input
@@ -73,11 +80,11 @@ export const Carousel = ({ children }: Props & ComponentPropsWithoutRef<'div'>) 
             value={progress}
           />
           {/* Track */}
-          <div className="bg-contrast-100 pointer-events-none absolute h-1 w-full rounded-full" />
+          <div className="pointer-events-none absolute h-1 w-full rounded-full bg-contrast-100" />
 
           {/* Bar */}
           <div
-            className="bg-foreground pointer-events-none absolute h-1 rounded-full transition-all duration-0 ease-linear"
+            className="pointer-events-none absolute h-1 rounded-full bg-foreground transition-all duration-0 ease-linear"
             style={{
               width: `${scrollbarPosition.width}%`,
               left: `${scrollbarPosition.left}%`,
@@ -86,9 +93,9 @@ export const Carousel = ({ children }: Props & ComponentPropsWithoutRef<'div'>) 
         </div>
 
         {/* Buttons */}
-        <div className="text-foreground flex gap-2">
+        <div className="flex gap-2 text-foreground">
           <button
-            className="disabled:text-contrast-300 rounded-lg ring-primary transition-colors duration-300 focus-visible:outline-0 focus-visible:ring-2 disabled:pointer-events-none"
+            className="rounded-lg ring-primary transition-colors duration-300 focus-visible:outline-0 focus-visible:ring-2 disabled:pointer-events-none disabled:text-contrast-300"
             disabled={!canScrollPrev}
             onClick={() => emblaApi?.scrollPrev()}
             role="button"
@@ -96,7 +103,7 @@ export const Carousel = ({ children }: Props & ComponentPropsWithoutRef<'div'>) 
             <ArrowLeft strokeWidth={1.5} />
           </button>
           <button
-            className="disabled:text-contrast-300 rounded-lg ring-primary transition-colors duration-300 focus-visible:outline-0 focus-visible:ring-2 disabled:pointer-events-none"
+            className="rounded-lg ring-primary transition-colors duration-300 focus-visible:outline-0 focus-visible:ring-2 disabled:pointer-events-none disabled:text-contrast-300"
             disabled={!canScrollNext}
             onClick={() => emblaApi?.scrollNext()}
             role="button"
