@@ -62,6 +62,15 @@ const nextConfig = {
       },
     ];
   },
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.ctfassets.net',
+      },
+    ],
+  },
 };
 
 module.exports = withNextIntl(nextConfig);
