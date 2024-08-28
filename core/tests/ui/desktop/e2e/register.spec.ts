@@ -19,8 +19,8 @@ test('Account register', async ({ page }) => {
     .fill(faker.internet.email({ provider: 'mybigcommerce.com' }));
   await page.getByLabel('PasswordRequired', { exact: true }).fill(password);
   await page.getByLabel('Confirm PasswordRequired').fill(password);
-  await page.getByLabel('First NameRequired').fill(firstName);
-  await page.getByLabel('Last NameRequired').fill(lastName);
+  await page.getByLabel('First NameRequired').fill(faker.person.firstName());
+  await page.getByLabel('Last NameRequired').fill(faker.person.lastName());
   await page.getByLabel('Phone Number').fill(faker.phone.number());
   await page.getByLabel('Address Line 1Required').fill(faker.location.streetAddress());
   await page.getByLabel('Suburb/CityRequired').fill(faker.location.city());

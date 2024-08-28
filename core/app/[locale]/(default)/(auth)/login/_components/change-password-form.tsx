@@ -12,13 +12,14 @@ import {
   FieldMessage,
   Form,
   FormSubmit,
-  Input,
 } from '~/components/ui/form';
-import { Message } from '~/components/ui/message';
-import { useRouter } from '~/routing';
 
-import { useAccountStatusContext } from '../../account/(tabs)/_components/account-status-provider';
+import { Message } from '~/components/ui/message';
+import { useRouter } from '~/navigation';
+
+import { useAccountStatusContext } from '../../account-status-provider';
 import { submitChangePasswordForm } from '../_actions/submit-change-password-form';
+import { Input } from '~/components/ui/header/input';
 
 interface Props {
   customerId: string;
@@ -100,11 +101,11 @@ export const ChangePasswordForm = ({ customerId, customerToken }: Props) => {
           <FieldControl asChild>
             <Input
               autoComplete="none"
-              error={state.status === 'error'}
               id="new-password"
               onChange={handleNewPasswordChange}
               required
               type="password"
+              variant={state.status === 'error' ? 'error' : undefined}
             />
           </FieldControl>
         </Field>
@@ -116,12 +117,12 @@ export const ChangePasswordForm = ({ customerId, customerToken }: Props) => {
           <FieldControl asChild>
             <Input
               autoComplete="none"
-              error={!isConfirmPasswordValid || state.status === 'error'}
               id="confirm-password"
               onChange={handleConfirmPasswordValidation}
               onInvalid={handleConfirmPasswordValidation}
               required
               type="password"
+              variant={!isConfirmPasswordValid || state.status === 'error' ? 'error' : undefined}
             />
           </FieldControl>
           <FieldMessage
