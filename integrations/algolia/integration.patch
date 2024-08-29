@@ -5,7 +5,7 @@ index b0425c70..19740fe4 100644
 @@ -34,3 +34,12 @@ TURBO_REMOTE_CACHE_SIGNATURE_KEY=
  # https://nextjs.org/docs/app/building-your-application/caching#data-cache
  # This sets a sensible revalidation target for cached requests
- NEXT_PUBLIC_DEFAULT_REVALIDATE_TARGET=3600
+ DEFAULT_REVALIDATE_TARGET=3600
 +
 +# Algolia config
 +# Get these variables by creating an app in the Algolia dashboard:
