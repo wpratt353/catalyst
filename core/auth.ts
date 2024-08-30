@@ -58,6 +58,7 @@ const config = {
   pages: {
     signIn: '/login',
   },
+  trustHost: true,
   callbacks: {
     jwt: ({ token, user }) => {
       // user can actually be undefined

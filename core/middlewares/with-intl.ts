@@ -13,6 +13,9 @@ const intlMiddleware = createMiddleware({
 
 export const withIntl: MiddlewareFactory = (next) => {
   return async (request, event) => {
+    // eslint-disable-next-line no-console
+    console.log('withIntl middleware', request.nextUrl.pathname);
+
     const intlResponse = intlMiddleware(request);
 
     // If intlMiddleware redirects, return it immediately

@@ -234,9 +234,24 @@ const getRouteInfo = async (request: NextRequest, event: NextFetchEvent) => {
   }
 };
 
-export const withRoutes: MiddlewareFactory = () => {
+export const withRoutes: MiddlewareFactory = (next) => {
   return async (request, event) => {
     const locale = request.headers.get('x-bc-locale') ?? '';
+
+    const cleanPathname = clearLocaleFromPath(request.nextUrl.pathname, locale);
+
+    if (cleanPathname.startsWith('/test-middleware-no-fetch')) {
+      return next(request, event);
+    }
+
+    if (cleanPathname.startsWith('/deini')) {
+      const destination = `/${locale}/product/111/static`;
+
+      return NextResponse.rewrite(new URL(destination, request.url));
+    }
+
+    // eslint-disable-next-line no-console
+    console.log('====== with routes:', request.nextUrl.pathname);
 
     const { route, status } = await getRouteInfo(request, event);
 
