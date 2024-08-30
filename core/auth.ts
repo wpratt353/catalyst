@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import NextAuth, { type DefaultSession, type NextAuthConfig } from 'next-auth';
 import 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
@@ -79,6 +79,7 @@ const config = {
   events: {
     async signIn({ user }) {
       const cookieCartId = cookies().get('cartId')?.value;
+      const ipAddress = headers().get('x-forwarded-for') ?? headers().get('x-real-ip') ?? '';
 
       if (cookieCartId && user.id) {
         try {
@@ -90,7 +91,10 @@ const config = {
               },
             },
             customerId: user.id,
-            fetchOptions: { cache: 'no-store' },
+            fetchOptions: {
+              cache: 'no-store',
+              headers: ipAddress ? { 'x-bc-ip': ipAddress } : undefined,
+            },
           });
         } catch (error) {
           // eslint-disable-next-line no-console
@@ -100,6 +104,7 @@ const config = {
     },
     async signOut(message) {
       const cookieCartId = cookies().get('cartId')?.value;
+      const ipAddress = headers().get('x-forwarded-for') ?? headers().get('x-real-ip') ?? '';
 
       const customerId = 'token' in message ? message.token?.id : null;
 
@@ -113,7 +118,10 @@ const config = {
               },
             },
             customerId,
-            fetchOptions: { cache: 'no-store' },
+            fetchOptions: {
+              cache: 'no-store',
+              headers: ipAddress ? { 'x-bc-ip': ipAddress } : undefined,
+            },
           });
         } catch (error) {
           // eslint-disable-next-line no-console
@@ -130,10 +138,15 @@ const config = {
       },
       async authorize(credentials) {
         const { email, password } = Credentials.parse(credentials);
+        const ipAddress = headers().get('x-forwarded-for') ?? headers().get('x-real-ip') ?? '';
 
         const response = await client.fetch({
           document: LoginMutation,
           variables: { email, password },
+          fetchOptions: {
+            cache: 'no-cache',
+            headers: ipAddress ? { 'x-bc-ip': ipAddress } : undefined,
+          },
         });
 
         const result = response.data.login;

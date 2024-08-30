@@ -79,7 +79,7 @@ class Client<FetcherRequestInit extends RequestInit = RequestInit> {
 
     const graphqlUrl = await this.getGraphQLEndpoint(channelId);
 
-    const response = await fetch(graphqlUrl, {
+    const response = await fetch(this.proxyRequest(graphqlUrl), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -153,6 +153,10 @@ class Client<FetcherRequestInit extends RequestInit = RequestInit> {
 
   private async getGraphQLEndpoint(channelId?: string) {
     return `${await this.getCanonicalUrl(channelId)}/graphql`;
+  }
+
+  private proxyRequest(url: string) {
+    return `https://${process.env.PROXY_HOSTNAME}/proxy?proxyUrl=${url}`;
   }
 
   private requestLogger(document: string) {
