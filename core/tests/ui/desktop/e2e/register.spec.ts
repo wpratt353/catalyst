@@ -9,7 +9,7 @@ const firstName = faker.person.firstName();
 const lastName = faker.person.lastName();
 
 test('Account register', async ({ page }) => {
-  await page.goto('/login');
+  await page.goto('/register');
 
   await page.getByRole('link', { name: 'Create Account' }).click();
   await page.getByRole('heading', { name: 'New account' }).waitFor();
