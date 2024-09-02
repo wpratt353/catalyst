@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 
 import { Link } from '~/components/link';
@@ -13,16 +13,16 @@ import {
   FieldMessage,
   Form,
   FormSubmit,
+  Input,
 } from '~/components/ui/form';
-import { Input } from '~/components/ui/header/input';
 import { Message } from '~/components/ui/message';
 
-import { useAccountStatusContext } from '../../account-status-provider';
+import { useAccountStatusContext } from '../../account/(tabs)/_components/account-status-provider';
 import { submitLoginForm } from '../_actions/submit-login-form';
 
 const SubmitButton = () => {
   const { pending } = useFormStatus();
-  const t = useTranslations('Account.Login');
+  const t = useTranslations('Login');
 
   return (
     <Button
@@ -42,9 +42,9 @@ export const LoginForm = () => {
   const [state, formAction] = useFormState(submitLoginForm, { status: 'idle' });
   const { accountState } = useAccountStatusContext();
 
-  const t = useTranslations('Account.Login');
+  const t = useTranslations('Login');
 
-  const isFormInvalid = state?.status === 'error';
+  const isFormInvalid = state.status === 'error';
 
   const handleInputValidation = (e: ChangeEvent<HTMLInputElement>) => {
     const validationStatus = e.target.validity.valueMissing;
@@ -71,14 +71,8 @@ export const LoginForm = () => {
       )}
 
       {isFormInvalid && (
-        <Message
-          aria-labelledby="error-message"
-          aria-live="polite"
-          className="mb-8 lg:col-span-2"
-          role="region"
-          variant="error"
-        >
-          <p id="error-message">{t('Form.errorMessage')}</p>
+        <Message className="mb-8 lg:col-span-2" variant="error">
+          <p>{t('Form.errorMessage')}</p>
         </Message>
       )}
       <Form action={formAction} className="mb-14 flex flex-col gap-3 md:p-8 lg:p-0">
@@ -87,12 +81,12 @@ export const LoginForm = () => {
           <FieldControl asChild>
             <Input
               autoComplete="email"
+              error={!isEmailValid}
               id="email"
               onChange={handleInputValidation}
               onInvalid={handleInputValidation}
               required
               type="email"
-              variant={!isEmailValid ? 'error' : undefined}
             />
           </FieldControl>
           <FieldMessage
@@ -106,12 +100,12 @@ export const LoginForm = () => {
           <FieldLabel htmlFor="password">{t('Form.passwordLabel')}</FieldLabel>
           <FieldControl asChild>
             <Input
+              error={!isPasswordValid}
               id="password"
               onChange={handleInputValidation}
               onInvalid={handleInputValidation}
               required
               type="password"
-              variant={!isPasswordValid ? 'error' : undefined}
             />
           </FieldControl>
           <FieldMessage

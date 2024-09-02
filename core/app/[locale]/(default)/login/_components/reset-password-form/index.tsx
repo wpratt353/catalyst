@@ -15,11 +15,11 @@ import {
   FieldMessage,
   Form,
   FormSubmit,
+  Input,
 } from '~/components/ui/form';
-import { Input } from '~/components/ui/header/input';
 import { Message } from '~/components/ui/message';
 
-import { useAccountStatusContext } from '../../../account-status-provider';
+import { useAccountStatusContext } from '../../../account/(tabs)/_components/account-status-provider';
 import { submitResetPasswordForm } from '../../_actions/submit-reset-password-form';
 
 import { ResetPasswordFormFragment } from './fragment';
@@ -65,7 +65,7 @@ export const ResetPasswordForm = ({ reCaptchaSettings }: Props) => {
 
   useEffect(() => {
     setAccountState({ status: 'idle' });
-  }, [])
+  }, [setAccountState]);
 
   const onReCatpchaChange = (token: string | null) => {
     if (!token) {
@@ -134,12 +134,12 @@ export const ResetPasswordForm = ({ reCaptchaSettings }: Props) => {
           <FieldControl asChild>
             <Input
               autoComplete="email"
+              error={!isEmailValid}
               id="email"
               onChange={handleEmailValidation}
               onInvalid={handleEmailValidation}
               required
               type="email"
-              variant={!isEmailValid ? 'error' : undefined}
             />
           </FieldControl>
           <FieldMessage
